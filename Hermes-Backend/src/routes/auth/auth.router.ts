@@ -1,10 +1,11 @@
 import express from 'express';
-import { handlerAuth } from '../../controllers/auth.controller';
-import { testValidation } from '../../middlewares/validation.middleware';
+import { handlerEmailAuthentication } from '../../controllers/auth.controller';
+import { validateData } from '../../middlewares/validation.middleware';
+import { triggerOTPScheme } from '../../types/auth/trigger';
 
 
 export const authRouter = express.Router();
 
 
-authRouter.post('/login', testValidation , handlerAuth);
+authRouter.post('/login', validateData(triggerOTPScheme) , handlerEmailAuthentication);
 
