@@ -2,10 +2,10 @@ import { useState } from "react"
 import styles from "./Quotes.module.css"
 import { useGetQuotesQuery } from "./quotesApiSlice"
 
-const options = [5, 10, 20, 30]
+const options = [2]
 
 export const Quotes = () => {
-  const [numberOfQuotes, setNumberOfQuotes] = useState(10)
+  const [numberOfQuotes, setNumberOfQuotes] = useState(2)
   // Using a query hook automatically fetches data and returns query values
   const { data, isError, isLoading, isSuccess } =
     useGetQuotesQuery(numberOfQuotes)
