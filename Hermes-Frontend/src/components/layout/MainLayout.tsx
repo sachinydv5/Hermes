@@ -1,4 +1,4 @@
-import FooterComponent from "../common/FooterComponent";
+import Footer from "../common/Footer";
 import Header from "../common/Header";
 
 export function MainLayout({ children }: any) {
@@ -10,7 +10,7 @@ export function MainLayout({ children }: any) {
             {children}
         </div>
         <footer>
-            <FooterComponent />
+            <Footer/>
         </footer>
     </>)
 }

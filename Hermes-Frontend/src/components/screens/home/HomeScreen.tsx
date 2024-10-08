@@ -1,10 +1,9 @@
-import Header from "../../common/Header";
-
+import { HomeComponent } from "../../pages/home/HomeComponent";
 
 
 export function HomeScreen() {
     return (<>
-        <Header/>
+    
     </>)
 }
 
