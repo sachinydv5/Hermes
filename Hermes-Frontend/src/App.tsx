@@ -10,7 +10,6 @@ const getMainLayout = () => {
   return (<MainLayout>
     <Routes>
       <Route path={AppRoutes.HOME} element={<HomeScreen />} />
-      <Route path={AppRoutes.ANY} element={<HomeScreen />} />
     </Routes>
   </MainLayout>)
 

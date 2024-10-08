@@ -1,10 +1,10 @@
 import FooterComponent from "../common/FooterComponent";
-import HeaderComponent from "../common/HeaderComponent";
+import Header from "../common/Header";
 
 export function MainLayout({ children }: any) {
     return (<>
         <header>
-            <HeaderComponent />
+            <Header />
         </header>
         <div className="min-h-screen p-2">
             {children}
