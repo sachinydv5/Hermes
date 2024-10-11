@@ -5,11 +5,18 @@ import {
 import MainLayout from "./components/layout/MainLayout";
 import HomeScreen from "./components/screens/home/HomeScreen";
 import { AppRoutes } from "./utils/AppRoutes";
+import CreatingList from "./components/pages/home/CreatingList";
+import SingleList from "./components/pages/home/SingleList";
+
+
 
 const getMainLayout = () => {
   return (<MainLayout>
     <Routes>
       <Route path={AppRoutes.HOME} element={<HomeScreen />} />
+      <Route path={AppRoutes.ANY} element={<HomeScreen />} />
+      <Route path={AppRoutes.CREATINGLIST} element={<CreatingList/>} />
+      <Route path={AppRoutes.CREATESINGLE} element={<SingleList/>} />
     </Routes>
   </MainLayout>)
 
@@ -19,6 +26,7 @@ function App() {
   return (
     <>
       {getMainLayout()}
+      {/* <SingleList/> */}
     </>
   );
 }

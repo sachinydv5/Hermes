@@ -1,9 +1,9 @@
-import { HomeComponent } from "../../pages/home/HomeComponent";
 
+import Landing from "../../pages/home/Landing";
 
-export function HomeScreen() {
+ function HomeScreen() {
     return (<>
-    
+    <Landing/>
     </>)
 }
 

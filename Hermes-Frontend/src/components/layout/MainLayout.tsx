@@ -6,7 +6,7 @@ export function MainLayout({ children }: any) {
         <header>
             <Header />
         </header>
-        <div className="min-h-screen p-2">
+        <div className="min-h-screen">
             {children}
         </div>
         <footer>

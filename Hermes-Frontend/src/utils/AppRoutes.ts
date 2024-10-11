@@ -1,4 +1,6 @@
 export const AppRoutes = {
     ANY: '*',
-    HOME: '/home'
+    HOME: '/home',
+    CREATINGLIST:'/creatinglist',
+    CREATESINGLE:'/createsingle'
 }

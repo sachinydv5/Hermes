@@ -1,8 +1,11 @@
 // import { IoSearch } from "react-icons/io5";
+
+import { Link } from "react-router-dom";
+
 // import { CiShoppingCart } from "react-icons/ci";
 const Header = () => {
   return (
-    <nav className=" px-6 py-7">
+    <nav className="bg-orange-100 px-6 py-7">
       <div className="container mx-auto flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center space-x-2">
@@ -16,7 +19,7 @@ const Header = () => {
         {/* Links */}
         <div className="">
         <ul className="flex gap-10">
-            <li className="text-gray-700 hover:text-[#f8a93a] font-semibold">Home</li>
+            <li className="text-gray-700 hover:text-[#f8a93a] font-semibold"><Link to='/home'>Home</Link></li>
             <li className="text-gray-700 hover:text-[#f8a93a] font-semibold">Discover</li>
             <li className="text-gray-700 hover:text-[#f8a93a] font-semibold">Company</li>
             </ul>
@@ -45,7 +48,7 @@ const Header = () => {
 
           {/* Create Listing Button */}
           <button className="bg-white text-[#f8a93a] px-4 py-2 rounded-full font-semibold hover:text-black">
-            Create listing
+           <Link to='/creatinglist'>Create listing</Link> 
           </button>
 
           {/* Log In Button */}
