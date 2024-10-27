@@ -8,9 +8,8 @@ export const triggerOTPScheme = z.object({
 export type TriggerOtpRequest = z.infer<typeof triggerOTPScheme>; 
 
 export type TriggerOtpResponse = {
-  otp: string;
   email: string;
-  otpModel: any
+  token: string
 }
 
 

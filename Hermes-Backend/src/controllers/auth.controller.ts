@@ -16,5 +16,5 @@ export const handlerEmailAuthentication = async (req: TypedRequest<TriggerOtpReq
   });
   const otpModel = await otpmodel(otp, req.body.email);
   const token = await encodeOBJ({ id: otpModel._id, email: req.body.email })
-  res.json({ otp: otp, email: req.body.email, otpModel: token });
+  res.json({ email: req.body.email, token: token });
 }
