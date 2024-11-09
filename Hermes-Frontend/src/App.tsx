@@ -1,3 +1,4 @@
+import * as React from 'react';
 import {
   Routes,
   Route,
@@ -7,6 +8,8 @@ import HomeScreen from "./components/screens/home/HomeScreen";
 import { AppRoutes } from "./utils/AppRoutes";
 import CreatingList from "./components/pages/home/CreatingList";
 import SingleList from "./components/pages/home/SingleList";
+import LoginForm from "./components/pages/home/LoginForm";
+import SignupForm from './components/pages/home/SignupForm';
 
 
 
@@ -25,8 +28,8 @@ const getMainLayout = () => {
 function App() {
   return (
     <>
-      {getMainLayout()}
-      {/* <SingleList/> */}
+      {/* {getMainLayout()} */}
+      <SignupForm/>
     </>
   );
 }
