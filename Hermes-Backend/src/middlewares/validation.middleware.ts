@@ -11,9 +11,10 @@ import { z, ZodError } from 'zod';
 // }
 //
 // check for request middle ware if it is of proper type
-export const validateData = (schema: z.ZodObject<any, any>) => {
+export const validateData = (schema: any) => {
   return (req: Request, res: Response, next: NextFunction) => {
     try {
+      console.log(req.body)
       schema.parse(req.body);
       next();
     } catch (error) {
@@ -21,10 +22,11 @@ export const validateData = (schema: z.ZodObject<any, any>) => {
         const _errorMessages = error.errors.map((issue: any) => ({
           message: `${issue.path.join('.')} is ${issue.message}`,
         }))
+        console.log(error)
         res.status(400).json({
           error: true,
           error_code: "REQUEST_VALIDATION_FAILED",
-          // errorMessages: errorMessages,
+          errorMessages: _errorMessages,
           userMessage: "Request Validation Failed"
         });
       } else {
