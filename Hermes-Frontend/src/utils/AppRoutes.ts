@@ -2,5 +2,6 @@ export const AppRoutes = {
     ANY: '*',
     HOME: '/home',
     CREATINGLIST:'/creatinglist',
-    CREATESINGLE:'/createsingle'
+    CREATESINGLE:'/createsingle',
+    // SIGNUPFORM:'/signup'
 }
