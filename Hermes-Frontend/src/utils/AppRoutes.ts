@@ -3,5 +3,5 @@ export const AppRoutes = {
     HOME: '/home',
     CREATINGLIST:'/creatinglist',
     CREATESINGLE:'/createsingle',
-    // SIGNUPFORM:'/signup'
+    MARKET:'/market'
 }

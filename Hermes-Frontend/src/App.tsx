@@ -10,6 +10,8 @@ import CreatingList from "./components/pages/home/CreatingList";
 import SingleList from "./components/pages/home/SingleList";
 import LoginForm from "./components/pages/home/LoginForm";
 import SignupForm from './components/pages/home/SignupForm';
+import PopularCategory from './components/common/PopularCategory';
+import Market from './components/pages/home/Market';
 
 
 
@@ -20,7 +22,7 @@ const getMainLayout = () => {
       <Route path={AppRoutes.ANY} element={<HomeScreen />} />
       <Route path={AppRoutes.CREATINGLIST} element={<CreatingList/>} />
       <Route path={AppRoutes.CREATESINGLE} element={<SingleList/>} />
-      {/* <Route path={AppRoutes.SIGNUPFORM} element={<SignupForm/>} /> */}
+      <Route path={AppRoutes.MARKET} element={<Market/>} />
     </Routes>
   </MainLayout>)
 
@@ -30,7 +32,7 @@ function App() {
   return (
     <>
       {getMainLayout()}
-      
+      {/* <PopularCategory/> */}
     </>
   );
 }

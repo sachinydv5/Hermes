@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import HeroSection from "../../common/HeroSection"
-import PopularNow from "../../common/PopukarNow"
+import PopularNow from "../../common/PopularNow"
 
 const Landing = () => {
   return (

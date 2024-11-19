@@ -30,7 +30,7 @@ const Header = () => {
         <div className="">
         <ul className="flex gap-10">
             <li className="text-gray-700 hover:text-[#f8a93a] font-semibold"><Link to='/home'>Home</Link></li>
-            <li className="text-gray-700 hover:text-[#f8a93a] font-semibold">Discover</li>
+            <li className="text-gray-700 hover:text-[#f8a93a] font-semibold"><Link to='/market'>Market</Link></li>
             <li className="text-gray-700 hover:text-[#f8a93a] font-semibold">Company</li>
             </ul>
         </div>
