@@ -1,7 +1,7 @@
 
 
 import { Request, Response, NextFunction } from 'express';
-import { ERROR_RESPONSE } from '../types/auth/trigger';
+import { ERROR_RESPONSE } from '../types/common/error';
 import { TypedResponse } from '../types/express.types';
 import { JwtPayload, verify } from 'jsonwebtoken';
 import { config } from '../configs/env.config';
