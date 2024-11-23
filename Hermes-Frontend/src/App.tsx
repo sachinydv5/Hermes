@@ -20,6 +20,7 @@ const getMainLayout = () => {
       <Route path={AppRoutes.ANY} element={<HomeScreen />} />
       <Route path={AppRoutes.CREATINGLIST} element={<CreatingList/>} />
       <Route path={AppRoutes.CREATESINGLE} element={<SingleList/>} />
+      {/* <Route path={AppRoutes.SIGNUPFORM} element={<SignupForm/>} /> */}
     </Routes>
   </MainLayout>)
 
@@ -28,8 +29,8 @@ const getMainLayout = () => {
 function App() {
   return (
     <>
-      {/* {getMainLayout()} */}
-      <SignupForm/>
+      {getMainLayout()}
+      {/* <SignupForm/> */}
     </>
   );
 }

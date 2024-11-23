@@ -49,7 +49,7 @@ const SignupForm = () => {
             <input
               id="text"
               type="text"
-              placeholder="jhon doe"
+              placeholder="0000 0000"
               className="w-full px-4 py-3 rounded-full bg-white text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-amber-200"
             //   value={formData.email}
             //   onChange={(e) => setFormData({ ...formData, email: e.target.value })}

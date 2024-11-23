@@ -6,14 +6,30 @@ const SingleList = () => {
     <div className="container mx-auto p-4">
       <div className="flex gap-8">
         <div className="w-2/3">
-          <h1 className="text-3xl font-bold mb-6">Create single Product</h1>
+        <div className='flex justify-between '>
+        <h1 className="text-3xl font-bold mb-6">Create single Product</h1>
+        <button className='text-sm leading-[16px]'>Switch to Multiple</button>
+        </div>
+          
           <div className="mb-6">
       <label className="block text-sm font-medium text-gray-700 mb-2">Upload file</label>
-      <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 bg-gray-50 text-center relative">
+      <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 bg-gray-50 text-center relative cursor-pointer">
         {/* Placeholder for uploaded file or icon */}
         <div className="inline-block mb-4">
-          <img src="path-to-placeholder-icon" alt="upload-icon" className="mx-auto mb-4" />
-        </div>
+  <label htmlFor="file-upload" className="cursor-pointer ">
+    <input 
+      type="file" 
+      id="file-upload" 
+      className="hidden" 
+      accept=".png,.gif,.webp,.mp4,.mp3" 
+    />
+    <img 
+      src="path-to-placeholder-icon" 
+      alt="upload-icon" 
+      className="mx-auto mb-4"
+    />
+  </label>
+</div>
         <p className="text-gray-500">Drag or choose your file to upload</p>
         <p className="text-gray-400 text-sm">PNG, GIF, WEBP, MP4 or MP3. Max 1GB.</p>
       </div>
@@ -121,7 +137,7 @@ const SingleList = () => {
                   <option>Default</option>
                 </select>
                 <select className="border rounded-md p-2">
-                  <option>5 Kms</option>
+                  <option>5 miles</option>
                 </select>
                 <select className="border rounded-md p-2">
                   <option>5 Weeks</option>
@@ -144,6 +160,7 @@ const SingleList = () => {
         </div>
 
         <div className="w-1/3">
+        <h2 className="w-[63px] text-base leading-[24px] font-medium font-body-2-bold text-neutrals-2 text-left inline-block mb-5">Preview</h2>
           <ProductCard/>
         </div>
         

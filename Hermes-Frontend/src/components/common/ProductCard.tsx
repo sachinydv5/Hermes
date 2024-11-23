@@ -1,3 +1,4 @@
+import { ShoppingCart } from 'lucide-react';
 import React from 'react';
 // import { CiShoppingCart } from 'react-icons/ci';
 
@@ -27,7 +28,7 @@ const ProductCard = () => {
         {/* Cart Button */}
         <div className="">
         <button className="bg-orange-400 text-white p-2 rounded-full">
-        {/* <CiShoppingCart /> */}
+        <ShoppingCart className="h-6 w-6" />
         </button>
       </div>
       </div>

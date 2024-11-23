@@ -1,6 +1,16 @@
 // import { IoSearch } from "react-icons/io5";
+import React from 'react';
+import { Search, ShoppingCart } from 'lucide-react'
+
+import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 
 import { Link } from "react-router-dom";
+import LoginForm from '../pages/home/LoginForm';
 
 // import { CiShoppingCart } from "react-icons/ci";
 const Header = () => {
@@ -29,9 +39,7 @@ const Header = () => {
         <div className="flex items-center space-x-4">
           {/* Search */}
           <div className="relative">
-          <span className="absolute inset-y-0 flex items-center pl-3">
-          {/* <IoSearch/> */}
-            </span>
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
             <input
               type="text"
               placeholder="Lorem ipsum rento"
@@ -41,10 +49,9 @@ const Header = () => {
           </div>
 
           {/* Cart Icon */}
-          <div>
-            
-          {/* <CiShoppingCart className="w-10 " /> */}
-          </div>
+          <Button variant="ghost" size="icon" aria-label="Shopping cart">
+            <ShoppingCart className="h-6 w-6" />
+          </Button>
 
           {/* Create Listing Button */}
           <button className="bg-white text-[#f8a93a] px-4 py-2 rounded-full font-semibold hover:text-black">
@@ -52,9 +59,16 @@ const Header = () => {
           </button>
 
           {/* Log In Button */}
-          <button className="border border-[#f8a93a] text-black px-4 py-2 rounded-full font-semibold hover:text-white">
-            Log In
-          </button>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="outline" className="border border-[#f8a93a] text-black px-4 py-2 rounded-full font-semibold">
+                Log In
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px] bg-[#313131] text-white border-none">
+              <LoginForm/>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
     </nav>
