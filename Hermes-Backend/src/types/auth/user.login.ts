@@ -12,3 +12,10 @@ export type UserLogin = {
   tokenDeleted: boolean;
   device?: string;  
 }
+
+
+export type BlacklistToken = {
+  token: string;
+  createdAt: Date;
+  updatedAt: Date;
+}

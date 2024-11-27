@@ -1,6 +1,6 @@
 import { decodeOBJ, encodeOBJ } from '../middlewares/crypto';
 import { MARK_OTP_AS_VERIFIED, OTP_FIND_BY_ID } from '../types/auth/otp';
-import { TriggerOtpRequest, TriggerOtpResponse, UserLoginRequest, UserLoginResponse, VerifyOtpRequest, VerifyOtpResponse } from '../types/auth/trigger';
+import { UserLoginRequest, UserLoginResponse, UserLogoutRequest, UserLogoutResponse, UserSignUpRequest, UserSignUpResponse, VerifyOtpRequest, VerifyOtpResponse } from '../types/auth/trigger';
 import { TypedRequest, TypedResponse } from '../types/express.types';
 import date from '../utils/date';
 import { getAuth, sendEmailVerification } from "firebase/auth"
@@ -12,7 +12,7 @@ import { sign } from 'jsonwebtoken';
 import { config } from '../configs/env.config';
 import { compare, hash } from 'bcrypt';
 
-export const handlerAuthentication = async (req: TypedRequest<TriggerOtpRequest>, res: TypedResponse<TriggerOtpResponse>) => {
+export const handleUserSignUp = async (req: TypedRequest<UserSignUpRequest>, res: TypedResponse<UserSignUpResponse>) => {
   try {
     if ("email" in req.body) {
       const user = await findUserByEmail(req.body.email);
@@ -97,6 +97,10 @@ export const handleLogin = async (req: TypedRequest<UserLoginRequest>, res: Type
   } catch (error) {
     res.json({ error_code: "INTERNAL_SERVER_ERROR", description: "Some error Occurred" });
   }
+}
+
+export const handleLogout = async (_req: TypedRequest<UserLogoutRequest> , res: TypedResponse<UserLogoutResponse>) => {
+  res.json({status: "USER_LOGGED_OUT"})
 }
 
 

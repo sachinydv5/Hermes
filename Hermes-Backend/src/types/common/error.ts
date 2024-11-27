@@ -1,3 +1,6 @@
+import { z } from 'zod';
+
+
 export type GLOBAL_ERROR_CODE = "INTERNAL_SERVER_ERROR" | "UNAUTHORIZED"
 
 export type Error<P> = {
@@ -10,3 +13,7 @@ export type ERROR_RESPONSE = {
   error_code: GLOBAL_ERROR_CODE,
   description: string
 }
+
+
+
+export const emptyObject = z.object({}).optional();
