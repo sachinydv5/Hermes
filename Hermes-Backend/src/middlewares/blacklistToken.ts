@@ -1,12 +1,12 @@
 
 
 import { Request, Response, NextFunction } from 'express';
-import { ERROR_RESPONSE } from '../types/auth/trigger';
 import { TypedResponse } from '../types/express.types';
 import { JwtPayload, verify } from 'jsonwebtoken';
 import { config } from '../configs/env.config';
 import { createBlackListToken, findBlackListedByTokenId } from '../database/login/blacklist.token';
 import { findUserLoginByTokenId, updateUserLoginAsDeleted } from '../database/login/user.login';
+import { ERROR_RESPONSE } from '../types/common/error';
 
 function isJwtPayload(payload: JwtPayload | string): payload is JwtPayload {
   return typeof payload !== 'string';

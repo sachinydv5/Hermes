@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { Error } from '../common/error';
+import { emptyObject, Error } from '../common/error';
 
 // Trigger OTP Request
 
