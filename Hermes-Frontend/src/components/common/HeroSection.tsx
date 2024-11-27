@@ -3,21 +3,21 @@ import React from 'react';
 
 const HeroSection = () => {
   return (
-    <section className="bg-orange-100 py-16 mb-40">
+    <section className=" py-16 mb-40">
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-between">
-        <div className="w-full md:w-1/2 mb-8 md:mb-0 text-balance">
+        <div className="w-full md:w-1/2 mb-8 md:mb-0 text-balance font-[popins]">
           <h1 className="text-5xl font-semibold text-gray-800 ">
             Lorem Ipsum is simply dummy text
           </h1>
-          <p className="text-lg text-gray-600 mt-4">
-            Lorem ipsum has been the industry's standard dummy text ever since the 1500s Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dolore suscipit illum at nulla quisquam ad, fugiat quidem libero, minima expedita illo ab sequi quis voluptates? Corporis error eum voluptates ratione!.
+          <p className="text-lg text-gray-600 mt-4 ">
+            Lorem ipsum has been the industry standard dummy text ever since the 1500s lorem.
           </p>
           <div className="mt-6">
             <button className="bg-black text-white px-4 py-2 rounded-full mr-4">Order Now</button>
             <button className="border-none border-orange-500 text-orange-500 px-4 py-2 rounded">Explore More</button>
           </div>
         </div>
-        <div className="relative w-64 h-64 rounded-full flex items-center justify-center">
+        <div className="relative right-40 w-64 h-64 rounded-full flex items-center justify-center">
         {/* Background image for the circle */}
         <img 
           src="herocircle.png" 

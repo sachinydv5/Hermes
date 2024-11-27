@@ -11,16 +11,16 @@ const PopularCategory = () => {
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
 
   const categories: Category[] = [
-    { imageSrc: "/placeholder.png?height=40&width=40", label: "Gaming" },
-    { imageSrc: "/placeholder.svg?height=40&width=40", label: "Sport Equip" },
-    { imageSrc: "/placeholder.svg?height=40&width=40", label: "Kitchen" },
-    { imageSrc: "/placeholder.svg?height=40&width=40", label: "Robot Cleaner" },
-    { imageSrc: "/placeholder.svg?height=40&width=40", label: "Mobiles" },
-    { imageSrc: "/placeholder.svg?height=40&width=40", label: "Office" },
-    { imageSrc: "/placeholder.svg?height=40&width=40", label: "Cameras" },
-    { imageSrc: "/placeholder.svg?height=40&width=40", label: "Computers" },
-    { imageSrc: "/placeholder.svg?height=40&width=40", label: "Televisions" },
-    { imageSrc: "/placeholder.svg?height=40&width=40", label: "Audios" },
+    { imageSrc: "/category-images/cat1.png", label: "Gaming" },
+    { imageSrc: "/category-images/cat2.png", label: "Sport Equip" },
+    { imageSrc: "/category-images/cat3.png", label: "Kitchen" },
+    { imageSrc: "/category-images/cat4.png", label: "Robot Cleaner" },
+    { imageSrc: "/category-images/cat5.png", label: "Mobiles" },
+    { imageSrc: "/category-images/cat6.png", label: "Office" },
+    { imageSrc: "/category-images/cat7.png", label: "Cameras" },
+    { imageSrc: "/category-images/cat8.png", label: "Computers" },
+    { imageSrc: "/category-images/cat9.png", label: "Televisions" },
+    { imageSrc: "/category-images/cat10.png", label: "Audios" },
     
   ]
 
@@ -29,8 +29,8 @@ const PopularCategory = () => {
   }
   return (
     <div>
-       <section className="w-full py-8 bg-white">
-      <div className="container mx-auto px-4">
+       <section className="w-full py-8 ">
+      <div className="w-[90vw] mx-auto px-4">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-bold text-gray-900">Popular Categories</h2>
           <button 
@@ -64,8 +64,7 @@ const PopularCategory = () => {
                 w-20 h-20 rounded-full bg-[#fbe6d4] flex items-center justify-center
                 ${selectedCategory === category.label ? 'ring-2 ring-primary ring-offset-2' : ''}
               `}>
-                <image
-                  
+                <img 
                   src={category.imageSrc}
                   alt={`${category.label} icon`}
                   width={40}

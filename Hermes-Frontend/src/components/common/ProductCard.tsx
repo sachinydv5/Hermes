@@ -1,5 +1,7 @@
 import { ShoppingCart } from 'lucide-react';
 import React from 'react';
+import { Button } from "@/components/ui/button"
+import { Heart } from 'lucide-react'
 // import { CiShoppingCart } from 'react-icons/ci';
 
 const ProductCard = () => {
@@ -11,6 +13,7 @@ const ProductCard = () => {
         <span className="absolute top-2 left-2 bg-gray-100 text-black text-xs rounded-full px-2 py-1">
           <span className="font-bold">0.0</span> ⭐
         </span>
+       
       </div>
 
       {/* Title and Rating */}

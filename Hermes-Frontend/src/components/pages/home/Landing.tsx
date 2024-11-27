@@ -5,7 +5,7 @@ import PopularNow from "../../common/PopularNow"
 const Landing = () => {
   return (
     <div className=''>
-      <section className='bg-orange-100'>
+      <section className='bg-[#F6EBDA]'>
     
         <HeroSection/>
         {/* popular section */}
@@ -37,7 +37,7 @@ const Landing = () => {
     </section>
     
     {/* about */}
-    <section className="relative p-8 lg:p-16 bg-orange-100 mt-20 mb-20">
+    <section className="relative p-8 lg:p-16 bg-[#F6EBDA] mt-20 mb-20 font-[poppins]">
       <div className="flex flex-col lg:flex-row items-center justify-between lg:space-x-8 relative">
         {/* Image Section */}
         <div className="relative lg:mb-0 mb-20 w-full lg:w-1/2 flex justify-center">
@@ -59,7 +59,7 @@ const Landing = () => {
             Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
             when an unknown printer took a galley of type and scrambled it.
           </p>
-          <button className="bg-gray-900 text-yellow-400 py-3 px-8 rounded-full font-bold shadow-md transition-all hover:bg-yellow-400 hover:text-gray-900">
+          <button className="bg-[#313131] text-[#F4AE26] py-3 px-8 rounded-full font-bold shadow-md transition-all  hover:text-orange-100">
             Get in touch
           </button>
         </div>

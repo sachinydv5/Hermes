@@ -9,7 +9,7 @@ export function MainLayout({ children }: any) {
         <div className="min-h-screen">
             {children}
         </div>
-        <footer>
+        <footer className="mt-10">
             <Footer/>
         </footer>
     </>)

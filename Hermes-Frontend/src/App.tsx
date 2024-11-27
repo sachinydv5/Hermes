@@ -12,6 +12,7 @@ import LoginForm from "./components/pages/home/LoginForm";
 import SignupForm from './components/pages/home/SignupForm';
 import PopularCategory from './components/common/PopularCategory';
 import Market from './components/pages/home/Market';
+import ProductList from './components/pages/home/ProductList';
 
 
 
@@ -23,6 +24,7 @@ const getMainLayout = () => {
       <Route path={AppRoutes.CREATINGLIST} element={<CreatingList/>} />
       <Route path={AppRoutes.CREATESINGLE} element={<SingleList/>} />
       <Route path={AppRoutes.MARKET} element={<Market/>} />
+      <Route path={AppRoutes.ProductList} element={<ProductList/>} />
     </Routes>
   </MainLayout>)
 
@@ -31,8 +33,7 @@ const getMainLayout = () => {
 function App() {
   return (
     <>
-      {getMainLayout()}
-      {/* <PopularCategory/> */}
+      {getMainLayout()} 
     </>
   );
 }
