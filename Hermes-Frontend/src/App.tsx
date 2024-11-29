@@ -33,12 +33,7 @@ const getMainLayout = () => {
 function App() {
   return (
     <>
-<<<<<<< HEAD
       {getMainLayout()} 
-=======
-      {getMainLayout()}
-      {/* <SignupForm/> */}
->>>>>>> a6236d1bf706187324308cb8c0a8698fad49afe6
     </>
   );
 }
