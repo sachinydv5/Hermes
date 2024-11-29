@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Button } from "@/components/ui/button";
+import SignupForm from './SignupForm';
 
 
 function LoginForm() {
@@ -9,9 +10,12 @@ function LoginForm() {
     email: '',
     password: '',
   });
+  const [showSignUp, setShowSignUp] = useState(false);
+
   return (
-    <div>
       <div className=" flex items-center justify-center ">
+       {!showSignUp ?(
+       
         <div className="w-full max-w-md space-y-6  bg-[#313131] rounded-xl  p-8">
           <div className="space-y-2">
             <h1 className="text-white text-[38px] font-normal font-['Inter']">Login</h1>
@@ -111,11 +115,28 @@ function LoginForm() {
             Don't have an account yet ?
             <Button variant="link"
               className="text-[#5776d3] text-sm font-normal font-['Inter']"
+              onClick={() => setShowSignUp(true)}
             > Register for free</Button>
           </div>
         </div>
+      ):(
+        <div className="w-full max-w-md space-y-6 bg-[#313131] rounded-xl p-8">
+        <div className="space-y-2">
+          <h1 className="text-white text-[38px] font-normal font-['Inter']">Sign Up</h1>
+        </div>
+        <SignupForm />
+        <div className="text-center text-sm text-[#bcbec0] font-semibold">
+          Already have an account?
+          <Button
+            variant="link"
+            className="text-[#5776d3] text-sm font-normal font-['Inter']"
+            onClick={() => setShowSignUp(false)}
+          >
+            Login
+          </Button>
+        </div>
+      </div>)} 
       </div>
-    </div>
   );
 }
 

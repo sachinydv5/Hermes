@@ -150,7 +150,7 @@ const Collection = () => {
     }
   }
   return (
-    <div className="w-full px-6 py-12">
+    <div className="w-full bg-white br px-6 py-12">
     <div className="w-[90vw] mx-auto">
       <div className="flex items-center justify-between mb-8 p-6">
         <h2 className="text-3xl font-bold">Hot collections</h2>

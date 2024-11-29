@@ -63,7 +63,6 @@ const Header = () => {
           {/* Log In Button */}
           <Dialog>
             <DialogTrigger asChild>
-    
               <Button variant="outline" className="border border-[#f8a93a] text-black px-4 py-2 rounded-full font-semibold">
                 Log In
               </Button>
