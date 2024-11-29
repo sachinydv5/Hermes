@@ -52,7 +52,6 @@ const Header = () => {
 
           {/* Cart Icon */}
           <Button variant="ghost" size="icon" aria-label="Shopping cart">
-            <ShoppingCart className="" />
             <ShoppingCart className="h-6 w-6" />
           </Button>
 
