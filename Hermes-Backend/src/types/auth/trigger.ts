@@ -1,9 +1,9 @@
 import { z } from 'zod';
-import { Error } from '../common/error';
+import { emptyObject, Error } from '../common/error';
 
 // Trigger OTP Request
 
-export const triggerOTPScheme = z.object({
+export const UserSignUpScheme = z.object({
   email: z.string().email(),
   password: z.string(),
   firstName: z.string(),
@@ -14,11 +14,11 @@ export const triggerOTPScheme = z.object({
 //   // email: z.string().email(),
 // }))
 
-type TRIGGER_ERROR_CODES = "SEND_EMAIL_ERROR" | "USER_NOT_FOUND" | "EMAIL_ALREADY_IN_USE" | "INVALID_EMAIL" | "PASSWORD_TOO_WEAK"
+type USER_SIGNUP_ERROR_CODES = "SEND_EMAIL_ERROR" | "USER_NOT_FOUND" | "EMAIL_ALREADY_IN_USE" | "INVALID_EMAIL" | "PASSWORD_TOO_WEAK"
 
-export type TriggerOtpRequest = z.infer<typeof triggerOTPScheme>;
+export type UserSignUpRequest = z.infer<typeof UserSignUpScheme>;
 
-export type TriggerOtpResponse = Error<TRIGGER_ERROR_CODES> | {
+export type UserSignUpResponse = Error<USER_SIGNUP_ERROR_CODES> | {
   status: "USER_CREATED_SUCCESSFULLY",
   authToken: string
 }
@@ -64,3 +64,12 @@ export type VerifyOtpResponse = Error<VERIFY_ERROR_CODES> | {
   verified: boolean,
 }
 
+type USER_LOGOUT_CODES = "INTERNAL_ERROR"
+
+export const userLogoutScheme = emptyObject;
+
+export type UserLogoutRequest = z.infer<typeof userLogoutScheme>
+
+export type UserLogoutResponse = Error<USER_LOGOUT_CODES> | {
+  status: "USER_LOGGED_OUT"
+}

@@ -48,7 +48,15 @@ export const ProductDO = z.object({
 })
 
 
-export const GetProductResponse = z.object({status:z.string(),pageNo:z.number(),pageSize: z.number(),totalPages:z.number(),products: z.array(ProductDO).min(0),lastRef: z.string().optional()});
+export const GetProductResponse = z.object({
+  status:z.string(),
+  pageNo:z.number(),
+  pageSize: z.number(),
+  totalPages:z.number(),
+  products: z.array(ProductDO).min(0),
+  lastRef: z.string().optional(),
+});
+
 
 export type GetProductDoResponse =Error<GLOBAL_ERROR_CODE> | z.infer<typeof GetProductResponse>;
 

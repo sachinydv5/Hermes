@@ -14,8 +14,11 @@ import { z, ZodError } from 'zod';
 export const validateData = (schema: any) => {
   return (req: Request, res: Response, next: NextFunction) => {
     try {
-      console.log(req.body)
+      console.log("start Time 1")
+      console.time();
       schema.parse(req.body);
+      console.timeEnd()
+      console.log("end Time")
       next();
     } catch (error) {
       if (error instanceof ZodError) {

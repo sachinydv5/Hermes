@@ -5,7 +5,7 @@ import { config } from '../configs/env.config';
 import { cert, initializeApp as ia} from 'firebase-admin/app';
 import { getFirestore as gf} from 'firebase-admin/firestore';
 
-import serviceAccount from '../../firebase-admin.json';
+// import serviceAccount from '../../firebase-admin.json';
 
 const firebaseConfig = {
   apiKey: config.FIREBASE_API_KEY,
@@ -22,8 +22,9 @@ let firestoreDB: Firestore;
 
 const initializeDatabase = () => {
   try {
+    // console.log(serviceAccount)
     ia({
-      credential: cert(serviceAccount as any)
+      credential: cert(config.FIREBASE_ADMIN as any)
     })
     app = initializeApp(firebaseConfig);
     firestoreDB = getFirestore();
