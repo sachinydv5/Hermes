@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
+export type GLOBAL_ERROR_CODE = "INTERNAL_SERVER_ERROR" | "UNAUTHORIZED" | "BAD_REQUEST";
 
-export type GLOBAL_ERROR_CODE = "INTERNAL_SERVER_ERROR" | "UNAUTHORIZED"
 
 export type Error<P> = {
   error_code: GLOBAL_ERROR_CODE | P,

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { Error } from "../common/error";
+import { Error, GLOBAL_ERROR_CODE } from "../common/error";
 
 // Schema for the duration object
 export const DurationSchema = z.object({
@@ -58,15 +58,13 @@ export const GetProductResponse = z.object({
 });
 
 
-export type GetProductDoResponse =Error<ERROR_CODE> | z.infer<typeof GetProductResponse>;
+export type GetProductDoResponse =Error<GLOBAL_ERROR_CODE> | z.infer<typeof GetProductResponse>;
 
 export type ProductDoSchema = z.infer<typeof ProductDO>;
 
 export type ProductRequestSchema = z.infer<typeof ProductSchema>;
 
-export type ERROR_CODE = "INTERNAL_SERVER_ERROR" | "UNAUTHORIZED" | "BAD_REQUEST";
-
-export type AddProductResponseSchema = Error<ERROR_CODE> | {
+export type AddProductResponseSchema = Error<GLOBAL_ERROR_CODE> | {
   status: "PRODUCT_ADDED_SUCCESSFULLY",
 }
 
