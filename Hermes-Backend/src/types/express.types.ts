@@ -1,10 +1,17 @@
 
+import express, { Request, Response } from 'express';
 import { Send } from 'express-serve-static-core';
 
-export interface TypedRequest<T> extends Express.Request {
+export interface TypedRequest<T> extends Request {
   body: T
 }
 
-export interface TypedResponse<ResBody> extends Express.Response {
+export interface TypedResponse<ResBody> extends Response {
   json: Send<ResBody, this>;
+}
+
+
+export interface PResponse<T> {
+  error?: Error,
+  value: T
 }

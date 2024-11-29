@@ -9,7 +9,7 @@ const winstonConfig = winston.createLogger({
     winston.format.json(),
   ),
   exitOnError: false,
-  defaultMeta: { hostName: 'themis-lsp', HOSTNAME: process.env.HOSTNAME || 'HOSTNAME_NOT_FOUND' },
+  defaultMeta: { hostName: 'HERMES_BACKEND', HOSTNAME: process.env.HOSTNAME || 'HOSTNAME_NOT_FOUND' },
   transports: [
     new winston.transports.Console({
       handleExceptions: true,

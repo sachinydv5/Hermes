@@ -1,0 +1,14 @@
+{
+  "name": "hermes",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:200-DevelopersFound/Hermes.git",
+  "author": "Shreyans Jain <shreyans1313@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build:backend": "cd Hermes-Backend && npm run-script build",
+    "run:backend" : "cd Hermes-Backend && npm run-script serve"
+  }
+
+}

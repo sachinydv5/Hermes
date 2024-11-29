@@ -23,8 +23,12 @@ const getMainLayout = () => {
       <Route path={AppRoutes.ANY} element={<HomeScreen />} />
       <Route path={AppRoutes.CREATINGLIST} element={<CreatingList/>} />
       <Route path={AppRoutes.CREATESINGLE} element={<SingleList/>} />
+<<<<<<< HEAD
       <Route path={AppRoutes.MARKET} element={<Market/>} />
       <Route path={AppRoutes.ProductList} element={<ProductList/>} />
+=======
+      {/* <Route path={AppRoutes.SIGNUPFORM} element={<SignupForm/>} /> */}
+>>>>>>> a6236d1bf706187324308cb8c0a8698fad49afe6
     </Routes>
   </MainLayout>)
 
@@ -33,7 +37,12 @@ const getMainLayout = () => {
 function App() {
   return (
     <>
+<<<<<<< HEAD
       {getMainLayout()} 
+=======
+      {getMainLayout()}
+      {/* <SignupForm/> */}
+>>>>>>> a6236d1bf706187324308cb8c0a8698fad49afe6
     </>
   );
 }

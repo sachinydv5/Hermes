@@ -1,7 +1,8 @@
 import { Schema, model } from 'mongoose';
 import { emailValidation, phoneValidation } from "../../utils/utils";
+import { Document } from "mongoose";
 
-interface OTP {
+interface OTP_SCHEMA {
   createdAt: Date;
   expirationTime: Date;
   otp: string;
@@ -9,9 +10,9 @@ interface OTP {
   email: string;
   phoneNumber: string;
 }
+export type OTP_DOCUMENT = Document & OTP_SCHEMA;
 
-
-const otpSchema = new Schema<OTP>({
+const otpSchema = new Schema<OTP_SCHEMA>({
   createdAt: { type: Date, default: new Date().getTime() },
   expirationTime: { type: Date, default: new Date().getTime() + 172800000 },
   otp: { type: String },
@@ -44,8 +45,15 @@ otpSchema.pre('validate', function(next) {
 });
 
 
-const otp_model = model<OTP>("OTP", otpSchema);
+export const OtpModel = model<OTP_SCHEMA>("OTP", otpSchema);
 
-export const otpmodel = async (otp:string, email: string) => await otp_model.create({
-  email, otp,
-})
+export const OTP_EMAIL = async (otp:string, email: string) => await OtpModel.create({ email, otp });
+
+export const OTP_PHONE_NUMBER = async (otp:string, phoneNumber: string) => await OtpModel.create({ phoneNumber, otp });
+
+export const OTP_FIND_BY_ID = async (id:string): Promise<OTP_DOCUMENT | null> => await OtpModel.findById(id);
+
+export const MARK_OTP_AS_VERIFIED = async (otp_db: OTP_DOCUMENT) => {
+  otp_db.verified = true;
+  await otp_db.save();
+}

@@ -39,7 +39,11 @@ const Header = () => {
         {/* Search and Cart */}
         <div className="md:flex items-center space-x-4 mt-4 md:mt-0 gap-2">
           {/* Search */}
+<<<<<<< HEAD
           {/* <div className="relative">
+=======
+          <div className="relative">
+>>>>>>> a6236d1bf706187324308cb8c0a8698fad49afe6
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
             <input
               type="text"
@@ -51,7 +55,11 @@ const Header = () => {
 
           {/* Cart Icon */}
           <Button variant="ghost" size="icon" aria-label="Shopping cart">
+<<<<<<< HEAD
             <ShoppingCart className="" />
+=======
+            <ShoppingCart className="h-6 w-6" />
+>>>>>>> a6236d1bf706187324308cb8c0a8698fad49afe6
           </Button>
 
           {/* Create Listing Button */}
@@ -62,7 +70,11 @@ const Header = () => {
           {/* Log In Button */}
           <Dialog>
             <DialogTrigger asChild>
+<<<<<<< HEAD
               <Button variant="outline" className="border border-[#f8a93a] text-black px-3 py-1 lg:px-4 lg:py-2 rounded-full font-semibold text-sm lg:text-base">
+=======
+              <Button variant="outline" className="border border-[#f8a93a] text-black px-4 py-2 rounded-full font-semibold">
+>>>>>>> a6236d1bf706187324308cb8c0a8698fad49afe6
                 Log In
               </Button>
             </DialogTrigger>
@@ -70,7 +82,10 @@ const Header = () => {
               <LoginForm/>
             </DialogContent>
           </Dialog>
+<<<<<<< HEAD
           </div>
+=======
+>>>>>>> a6236d1bf706187324308cb8c0a8698fad49afe6
         </div>
       </div>
     </nav>
