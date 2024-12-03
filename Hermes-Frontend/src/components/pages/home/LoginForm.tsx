@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
 import { Button } from "@/components/ui/button";
 import SignupForm from './SignupForm';
+import { callApi } from '../../../api/api';
+
 
 
 function LoginForm() {
@@ -11,6 +12,39 @@ function LoginForm() {
     password: '',
   });
   const [showSignUp, setShowSignUp] = useState(false);
+  const[loading, setLoading]=useState(false);
+  const[error,setError] = useState<string | null>(null)
+  
+
+  const handleLogin = async (e:any) => { 
+   e.preventDefault();
+   setLoading(true);
+   setError(null);
+
+   try{
+    const response = await callApi(
+      {
+      email: formData.email,
+      password: formData.password,
+     },
+     "/api/login"
+    );
+
+     if("authToken" in response){
+      localStorage.setItem("token", response.authToken);
+     }
+     else{
+      setError(response.description)
+     }
+   } catch(err){
+    console.error("Login error:", err)
+    setError("faild to login")
+   }
+   setFormData({
+    email: '',
+    password: '',
+  })
+  };
 
   return (
       <div className=" flex items-center justify-center ">
@@ -21,7 +55,7 @@ function LoginForm() {
             <h1 className="text-white text-[38px] font-normal font-['Inter']">Login</h1>
           </div>
 
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={handleLogin}>
            
             <div className="space-y-2">
               <label className="text-[#f8d9a9] text-sm font-normal font-['Inter']" htmlFor="emailorphone">
@@ -78,7 +112,7 @@ function LoginForm() {
 
             <button
               type="submit"
-              className="w-full py-3 px-4  text-[#313131] text-xl font-bold  bg-[#f8d9a9]  rounded-full "
+              className="w-full py-3 px-4  text-[#313131] text-xl font-bold  bg-[#f8d9a9]  rounded-full  hover:bg-orange-100"
             >
               Sign in
             </button>

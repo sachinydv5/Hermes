@@ -1,29 +1,55 @@
       import React, { useState } from 'react'
+      import { callApi } from '../../../api/api';
 
       const SignupForm = () => {
           const [showPassword, setShowPassword] = useState(false)
           const [formData, setFormData] = useState({
-            name: '',
+            firstName: '',
             email: '',
             password: '',
           });
-        
+          const[error,setError] = useState<string | null>(null)
+
           const handleSubmit = (e: React.FormEvent) => {
             e.preventDefault();
-            // Handle form submission here
+          
             console.log(formData);
+
+            try{
+              const response = callApi(
+                {
+                 firstName:formData.firstName,
+                email: formData.email,
+                password: formData.password,
+                lastName:formData.firstName
+              },
+              "/api/signup"
+            );
+
+            console.log(response)
+
+          }catch(err){
+            console.error("Sign up error:", err)
+            setError("faild to signup")
+            } 
+            setFormData({
+              firstName: '',
+              email: '',
+              password: '',
+            })
           };
+          
         return (
           <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <label htmlFor="name" className="text-[#f8d9a9]">FirstName</label>
             <input
-                      id="emailorphone"
+                      id="name"
                       type="text"
                       placeholder="Full name please"
                       className="w-full px-4 py-3 rounded-full bg-white text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-amber-200"
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      value={formData.firstName}
+                      onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
                       required />
           </div>
           <div className="space-y-2">
@@ -48,7 +74,7 @@
                         onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                         required />
           </div>
-          <button type="submit" className="w-full py-3 px-4 text-[#313131] text-xl font-bold bg-[#f8d9a9] rounded-full">Sign Up</button>
+          <button type="submit" className="w-full py-3 px-4 text-[#313131] text-xl font-bold bg-[#f8d9a9] rounded-full hover:bg-orange-100">Sign Up</button>
           
           <div className="flex justify-center text-sm mt-4">
             <span className="px-2 text-gray-400">or continue with</span>
