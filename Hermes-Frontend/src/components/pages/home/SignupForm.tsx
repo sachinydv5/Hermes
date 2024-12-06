@@ -1,63 +1,84 @@
       import React, { useState } from 'react'
       import { callApi } from '../../../api/api';
+import {  UserSignUpResponse } from '../../../api/types';
 
       const SignupForm = () => {
-          const [showPassword, setShowPassword] = useState(false)
           const [formData, setFormData] = useState({
             firstName: '',
+            lastName:'',
             email: '',
             password: '',
           });
           const[error,setError] = useState<string | null>(null)
 
-          const handleSubmit = (e: React.FormEvent) => {
+          const handleSubmit = async (e: React.FormEvent) => {
             e.preventDefault();
-          
-            console.log(formData);
-
             try{
-              const response = callApi(
+              const response: UserSignUpResponse = await callApi(
                 {
                  firstName:formData.firstName,
                 email: formData.email,
                 password: formData.password,
-                lastName:formData.firstName
+                lastName:formData.lastName
               },
               "/api/signup"
             );
-
+        
             console.log(response)
+            if("status" in response && response.status === "USER_CREATED_SUCCESSFULLY"){
+              localStorage.setItem("token", response.authToken);
+
+                 window.location.href="/home";
+
+                 setFormData({
+                  firstName: '',
+                  lastName:'',
+                  email: '',
+                  password: '',
+                })
+             }
+             else if("error_code" in response){
+              setError(response.description)
+             }
 
           }catch(err){
             console.error("Sign up error:", err)
             setError("faild to signup")
             } 
-            setFormData({
-              firstName: '',
-              email: '',
-              password: '',
-            })
+           
           };
           
         return (
           <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <label htmlFor="name" className="text-[#f8d9a9]">FirstName</label>
+            <label htmlFor="name" className="text-[#f8d9a9]">First Name</label>
             <input
-                      id="name"
+                      id="firstname"
                       type="text"
-                      placeholder="Full name please"
+                      placeholder="First name"
                       className="w-full px-4 py-3 rounded-full bg-white text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-amber-200"
                       value={formData.firstName}
                       onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
                       required />
           </div>
           <div className="space-y-2">
-            <label htmlFor="email" className="text-[#f8d9a9]">Email/Phone</label>
+            <label htmlFor="name" className="text-[#f8d9a9]">Last Name</label>
             <input
-                      id="emailorphone"
+                      id="lastname"
                       type="text"
-                      placeholder="Email or Phone Number"
+                      placeholder="Last name"
+                      className="w-full px-4 py-3 rounded-full bg-white text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-amber-200"
+                      value={formData.lastName}
+                      onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                      required />
+          </div>
+
+          <div className="space-y-2">
+            <label htmlFor="email" className="text-[#f8d9a9]">Email</label>
+            <input
+                      id="email"
+                      type="text"
+                      placeholder="Email "
                       className="w-full px-4 py-3 rounded-full bg-white text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-amber-200"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -67,7 +88,7 @@
             <label htmlFor="password" className="text-[#f8d9a9]">Password</label>
             <input
                         id="password"
-                        type={showPassword ? 'text' : 'password'}
+                        type={'password'}
                         placeholder="Password"
                         className="w-full px-4 py-3 rounded-full bg-white text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-amber-200"
                         value={formData.password}
@@ -75,7 +96,9 @@
                         required />
           </div>
           <button type="submit" className="w-full py-3 px-4 text-[#313131] text-xl font-bold bg-[#f8d9a9] rounded-full hover:bg-orange-100">Sign Up</button>
-          
+
+          {error && <p className='text-red-500'>{error}</p>}
+
           <div className="flex justify-center text-sm mt-4">
             <span className="px-2 text-gray-400">or continue with</span>
           </div>
