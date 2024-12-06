@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Button } from "@/components/ui/button";
 import SignupForm from './SignupForm';
 import { callApi } from '../../../api/api';
+import { UserLoginResponse } from '../../../api/types';
 
 
 
@@ -22,7 +23,7 @@ function LoginForm() {
    setError(null);
 
    try{
-    const response = await callApi(
+    const response: UserLoginResponse  = await callApi(
       {
       email: formData.email,
       password: formData.password,
@@ -30,20 +31,23 @@ function LoginForm() {
      "/api/login"
     );
 
-     if("authToken" in response){
+     if("status" in response && response.status === "USER_LOGGED_IN"){
       localStorage.setItem("token", response.authToken);
+         window.location.href="/home";
+         setFormData({
+          email: '',
+          password: '',
+        })
      }
-     else{
+     
+     else if("error_code" in response){
       setError(response.description)
      }
    } catch(err){
     console.error("Login error:", err)
     setError("faild to login")
    }
-   setFormData({
-    email: '',
-    password: '',
-  })
+  
   };
 
   return (
