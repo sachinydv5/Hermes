@@ -1,18 +1,20 @@
-import { ERROR_RESPONSE, GetProductRequest, GetProductResponse, ProductRequest, ProductResponse, UserLoginRequest, UserLoginResponse, UserLogoutRequest, UserLogoutResponse, UserSignUpRequest, UserSignUpResponse } from "./types";
+import { AppConfigRequest, AppConfigResponse, ERROR_RESPONSE, GetProductRequest, GetProductResponse, ProductRequest, ProductResponse, UpdateAppConfigRequest, UpdateAppConfigResponse, UserLoginRequest, UserLoginResponse, UserLogoutRequest, UserLogoutResponse, UserSignUpRequest, UserSignUpResponse } from "./types";
 
 import axios, { AxiosResponse } from 'axios';
 
 
 const endpoint = "https://hermes-backend-pykc.onrender.com";
 
-type API_REQUEST = UserSignUpRequest | UserLoginRequest | UserLogoutRequest | ProductRequest | ProductResponse;
-type API_RESPONSE = UserSignUpResponse | UserLoginResponse | UserLogoutResponse | ProductResponse | GetProductResponse | ERROR_RESPONSE;
+type API_REQUEST = UserSignUpRequest | UserLoginRequest | UserLogoutRequest | ProductRequest | ProductResponse | UpdateAppConfigRequest | AppConfigRequest;
+type API_RESPONSE = UserSignUpResponse | UserLoginResponse | UserLogoutResponse | ProductResponse | GetProductResponse | UpdateAppConfigResponse | AppConfigResponse | ERROR_RESPONSE;
 
 export function callApi(request: UserSignUpRequest, url: "/api/signup"): Promise<UserSignUpResponse | ERROR_RESPONSE>;
 export function callApi(request: UserLoginRequest, url: "/api/login"): Promise<UserLoginResponse | ERROR_RESPONSE>;
 export function callApi(request: UserLogoutRequest, url: "/api/logout"): Promise<UserLogoutResponse | ERROR_RESPONSE>;
 export function callApi(request: ProductRequest, url: "/api/product/addProduct"): Promise<ProductResponse | ERROR_RESPONSE>;
 export function callApi(request: GetProductRequest, url: "/api/product/getProduct"): Promise<GetProductResponse | ERROR_RESPONSE>;
+export function callApi(request: UpdateAppConfigRequest, url: "/api/appConfig"): Promise<UpdateAppConfigResponse | ERROR_RESPONSE>;
+export function callApi(request: AppConfigRequest, url: "/api/appConfig"): Promise<AppConfigResponse | ERROR_RESPONSE>;
 
 export async function callApi(request: API_REQUEST, url: string): Promise<API_RESPONSE> {
   try {
