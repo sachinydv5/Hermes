@@ -10,9 +10,11 @@ import { useAppDispatch } from '../../../app/hooks';
 function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: 'yogeshk4142@gmail.com',
+    password: 'Yogesh@999',
   });
+
+
   const [showSignUp, setShowSignUp] = useState(false);
   const[loading, setLoading]=useState(false);
   const[error,setError] = useState<string | null>(null)
@@ -32,13 +34,10 @@ function LoginForm() {
 
      if("status" in response && response.status === "USER_LOGGED_IN"){
       localStorage.setItem("token", response.authToken);
-         setFormData({
-          email: '',
-          password: '',
-        })
         const storePayload = {
-          firstName: response.user.firstName
+          firstName: response.user.first_name
         }
+        console.log(storePayload)
         dispatch(updateUserLoggedIn(storePayload))
         navigate("/home");
 

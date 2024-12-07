@@ -19,13 +19,14 @@ export const userSlice = createAppSlice({
     updateUserLoggedIn: create.reducer(
       (state, action: PayloadAction<{firstName: string}>) => {
         console.log("isUserLoggedIn called")
+        console.log(action)
         state.isLoggedIn = true;
         state.firstName = action.payload.firstName
       },
     ),
   }),
   selectors: {
-    userData: state => state,
+    userData: state => state.firstName,
     isUserLoggedIn: state => state.isLoggedIn
   },
 })

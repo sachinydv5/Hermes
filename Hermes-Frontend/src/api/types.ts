@@ -48,7 +48,7 @@ export type UserLoginResponse = Error<USER_LOGIN_ERROR_CODES> | {
   status: "USER_LOGGED_IN",
   authToken: string,
   user: {
-    firstName: string
+    first_name: string
   },
 }
 
