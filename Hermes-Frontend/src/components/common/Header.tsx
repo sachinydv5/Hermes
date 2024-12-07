@@ -11,9 +11,21 @@ import {
 
 import { Link } from "react-router-dom";
 import LoginForm from '../pages/home/LoginForm';
+import { useAppDispatch, useAppSelector} from '../../app/hooks';
+import { isUserLoggedIn } from '../../app/store/user';
 
-// import { CiShoppingCart } from "react-icons/ci";
+
 const Header = () => {
+  // const user = useAppSelector(UserGetter.userData)
+  const isLogIn: boolean = useAppSelector(isUserLoggedIn)
+  console.log(isLogIn)
+
+
+
+
+
+
+
   return (
     <div className='w-full bg-[#F6EBDA]'>
     <nav className="  px-4 sm:px-6 py-4 sm:py-5 lg:py-7">

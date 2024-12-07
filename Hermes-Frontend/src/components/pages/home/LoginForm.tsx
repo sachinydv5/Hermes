@@ -2,9 +2,10 @@ import React, { useState } from 'react'
 import { Button } from "@/components/ui/button";
 import SignupForm from './SignupForm';
 import { callApi } from '../../../api/api';
-import { UserLoginResponse } from '../../../api/types';
-
-
+import { UserLoginRequest, UserLoginResponse } from '../../../api/types';
+import { useNavigate } from "react-router";
+import { updateUserLoggedIn } from '../../../app/store/user';
+import { useAppDispatch } from '../../../app/hooks';
 
 function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -15,29 +16,32 @@ function LoginForm() {
   const [showSignUp, setShowSignUp] = useState(false);
   const[loading, setLoading]=useState(false);
   const[error,setError] = useState<string | null>(null)
-  
-
+  let navigate = useNavigate();
+  const dispatch = useAppDispatch()
   const handleLogin = async (e:any) => { 
    e.preventDefault();
    setLoading(true);
    setError(null);
 
    try{
-    const response: UserLoginResponse  = await callApi(
-      {
-      email: formData.email,
-      password: formData.password,
-     },
-     "/api/login"
-    );
+      const userLoginRequest: UserLoginRequest = {
+        email: formData.email,
+        password: formData.password,
+      } 
+      const response: UserLoginResponse  = await callApi(userLoginRequest,"/api/login");
 
      if("status" in response && response.status === "USER_LOGGED_IN"){
       localStorage.setItem("token", response.authToken);
-         window.location.href="/home";
          setFormData({
           email: '',
           password: '',
         })
+        const storePayload = {
+          firstName: response.user.firstName
+        }
+        dispatch(updateUserLoggedIn(storePayload))
+        navigate("/home");
+
      }
      
      else if("error_code" in response){
