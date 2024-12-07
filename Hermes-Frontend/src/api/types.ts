@@ -47,7 +47,9 @@ type USER_LOGIN_ERROR_CODES = "INCORRECT_EMAIL_PROVIDED" | "INCORRECT_PHONE_PROV
 export type UserLoginResponse = Error<USER_LOGIN_ERROR_CODES> | {
   status: "USER_LOGGED_IN",
   authToken: string,
-  user: any,
+  user: {
+    firstName: string
+  },
 }
 
 
