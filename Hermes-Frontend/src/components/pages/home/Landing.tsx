@@ -64,6 +64,12 @@ const Landing = () => {
           </button>
         </div>
       </div>
+      <div className="absolute top-0 right-0 w-1/2 h-full flex items-center justify-end">
+        <div 
+          className="w-3/4 h-3/4 bg-contain bg-right bg-no-repeat opacity-10"
+          style={{ backgroundImage: "url('/logo.png')" }}
+        ></div>
+      </div>
     </section>
     {/* footer */}
     </div>
