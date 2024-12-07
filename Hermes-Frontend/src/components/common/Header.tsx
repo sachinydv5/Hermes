@@ -2,6 +2,8 @@
 import React from 'react';
 import { Search, ShoppingCart } from 'lucide-react'
 
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { ChevronDown } from "lucide-react";
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -12,19 +14,14 @@ import {
 import { Link } from "react-router-dom";
 import LoginForm from '../pages/home/LoginForm';
 import { useAppDispatch, useAppSelector} from '../../app/hooks';
-import { isUserLoggedIn } from '../../app/store/user';
+import { isUserLoggedIn, userData } from '../../app/store/user';
 
 
 const Header = () => {
   // const user = useAppSelector(UserGetter.userData)
   const isLogIn: boolean = useAppSelector(isUserLoggedIn)
-  console.log(isLogIn)
-
-
-
-
-
-
+  const firstName: string = useAppSelector(userData)
+  console.log(firstName)
 
   return (
     <div className='w-full bg-[#F6EBDA]'>
@@ -73,7 +70,8 @@ const Header = () => {
           </button>
 
           {/* Log In Button */}
-          <Dialog>
+          {!isLogIn ? (
+            <Dialog>
             <DialogTrigger asChild>
               <Button variant="outline" className="border border-[#f8a93a] text-black px-4 py-2 rounded-full font-semibold">
                 Log In
@@ -83,6 +81,24 @@ const Header = () => {
               <LoginForm/>
             </DialogContent>
           </Dialog>
+          ):(<Button
+            variant="outline"
+            className="flex items-center gap-2 px-4 py-2 rounded-full border-2 border-orange-400 text-black"
+          >
+            {/* Avatar */}
+            <Avatar className="w-8 h-8">
+              <AvatarImage
+                src="https://via.placeholder.com/150" // Replace with the user's image URL
+                alt="User Profile"
+              />
+              <AvatarFallback>BS</AvatarFallback>
+            </Avatar>
+            {/* User name */}
+            <span className="font-semibold text-sm">{firstName}</span>
+            {/* Dropdown arrow */}
+            <ChevronDown className="w-4 h-4" />
+          </Button>)}
+          
           </div>
         </div>
       </div>
