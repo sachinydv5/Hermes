@@ -10,6 +10,7 @@ import PopularSellers from '../../common/PopularSellers'
 import Collection from '../../common/HotCollection'
 import RecentlyView from '../../common/RecentlyView'
 import { Link } from 'react-router-dom'
+import ProductCardTwo from '../../common/ProductCardTwo'
 
 
 const trendingItems = [
@@ -206,14 +207,18 @@ const Market = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
           {/* Map through filtered products and render ProductCard for each */}
+          {/* <ProductCard/>
           <ProductCard/>
           <ProductCard/>
           <ProductCard/>
           <ProductCard/>
           <ProductCard/>
           <ProductCard/>
-          <ProductCard/>
-          <ProductCard/>
+          <ProductCard/> */}
+          <ProductCardTwo/>
+          <ProductCardTwo/>
+          <ProductCardTwo/>
+          <ProductCardTwo/>
           {/* {filteredProducts.length > 0 ? (
             filteredProducts.map(product => (
               <ProductCard key={product.id} product={product} />

@@ -11,8 +11,8 @@ import { Heart } from 'lucide-react'
 import { Card } from "@/components/ui/card"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
 import { callApi } from '../../../api/api'
-import { ProductResponse } from '../../../api/types'
-
+import { ProductRequest, ProductResponse } from '../../../api/types'
+import { useNavigate } from 'react-router-dom';
 
 
 const SingleList = () => {
@@ -24,6 +24,7 @@ const SingleList = () => {
     itemName: "Default Item Name",
     price: "0.00",
   });
+  let navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false)
   const handleFileChange = (event) => {
     setUploadedFile(event.target.files[0]);
@@ -38,9 +39,31 @@ const SingleList = () => {
     setIsSubmitting(true); // Show loader
     console.log("Form data submitted:", data);
     try{
-      const response: ProductResponse = await callApi(data,"/api/product/addProduct");
+      let req: ProductRequest = {
+        name: data.title,
+        description: data.description,
+        qty: 1,
+        duration: {
+          value: 3,
+          unit: 'month'
+        },
+        discount: 0,
+        pickupAddress: {
+          city: 'menesota',
+          country: 'USA',
+          pincode: '',
+          addressLine1: data.address,
+          addressLine2: undefined
+        },
+        price: data.price,
+        category: '',
+        userId: '',
+        collectionId: ''
+      }
+      const response: ProductResponse = await callApi(req,"/product/addProduct");
       if("status" in response){
         alert(response.status)
+        navigate(`/productdetail/${response.id}`)
       }
      else if("error_code" in response ){
         setError(response.description)
@@ -61,9 +84,9 @@ const SingleList = () => {
         <div className="lg:w-2/3">
           <div className='flex justify-between items-center mb-6'>
             <h1 className="text-3xl font-bold">Create Single Product</h1>
-            <Button variant="outline" className="border-dotted">
+            {/* <Button variant="outline" className="border-dotted">
               Switch to Multiple
-            </Button>
+            </Button> */}
           </div>
           
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">

@@ -4,7 +4,7 @@ import { Heart } from 'lucide-react'
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
-const ProductCard2 = () => {
+const ProductCardTwo = () => {
     const [isHovered, setIsHovered] = useState(false)
 
     const images = [
@@ -86,4 +86,4 @@ const ProductCard2 = () => {
   )
 }
 
-export default ProductCard2
+export default ProductCardTwo

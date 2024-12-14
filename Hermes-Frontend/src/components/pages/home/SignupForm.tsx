@@ -4,6 +4,7 @@ import { UserLoginRequest, UserSignUpRequest, UserSignUpResponse } from '../../.
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../../app/hooks';
 import { updateUserLoggedIn } from '../../../app/store/user';
+import { Loader } from 'lucide-react';
 
 const SignupForm = () => {
   const [formData, setFormData] = useState({
@@ -13,10 +14,12 @@ const SignupForm = () => {
     password: '',
   });
   const [error, setError] = useState<string | null>(null)
+  const [isSigningup, setIsSigningup] = useState(false)
   let navigate = useNavigate();
   const dispatch = useAppDispatch()
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSigningup(true)
     try {
       const userSignUpRequest: UserSignUpRequest = {
           firstName: formData.firstName,
@@ -92,7 +95,13 @@ const SignupForm = () => {
           onChange={(e) => setFormData({ ...formData, password: e.target.value })}
           required />
       </div>
-      <button type="submit" className="w-full py-3 px-4 text-[#313131] text-xl font-bold bg-[#f8d9a9] rounded-full hover:bg-orange-100">Sign Up</button>
+      <button type="submit" className="w-full py-3 px-4 text-[#313131] text-xl font-bold bg-[#f8d9a9] rounded-full hover:bg-orange-100"
+        disabled={isSigningup}> 
+        {isSigningup ? (
+          <Loader className="animate-spin h-5 w-5 mr-2" />
+        ) : null}
+        {isSigningup ? "Signing up..." : "Sign up"}
+        </button>
 
       {error && <p className='text-red-500'>{error}</p>}
 
