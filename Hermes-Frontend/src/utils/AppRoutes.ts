@@ -6,5 +6,6 @@ export const AppRoutes = {
     CREATINGLIST:'/creatinglist',
     CREATESINGLE:'/createsingle',
     MARKET:'/market',
-    ProductList:'/productlist'
+    ProductList:'/productlist',
+     ProductDetail:'/productdetail/:productid'
 }
