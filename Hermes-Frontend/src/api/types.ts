@@ -148,3 +148,30 @@ export type GetAddToWishlistRequest = {
 export type GetAddToWishlistResponse = Error<GET_ADDTOWISHLIST_ERROR_CODES> | {
   status: string
 }
+
+// app config 
+
+
+type APP_CONFIG_CODES = "INTERNAL_ERROR"
+
+export type AppConfig = {
+  primary_colour: string
+}
+
+export type AppConfigRequest = {} | undefined
+
+export type AppConfigResponse = Error<APP_CONFIG_CODES> | {
+  status: "SUCCESS",
+  config: AppConfig,
+}
+
+// update app config
+type UPDATE_APP_CONFIG_CODES = "INTERNAL_ERROR"
+
+export type UpdateAppConfigRequest = Partial<AppConfig>;
+
+export type UpdateAppConfigResponse = Error<UPDATE_APP_CONFIG_CODES> | {
+  status: "SUCCESS",
+}
+
+

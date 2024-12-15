@@ -1,20 +1,18 @@
-import { ERROR_RESPONSE, GetAddToWishlistRequest, GetAddToWishlistResponse, GetProductIdRequest, GetProductIdResponse, GetProductRequest, GetProductResponse, GetWishlistRequest, GetWishlistResponse, ProductRequest, ProductResponse, UserLoginRequest, UserLoginResponse, UserLogoutRequest, UserLogoutResponse, UserSignUpRequest, UserSignUpResponse } from "./types";
+import { ERROR_RESPONSE, GetProductRequest, GetProductResponse, ProductRequest, ProductResponse, UserLoginRequest, UserLoginResponse, UserLogoutRequest, UserLogoutResponse, UserSignUpRequest, UserSignUpResponse } from "./types";
 
 import axios, { AxiosResponse } from 'axios';
 
 
 const endpoint = "https://f32b-2406-7400-50-3132-e8e1-2aa-4d23-56de.ngrok-free.app";
 
-type API_REQUEST = UserSignUpRequest | UserLoginRequest | UserLogoutRequest | ProductRequest | ProductResponse | GetProductIdRequest | GetAddToWishlistRequest;
-type API_RESPONSE = UserSignUpResponse | UserLoginResponse | UserLogoutResponse | ProductResponse | GetProductResponse | ERROR_RESPONSE | GetProductIdResponse | GetAddToWishlistResponse ;
+type API_REQUEST = UserSignUpRequest | UserLoginRequest | UserLogoutRequest | ProductRequest | ProductResponse;
+type API_RESPONSE = UserSignUpResponse | UserLoginResponse | UserLogoutResponse | ProductResponse | GetProductResponse | ERROR_RESPONSE;
 
 export function callApi(request: UserSignUpRequest, url: "/api/signup"): Promise<UserSignUpResponse | ERROR_RESPONSE>;
 export function callApi(request: UserLoginRequest, url: "/api/login"): Promise<UserLoginResponse | ERROR_RESPONSE>;
 export function callApi(request: UserLogoutRequest, url: "/api/logout"): Promise<UserLogoutResponse | ERROR_RESPONSE>;
-export function callApi(request: ProductRequest, url: "/product/addProduct"): Promise<ProductResponse | ERROR_RESPONSE>;
-export function callApi(request: GetProductRequest, url: "/product/getProduct"): Promise<GetProductResponse | ERROR_RESPONSE>;
-export function callApi(request: GetAddToWishlistRequest, url: "/wishlist/remove"): Promise<GetAddToWishlistResponse | ERROR_RESPONSE>;
-// export function callApi(request: GetProductIdRequest, url: "/product/getProduct"): Promise<GetProductIdResponse | ERROR_RESPONSE>;
+export function callApi(request: ProductRequest, url: "/api/product/addProduct"): Promise<ProductResponse | ERROR_RESPONSE>;
+export function callApi(request: GetProductRequest, url: "/api/product/getProduct"): Promise<GetProductResponse | ERROR_RESPONSE>;
 
 export async function callApi(request: API_REQUEST, url: string): Promise<API_RESPONSE> {
   try {
