@@ -4,14 +4,12 @@ import { Heart } from 'lucide-react'
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
-const ProductCardTwo = () => {
+
+const ProductCardTwo = ({product}) => {
     const [isHovered, setIsHovered] = useState(false)
 
     const images = [
-      "/productimage.png",
-      "/placeholder.svg?height=200&width=200&text=Image+2",
-      "/placeholder.svg?height=200&width=200&text=Image+3",
-      "/placeholder.svg?height=200&width=200&text=Image+4"
+      "https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png",
     ]
   
     return (
@@ -60,12 +58,12 @@ const ProductCardTwo = () => {
           </div>
   
           <h3 className="font-medium text-sm mb-2 line-clamp-2">
-            TOZO T6 True Wireless Earbuds Bluetooth Headphon...
+           {product?.name}
           </h3>
   
           <div className="flex items-baseline gap-2 mb-2">
-            <span className="text-gray-400 line-through text-sm">$49</span>
-            <span className="text-2xl font-semibold text-[#f4a340]">$29</span>
+            <span className="text-gray-400 line-through text-sm"></span>
+            <span className="text-2xl font-semibold text-[#f4a340]">${product?.price}</span>
             <span className="text-sm text-gray-500">/per week</span>
           </div>
   

@@ -12,21 +12,22 @@ import { useParams } from 'react-router-dom'
 import { callApi, getProductIdRequest } from '../../../api/api'
 import { GetAddToWishlistRequest, GetAddToWishlistResponse, GetProductIdResponse } from '../../../api/types'
 import { useNavigate } from 'react-router-dom';
+import { Product } from '../../../api/common.types'
 
 
 const ProductDetail = () => {
   const id = useParams();
     const [currentImage, setCurrentImage] = useState(0)
     const [error, setError] = useState<string | null>(null)
-    const [productData , setProductData] = useState();
+    const [productData , setProductData] =  useState<Product>();
     const [productid, setProductId]= useState(id.productid)
     const images = [
-      'productimage.png',
-      '/placeholder.svg?height=400&width=600',
-      '/placeholder.svg?height=400&width=600',
-      '/placeholder.svg?height=400&width=600',
-      '/placeholder.svg?height=400&width=600',
-      '/placeholder.svg?height=400&width=600'
+      'https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png',
+      'https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png',
+      'https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png',
+      'https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png',
+      'https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png',
+      'https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png'
     ]
   
   
@@ -59,7 +60,7 @@ const ProductDetail = () => {
       let req: GetAddToWishlistRequest = {
          productId:id,
       }
-      const response: GetAddToWishlistResponse = await callApi(req,"/wishlist/remove");
+      const response: GetAddToWishlistResponse = await callApi(req,"/wishlist/add");
       if("status" in response){
         alert(response.status)
        

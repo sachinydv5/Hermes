@@ -215,10 +215,10 @@ const Market = () => {
           <ProductCard/>
           <ProductCard/>
           <ProductCard/> */}
-          <ProductCardTwo/>
-          <ProductCardTwo/>
-          <ProductCardTwo/>
-          <ProductCardTwo/>
+          <ProductCardTwo product={undefined}/>
+          <ProductCardTwo product={undefined}/>
+          <ProductCardTwo product={undefined}/>
+          <ProductCardTwo product={undefined}/>
           {/* {filteredProducts.length > 0 ? (
             filteredProducts.map(product => (
               <ProductCard key={product.id} product={product} />

@@ -1,12 +1,12 @@
-import { AppConfigRequest, AppConfigResponse, ERROR_RESPONSE, GetProductRequest, GetProductResponse, ProductRequest, ProductResponse, UpdateAppConfigRequest, UpdateAppConfigResponse, UserLoginRequest, UserLoginResponse, UserLogoutRequest, UserLogoutResponse, UserSignUpRequest, UserSignUpResponse } from "./types";
+import { AppConfigRequest, AppConfigResponse, ERROR_RESPONSE, GetAddToWishlistRequest, GetAddToWishlistResponse, GetProductIdRequest, GetProductIdResponse, GetProductRequest, GetProductResponse, GetWishlistRequest, GetWishlistResponse, ProductRequest, ProductResponse, UpdateAppConfigRequest, UpdateAppConfigResponse, UserLoginRequest, UserLoginResponse, UserLogoutRequest, UserLogoutResponse, UserSignUpRequest, UserSignUpResponse } from "./types";
 
 import axios, { AxiosResponse } from 'axios';
 
 
-const endpoint = "https://f32b-2406-7400-50-3132-e8e1-2aa-4d23-56de.ngrok-free.app";
+const endpoint = "https://hermes-backend-pykc.onrender.com/";
 
-type API_REQUEST = UserSignUpRequest | UserLoginRequest | UserLogoutRequest | ProductRequest | ProductResponse | UpdateAppConfigRequest | AppConfigRequest;
-type API_RESPONSE = UserSignUpResponse | UserLoginResponse | UserLogoutResponse | ProductResponse | GetProductResponse | UpdateAppConfigResponse | AppConfigResponse | ERROR_RESPONSE;
+type API_REQUEST = UserSignUpRequest | UserLoginRequest | UserLogoutRequest | ProductRequest | ProductResponse | UpdateAppConfigRequest | AppConfigRequest | GetAddToWishlistRequest;
+type API_RESPONSE = UserSignUpResponse | UserLoginResponse | UserLogoutResponse | ProductResponse | GetProductResponse | UpdateAppConfigResponse | AppConfigResponse | ERROR_RESPONSE |GetAddToWishlistResponse;
 
 export function callApi(request: UserSignUpRequest, url: "/api/signup"): Promise<UserSignUpResponse | ERROR_RESPONSE>;
 export function callApi(request: UserLoginRequest, url: "/api/login"): Promise<UserLoginResponse | ERROR_RESPONSE>;
@@ -15,6 +15,7 @@ export function callApi(request: ProductRequest, url: "/api/product/addProduct")
 export function callApi(request: GetProductRequest, url: "/api/product/getProduct"): Promise<GetProductResponse | ERROR_RESPONSE>;
 export function callApi(request: UpdateAppConfigRequest, url: "/api/appConfig"): Promise<UpdateAppConfigResponse | ERROR_RESPONSE>;
 export function callApi(request: AppConfigRequest, url: "/api/appConfig"): Promise<AppConfigResponse | ERROR_RESPONSE>;
+export function callApi(request:GetAddToWishlistRequest, url: "/wishlist/add"): Promise<GetAddToWishlistResponse | ERROR_RESPONSE>;
 
 export async function callApi(request: API_REQUEST, url: string): Promise<API_RESPONSE> {
   try {
@@ -68,4 +69,29 @@ export async function getWishlist(request: GetWishlistRequest, url: string): Pro
     console.error('Error making POST request:', error);
     return { error_code: "INTERNAL_SERVER_ERROR", description: "API Call Failure" } as ERROR_RESPONSE;
   }
+}
+
+
+
+
+export async function getProduct(request: GetProductRequest, url: string): Promise<GetProductResponse > {
+  try {
+    const config = {
+      method: 'get',
+      url: endpoint+url,
+      headers: { 
+        'Content-Type': 'application/json', 
+        'Authorization': "Bearer "+ localStorage.getItem("token")
+      },
+      // data: data,
+    };
+
+    const response = await axios.request(config);
+    console.log(JSON.stringify(response.data));
+    return response.data;
+  } 
+ catch (error) {
+  console.error('Error making POST request:', error);
+  return { error_code: "INTERNAL_SERVER_ERROR", description: "API Call Failure" } as ERROR_RESPONSE;
+}
 }

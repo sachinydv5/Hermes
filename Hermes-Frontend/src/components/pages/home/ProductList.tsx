@@ -1,5 +1,5 @@
-import React from 'react'
-import ProductCard from '../../common/ProductCard'
+import React, { useEffect, useState } from 'react'
+import ProductCardTwo from '../../common/ProductCardTwo'
 import { Search, X } from 'lucide-react'
 import {
   Select,
@@ -13,12 +13,38 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Sidebar } from "./components/sidebar"
 import SideBar from '../../common/SideBar'
+import { GetProductRequest, GetProductResponse } from '../../../api/types'
+import { getProduct } from '../../../api/api'
+import { Product } from '../../../api/common.types'
+import { Link } from 'react-router-dom'
 
 
 // Sample active filters
 const activeFilters = ["Wireless", "Under $50", "In Stock"]
 
 const ProductList = () => {
+  const [productData , setProductData] = useState<Product[]>([]);
+const [error, setError] = useState<string | null>(null)
+  console.log("product data", productData)
+  useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response: GetProductResponse = await getProduct("", "product/getProduct");
+          if ("error_code" in response) {
+            setError(response.description);
+          }
+         else if ("status" in response) {
+           setProductData(response.products);
+          console.log("product detail",response)
+          } 
+        } catch (err) {
+          console.error("Sign up error:", err);
+          setError("");
+        }
+      };
+    
+      fetchData();
+    }, []);
   return (
     <div className="container mx-auto py-8">
     <div className="flex gap-8">
@@ -66,11 +92,10 @@ const ProductList = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {/* {products.map((product) => (
           
-          ))} */}
-            <ProductCard/>
-            <ProductCard/>  <ProductCard/>  <ProductCard/>  <ProductCard/>  <ProductCard/>  <ProductCard/>  <ProductCard/>  <ProductCard/>  <ProductCard/>  <ProductCard/>  <ProductCard/>
+          {productData.map((items) => (
+          <Link to={`/productdetail/${items?.id}`}> <ProductCardTwo  key={items?.id}  product={items} /> </Link>
+          ))}     
         </div>
 
         <div className="flex justify-center mt-8">

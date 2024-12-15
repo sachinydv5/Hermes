@@ -60,7 +60,7 @@ const SingleList = () => {
         userId: '',
         collectionId: ''
       }
-      const response: ProductResponse = await callApi(req,"/product/addProduct");
+      const response: ProductResponse = await callApi(req,"/api/product/addProduct");
       if("status" in response){
         alert(response.status)
         navigate(`/productdetail/${response.id}`)

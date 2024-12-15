@@ -1,3 +1,5 @@
 .DS_Store
 node_modules
 Hermes-Backend/dist
+Hermes-Frontend/package-lock.json
+Hermes-Frontend/yarn.lock
