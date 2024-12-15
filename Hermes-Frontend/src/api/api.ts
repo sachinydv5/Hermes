@@ -11,10 +11,10 @@ type API_RESPONSE = UserSignUpResponse | UserLoginResponse | UserLogoutResponse 
 export function callApi(request: UserSignUpRequest, url: "/api/signup"): Promise<UserSignUpResponse | ERROR_RESPONSE>;
 export function callApi(request: UserLoginRequest, url: "/api/login"): Promise<UserLoginResponse | ERROR_RESPONSE>;
 export function callApi(request: UserLogoutRequest, url: "/api/logout"): Promise<UserLogoutResponse | ERROR_RESPONSE>;
-export function callApi(request: ProductRequest, url: "/api/product/addProduct"): Promise<ProductResponse | ERROR_RESPONSE>;
-export function callApi(request: GetProductRequest, url: "/api/product/getProduct"): Promise<GetProductResponse | ERROR_RESPONSE>;
-export function callApi(request: UpdateAppConfigRequest, url: "/api/appConfig"): Promise<UpdateAppConfigResponse | ERROR_RESPONSE>;
-export function callApi(request: AppConfigRequest, url: "/api/appConfig"): Promise<AppConfigResponse | ERROR_RESPONSE>;
+export function callApi(request: ProductRequest, url: "/product/addProduct"): Promise<ProductResponse | ERROR_RESPONSE>;
+export function callApi(request: GetProductRequest, url: "/product/getProduct"): Promise<GetProductResponse | ERROR_RESPONSE>;
+export function callApi(request: UpdateAppConfigRequest, url: "/appConfig"): Promise<UpdateAppConfigResponse | ERROR_RESPONSE>;
+export function callApi(request: AppConfigRequest, url: "/appConfig"): Promise<AppConfigResponse | ERROR_RESPONSE>;
 export function callApi(request:GetAddToWishlistRequest, url: "/wishlist/add"): Promise<GetAddToWishlistResponse | ERROR_RESPONSE>;
 
 export async function callApi(request: API_REQUEST, url: string): Promise<API_RESPONSE> {
