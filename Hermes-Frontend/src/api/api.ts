@@ -3,7 +3,7 @@ import { AppConfigRequest, AppConfigResponse, ERROR_RESPONSE, GetAddToWishlistRe
 import axios, { AxiosResponse } from 'axios';
 
 
-const endpoint = "https://hermes-backend-pykc.onrender.com/";
+const endpoint = "https://hermes-backend-pykc.onrender.com";
 
 type API_REQUEST = UserSignUpRequest | UserLoginRequest | UserLogoutRequest | ProductRequest | ProductResponse | UpdateAppConfigRequest | AppConfigRequest | GetAddToWishlistRequest;
 type API_RESPONSE = UserSignUpResponse | UserLoginResponse | UserLogoutResponse | ProductResponse | GetProductResponse | UpdateAppConfigResponse | AppConfigResponse | ERROR_RESPONSE |GetAddToWishlistResponse;
