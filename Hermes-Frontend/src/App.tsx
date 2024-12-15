@@ -14,6 +14,7 @@ import PopularCategory from './components/common/PopularCategory';
 import Market from './components/pages/home/Market';
 import ProductList from './components/pages/home/ProductList';
 import ProductDetail from './components/pages/home/ProductDetail';
+import Wishlist from './components/pages/Wishlist';
 
 
 
@@ -27,6 +28,8 @@ const getMainLayout = () => {
       <Route path={AppRoutes.MARKET} element={<Market/>} />
       <Route path={AppRoutes.ProductList} element={<ProductList/>} />
       <Route path={AppRoutes.ProductDetail} element={<ProductDetail/>} />
+      <Route path={AppRoutes.Wishlist} element={<Wishlist/>} />
+
     </Routes>
   </MainLayout>)
 

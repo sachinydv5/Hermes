@@ -97,6 +97,7 @@ type PRODUCT_ERROR_CODES = "INTERNAL_ERROR"
 
 export type ProductResponse = Error<PRODUCT_ERROR_CODES> | {
   status: "PRODUCT_ADDED_SUCCESSFULLY",
+  id: string
 }
 
 
@@ -115,6 +116,63 @@ export type GetProductResponse = Error<GET_PRODUCT_ERROR_CODES> | {
     products: Product[] 
 }
 
+
+// Get Product ID Resonse 
+
+type GET_PRODUCT_ID_ERROR_CODES = "INTERNAL_ERROR"
+
+export type GetProductIdRequest = {} | undefined
+
+export type  GetProductIdResponse = Error<GET_PRODUCT_ID_ERROR_CODES > | Product
+
+
+//  get wishlist
+ 
+type GET_Wishlist_ERROR_CODES  = "INTERNAL_ERROR"
+
+export type GetWishlistRequest = {} | undefined
+
+export type  GetWishlistResponse = Error<GET_Wishlist_ERROR_CODES > | {
+  products: Product[] 
+}
+
+
+// ADD WISHLIST Resonse 
+
+type GET_ADDTOWISHLIST_ERROR_CODES = "INTERNAL_ERROR"
+
+export type GetAddToWishlistRequest = {
+  productId: string,
+} 
+
+export type GetAddToWishlistResponse = Error<GET_ADDTOWISHLIST_ERROR_CODES> | {
+  status: string
+}
+
+// app config 
+
+
+type APP_CONFIG_CODES = "INTERNAL_ERROR"
+
+export type AppConfig = {
+  primary_colour: string
+}
+
+export type AppConfigRequest = {} | undefined
+
+export type AppConfigResponse = Error<APP_CONFIG_CODES> | {
+  status: "SUCCESS",
+  config: AppConfig,
+}
+
+// update app config
+type UPDATE_APP_CONFIG_CODES = "INTERNAL_ERROR"
+
+export type UpdateAppConfigRequest = Partial<AppConfig>;
+
+export type UpdateAppConfigResponse = Error<UPDATE_APP_CONFIG_CODES> | {
+  status: "SUCCESS",
+}
 
 
 

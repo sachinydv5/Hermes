@@ -6,6 +6,7 @@ import { UserLoginRequest, UserLoginResponse } from '../../../api/types';
 import { useNavigate } from "react-router";
 import { updateUserLoggedIn } from '../../../app/store/user';
 import { useAppDispatch } from '../../../app/hooks';
+import { Loader } from 'lucide-react';
 
 function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -16,13 +17,13 @@ function LoginForm() {
 
 
   const [showSignUp, setShowSignUp] = useState(false);
-  const[loading, setLoading]=useState(false);
+  const[isSigningin, setIsSigningin]=useState(false);
   const[error,setError] = useState<string | null>(null)
   let navigate = useNavigate();
   const dispatch = useAppDispatch()
   const handleLogin = async (e:any) => { 
    e.preventDefault();
-   setLoading(true);
+   setIsSigningin(true);
    setError(null);
 
    try{
@@ -120,8 +121,14 @@ function LoginForm() {
             <button
               type="submit"
               className="w-full py-3 px-4  text-[#313131] text-xl font-bold  bg-[#f8d9a9]  rounded-full  hover:bg-orange-100"
+              disabled={isSigningin}
             >
-              Sign in
+           {isSigningin ? (
+        <div className="absolute  flex items-center justify-center">
+          <Loader className="animate-spin h-6 w-6" />
+        </div>
+      ) : null}
+        {isSigningin? "Signing in..." : "Sign in"}
             </button>
           </form>
 

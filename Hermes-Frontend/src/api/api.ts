@@ -3,7 +3,7 @@ import { AppConfigRequest, AppConfigResponse, ERROR_RESPONSE, GetProductRequest,
 import axios, { AxiosResponse } from 'axios';
 
 
-const endpoint = "https://hermes-backend-pykc.onrender.com";
+const endpoint = "https://f32b-2406-7400-50-3132-e8e1-2aa-4d23-56de.ngrok-free.app";
 
 type API_REQUEST = UserSignUpRequest | UserLoginRequest | UserLogoutRequest | ProductRequest | ProductResponse | UpdateAppConfigRequest | AppConfigRequest;
 type API_RESPONSE = UserSignUpResponse | UserLoginResponse | UserLogoutResponse | ProductResponse | GetProductResponse | UpdateAppConfigResponse | AppConfigResponse | ERROR_RESPONSE;
@@ -18,7 +18,16 @@ export function callApi(request: AppConfigRequest, url: "/api/appConfig"): Promi
 
 export async function callApi(request: API_REQUEST, url: string): Promise<API_RESPONSE> {
   try {
-    const response: AxiosResponse<API_RESPONSE> = await axios.post(endpoint + url, request);
+    const config = {
+      method: 'post',
+      url: endpoint+url,
+      headers: { 
+        'Content-Type': 'application/json', 
+        'Authorization': "Bearer "+ localStorage.getItem("token")
+      },
+      data: request,
+    };
+    const response: AxiosResponse<API_RESPONSE> = await axios.request(config);
     return response.data;
   } catch (error) {
     console.error('Error making POST request:', error);
@@ -27,3 +36,36 @@ export async function callApi(request: API_REQUEST, url: string): Promise<API_RE
 }
 
 
+export async function getProductIdRequest(request: GetProductIdRequest, url: string): Promise<GetProductIdResponse> {
+  try {
+    const response: AxiosResponse<GetProductIdResponse> = await axios.get(endpoint + url);
+    return response.data;
+  } catch (error) {
+    console.error('Error making POST request:', error);
+    return { error_code: "INTERNAL_SERVER_ERROR", description: "API Call Failure" } as ERROR_RESPONSE;
+  }
+}
+
+
+export async function getWishlist(request: GetWishlistRequest, url: string): Promise<GetWishlistResponse> {
+    try {
+      const config = {
+        method: 'get',
+        maxBodyLength: Infinity,
+        url: endpoint+url,
+        headers: { 
+          'Content-Type': 'application/json', 
+          'Authorization': "Bearer "+ localStorage.getItem("token")
+        },
+        // data: data,
+      };
+  
+      const response = await axios.request(config);
+      console.log(JSON.stringify(response.data));
+      return response.data;
+    } 
+   catch (error) {
+    console.error('Error making POST request:', error);
+    return { error_code: "INTERNAL_SERVER_ERROR", description: "API Call Failure" } as ERROR_RESPONSE;
+  }
+}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ChevronLeft, ChevronRight, Star, StarHalf, Share2, PinIcon as Pinterest, Clock, Truck, ShieldCheck, HeadphonesIcon, CreditCard, StarIcon } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -8,10 +8,18 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import RecentlyView from '../../common/RecentlyView'
 import ListYourProduct from '../../common/ListYourProduct'
+import { useParams } from 'react-router-dom'
+import { callApi, getProductIdRequest } from '../../../api/api'
+import { GetAddToWishlistRequest, GetAddToWishlistResponse, GetProductIdResponse } from '../../../api/types'
+import { useNavigate } from 'react-router-dom';
 
 
 const ProductDetail = () => {
+  const id = useParams();
     const [currentImage, setCurrentImage] = useState(0)
+    const [error, setError] = useState<string | null>(null)
+    const [productData , setProductData] = useState();
+    const [productid, setProductId]= useState(id.productid)
     const images = [
       'productimage.png',
       '/placeholder.svg?height=400&width=600',
@@ -20,6 +28,52 @@ const ProductDetail = () => {
       '/placeholder.svg?height=400&width=600',
       '/placeholder.svg?height=400&width=600'
     ]
+  
+  
+
+  let navigate = useNavigate(); 
+
+  useEffect(() => {
+  
+    const fetchData = async () => {
+      try {
+        const response: GetProductIdResponse = await getProductIdRequest("", `/product/getProduct/${productid}`);
+        if ("error_code" in response) {
+          setError(response.description);
+        }
+       else if ("product" in response) {
+        //  setProductData(response.product);
+        console.log("product detail",response)
+        } 
+      } catch (err) {
+        console.error("Sign up error:", err);
+        setError("");
+      }
+    };
+    fetchData();
+  }, []);
+
+
+  const handleApi = async (id:string) => {
+    try{
+      let req: GetAddToWishlistRequest = {
+         productId:id,
+      }
+      const response: GetAddToWishlistResponse = await callApi(req,"/wishlist/remove");
+      if("status" in response){
+        alert(response.status)
+       
+      }
+     else if("error_code" in response ){
+        setError(response.description)
+      }
+    
+    }
+    catch(err){
+      console.error("Sign up error:", err)
+      setError("faild to signup")
+    }
+  }
     return (
         <>
         <div className="w-[90vw] mx-auto  py-8">
@@ -128,7 +182,11 @@ const ProductDetail = () => {
                 </div>
     
                 <div className="flex gap-4">
-                  <Button variant="outline" className="flex-1">ADD TO WISHLIST</Button>
+                  <Button variant="outline" className="flex-1"
+                  onClick={()=>{handleApi(productid ?? "")}}
+                  >
+                    ADD TO WISHLIST
+                  </Button>
                   <Button className="flex-1">ADD TO CART</Button>
                   <Button variant="secondary" className="flex-1">BUY NOW</Button>
                 </div>

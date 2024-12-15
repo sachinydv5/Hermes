@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
+import { Link } from 'react-router-dom'
 
 
 const categories = [
@@ -81,8 +82,8 @@ const NavBar = () => {
 
         <Separator orientation="vertical" className="h-6" />
 
-        <Button variant="ghost" className="h-8 px-2 hover:bg-transparent">
-          <Heart className="h-4 w-4 text-orange-500" />
+        <Button variant="ghost" className="h-8 px-2 hover:bg-orange-100">
+         <Link to='/wishlist'> <Heart className="h-4 w-4 text-orange-500" /></Link>
         </Button>
 
         <Button variant="ghost" className="h-8 hover:bg-transparent">

@@ -83,7 +83,7 @@ const Header = () => {
           </Dialog>
           ):(<Button
             variant="outline"
-            className="flex items-center gap-2 px-4 py-2 rounded-full border-2 border-orange-400 text-black"
+            className="flex items-center gap-2 p-5 rounded-full border-2 border-orange-400 text-black"
           >
             {/* Avatar */}
             <Avatar className="w-8 h-8">
@@ -96,7 +96,7 @@ const Header = () => {
             {/* User name */}
             <span className="font-semibold text-sm">{firstName}</span>
             {/* Dropdown arrow */}
-            <ChevronDown className="w-4 h-4" />
+            {/* <ChevronDown className="w-4 h-4" /> */}
           </Button>)}
           
           </div>
