@@ -9,6 +9,10 @@ export const BLACKLISTTOKEN_DB_COLLECTION = "blacklistToken"
 
 export const APPCONFIG_DB_COLLECTION = "appConfig"
 
+export const WISHLIST_DB_COLLECTION = "wishlist"
+
+export const CART_DB_COLLECTION = "cart"
+
 export const APPCONFIG_COLLECTION_ID = "configID"
 
 

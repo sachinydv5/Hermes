@@ -2,6 +2,7 @@ import { randomUUID } from "crypto";
 import { ProductDoSchema, ProductRequestSchema } from "../../types/product/product";
 import { getFirestore} from 'firebase-admin/firestore';
 import moment from "moment";
+import { warn } from "console";
 
 
 export const addProductInDB = async (product: ProductRequestSchema)=>{
@@ -22,7 +23,7 @@ export const addProductInDB = async (product: ProductRequestSchema)=>{
        country : product.pickupAddress.country,
        pincode : product.pickupAddress.pincode,
        addressLine1 : product.pickupAddress.addressLine1,
-       addressLine2 : product.pickupAddress.addressLine2
+       addressLine2 : product.pickupAddress.addressLine2 || ""
     },
     price : product.price,
     userId : product.userId,
@@ -30,6 +31,7 @@ export const addProductInDB = async (product: ProductRequestSchema)=>{
     createTs: moment().format()
   }
   await db.collection("product").doc(productDB.id).set(productDB);
+  return productDB.id;
 }
 
 export const getTotalRecords = async()=>{
@@ -37,6 +39,17 @@ export const getTotalRecords = async()=>{
   let query = await db.collection("product").count().get();
   return query.data().count;
 }
+
+
+export const findProductByProductId = async (productId: string) => {
+  const db = getFirestore();
+  const snapshot = await db.collection("product").doc(productId).get();
+  if (!snapshot.exists) return null;
+  return snapshot.data() as ProductDoSchema;
+}
+
+
+
 
 export const getProductsFromDB = async (lastDoc: string | undefined, limit: number): Promise<{products:ProductDoSchema[],lastRef?: string}>  => {
   try {
@@ -50,7 +63,6 @@ export const getProductsFromDB = async (lastDoc: string | undefined, limit: numb
     }
 
     if (productSnapshot.empty) {
-      console.log("No products found");
       throw new Error("No Product found");
     }
 
@@ -61,10 +73,8 @@ export const getProductsFromDB = async (lastDoc: string | undefined, limit: numb
       })
     }
     let lastDocRef = productSnapshot.docs[productSnapshot.docs.length-1];
-    
     return {products:product, lastRef:lastDocRef.data().id};
   } catch (error) {
-    console.error("Error getting products: ", error);
     throw new Error();
   }
 }

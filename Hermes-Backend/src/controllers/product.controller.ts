@@ -1,14 +1,14 @@
-import { ProductRequestSchema, AddProductResponseSchema, GetProductDoResponse, ProductDoSchema } from "../types/product/product";
+import { ProductRequestSchema, AddProductResponseSchema, GetProductDoResponse, ProductDoSchema, GetProductIdRespose } from "../types/product/product";
 import { TypedRequest, TypedResponse } from "../types/express.types";
-import { addProductInDB, getProductsFromDB, getTotalRecords } from "../database/product/product";
+import { addProductInDB, findProductByProductId, getProductsFromDB, getTotalRecords } from "../database/product/product";
+
+import express, { Request, Response } from 'express';
+
 
 export const addProduct = async (req: TypedRequest<ProductRequestSchema>, res: TypedResponse<AddProductResponseSchema>) => {
     try {
-        // validateCategory();
-        // validateCollectionId();
-        // validatePickupAddress();
-        addProductInDB(req.body);
-        res.json({status:"PRODUCT_ADDED_SUCCESSFULLY"})
+        const a = await addProductInDB(req.body);
+        res.json({status:"PRODUCT_ADDED_SUCCESSFULLY", "id": a})
     } catch(error){
         res.json({ error_code: "INTERNAL_SERVER_ERROR", description: "Some error Occurred" });
     }
@@ -66,9 +66,32 @@ export const getProduct = async (req: TypedRequest<any>, res: TypedResponse<GetP
     }
 }
 
+
+export const getProductID = async (req: Request, res: Response) => {
+    try {
+      const productId = req.params.id;
+      if (!productId)
+        res.json({ error_code: "INTERNAL_SERVER_ERROR", description: "Some error Occurred" });
+      else {
+        const product = await  findProductByProductId(productId)
+        res.json(product)
+      }
+    } catch(error){
+        res.json({ error_code: "INTERNAL_SERVER_ERROR", description: "Some error Occurred" });
+    }
+}
+
+
+
+
+
 function validateCollectionId() {
     throw new Error("Function not implemented.");
 }
 function validateCategory() {
     throw new Error("Function not implemented.");
 }
+
+
+
+

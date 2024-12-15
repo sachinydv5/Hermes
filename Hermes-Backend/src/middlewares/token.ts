@@ -2,7 +2,7 @@
 
 import { Request, Response, NextFunction } from 'express';
 import { ERROR_RESPONSE } from '../types/common/error';
-import { TypedResponse } from '../types/express.types';
+import { TypedRequestEmail, TypedResponse } from '../types/express.types';
 import { JwtPayload, verify } from 'jsonwebtoken';
 import { config } from '../configs/env.config';
 import { findUserLoginByTokenId } from '../database/login/user.login';
@@ -28,17 +28,16 @@ export const authTokenVerification = async (req: Request, resp: TypedResponse<ER
           if (err)
             resp.json({ error_code: "UNAUTHORIZED", description: "Token not found 2" })
           else if (payload) {
-            console.log(payload)
             if (isJwtPayload(payload)) {
               const blacklistedToken = await findBlackListedByTokenId(payload.tokenId);
-              console.log("blacklistedToken");
-              console.log(blacklistedToken);
               const userLogin = await findUserLoginByTokenId(payload.tokenId ?? "");
               if (!userLogin)
                 resp.json({ error_code: "UNAUTHORIZED", description: "Token not found 3" })
               else {
-                const user = await findUserByEmail(userLogin.userEmail);
-                console.log(user)
+
+                req.body.email = userLogin.userEmail;
+                (req as TypedRequestEmail<any>).email = userLogin.userEmail;
+                // const user = await findUserByEmail(userLogin.userEmail);
                 next()
 
               }

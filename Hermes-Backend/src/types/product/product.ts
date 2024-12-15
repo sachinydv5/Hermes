@@ -25,10 +25,10 @@ export const ProductSchema = z.object({
   duration: DurationSchema, // Nested duration object
   discount: z.number(),
   pickupAddress: PickupAddressSchema, // Nested address object
-  price: z.number(),
-  category: z.string().uuid(),
-  userId: z.string().uuid(),
-  collectionId: z.string().uuid(),
+  price: z.string(),
+  category: z.string(),
+  userId: z.string(),
+  collectionId: z.string(),
 });
 
 export const ProductDO = z.object({
@@ -39,7 +39,7 @@ export const ProductDO = z.object({
   duration: DurationSchema, // Nested duration object
   discount: z.number(),
   pickupAddress: PickupAddressSchema, // Nested address object
-  price: z.number(),
+  price: z.string(),
   qty: z.number().min(1), // Can be empty string
   category: z.string().uuid(),
   userId: z.string().uuid(),
@@ -66,6 +66,12 @@ export type ProductRequestSchema = z.infer<typeof ProductSchema>;
 
 export type AddProductResponseSchema = Error<GLOBAL_ERROR_CODE> | {
   status: "PRODUCT_ADDED_SUCCESSFULLY",
+  id: string
 }
 
 
+
+export type GetProductIdRequest = {}
+
+
+export type GetProductIdRespose = Error<GLOBAL_ERROR_CODE> | ProductDoSchema

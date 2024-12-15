@@ -15,3 +15,14 @@ export interface PResponse<T> {
   error?: Error,
   value: T
 }
+
+
+
+export interface TypedRequestEmail<T> extends Request {
+  body: T
+  email?: string
+}
+
+
+
+

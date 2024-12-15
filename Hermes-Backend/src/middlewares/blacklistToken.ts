@@ -28,7 +28,6 @@ export const blacklistToken = async (req: Request, resp: TypedResponse<ERROR_RES
             resp.json({ error_code: "UNAUTHORIZED", description: "Token not found 1" })
           }
           if (payload && isJwtPayload(payload)) {
-            console.log(payload)
             const userLogin = await findUserLoginByTokenId(payload.tokenId ?? "");
             if (!userLogin)
               resp.json({ error_code: "UNAUTHORIZED", description: "Token not found wef w3" })

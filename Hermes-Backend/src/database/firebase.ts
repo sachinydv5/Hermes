@@ -22,7 +22,6 @@ let firestoreDB: Firestore;
 
 const initializeDatabase = () => {
   try {
-    // console.log(serviceAccount)
     ia({
       credential: cert(config.FIREBASE_ADMIN as any)
     })

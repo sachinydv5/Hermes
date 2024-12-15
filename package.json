@@ -8,7 +8,9 @@
   "private": true,
   "scripts": {
     "build:backend": "cd Hermes-Backend && npm run-script build",
-    "run:backend" : "cd Hermes-Backend && npm run-script serve"
+    "run:backend": "cd Hermes-Backend && npm run-script serve"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17"
   }
-
 }

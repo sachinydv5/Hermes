@@ -16,7 +16,6 @@ export const handleUserSignUp = async (req: TypedRequest<UserSignUpRequest>, res
   try {
     if ("email" in req.body) {
       const user = await findUserByEmail(req.body.email);
-      console.log("reached here")
       if (user)
         res.json({ error_code: "EMAIL_ALREADY_IN_USE", description: "Some error Occurred" });
       else if (!isPasswordStrong(req.body.password))
@@ -25,7 +24,6 @@ export const handleUserSignUp = async (req: TypedRequest<UserSignUpRequest>, res
         const encryptedPassword = await hash(req.body.password, 10);
         const newUser = await createUserWithEmailAndPassword(req.body.email, encryptedPassword, req.body.firstName, req.body.lastName);
         // sendEmailToNewUser
-        console.log(newUser)
         const userIP = (req.headers["x-forwarded-for"] || "").toString();
         // await findAndUpdateAllTokenAsDeleted({
         //   userId: newUser.user_id,
@@ -50,7 +48,6 @@ export const handleUserSignUp = async (req: TypedRequest<UserSignUpRequest>, res
     } else
       res.json({ error_code: "INTERNAL_SERVER_ERROR", description: "Some error Occurred 1" });
   } catch (error) {
-    console.log(error)
     res.json({ error_code: "INTERNAL_SERVER_ERROR", description: "Some error Occurred 2" });
   }
 }
@@ -58,13 +55,9 @@ export const handleUserSignUp = async (req: TypedRequest<UserSignUpRequest>, res
 
 export const handleLogin = async (req: TypedRequest<UserLoginRequest>, res: TypedResponse<UserLoginResponse>) => {
   try {
-    console.log(req.body.email)
-    console.log("email" in req.body)
     if ("email" in req.body) {
       const user = await findUserByEmail(req.body.email)
       const password = await compare(req.body.password, user!.password)
-      console.log(user);
-      console.log(password);
       if (user && password) {
         const userIP = (req.headers["x-forwarded-for"] || "").toString();
         // await findAndUpdateAllTokenAsDeleted({
@@ -110,7 +103,6 @@ export const handleVerification = async (req: TypedRequest<VerifyOtpRequest>, re
     const { token, otp, email, phone_number } = req.body;
 
     const decodededToken = await decodeOBJ(token);
-    console.log(decodededToken);
     const OTP_DB = await OTP_FIND_BY_ID(decodededToken.id);
 
     if (decodededToken && decodededToken.email && (email !== null || email !== undefined) && decodededToken.email != email)
@@ -137,7 +129,6 @@ export const handleVerification = async (req: TypedRequest<VerifyOtpRequest>, re
     }
 
   } catch (error) {
-    console.log(error)
     res.json({ error_code: "INTERNAL_SERVER_ERROR", description: "Some error Occurred" });
   }
 }

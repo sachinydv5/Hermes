@@ -30,9 +30,9 @@ export const findUserByEmail = async (email: string) => {
 export const findUserByUserId = async (userId: string) => {
   const db = getFirestore();
   const snap = await db.collection("users").get();
-  snap.forEach(doc => {
-    console.log(doc.id, '=>', doc.data());
-  });
+  // snap.forEach(doc => {
+  //   console.log(doc.id, '=>', doc.data());
+  // });
   const snapshot = await db.collection("users").doc(userId).get();
   if (!snapshot.exists) return null;
   return snapshot.data() as User;
