@@ -29,7 +29,7 @@ const [error, setError] = useState<string | null>(null)
   useEffect(() => {
       const fetchData = async () => {
         try {
-          const response: GetProductResponse = await getProduct("", "product/getProduct");
+          const response: GetProductResponse = await getProduct("", "/product/getProduct");
           if ("error_code" in response) {
             setError(response.description);
           }

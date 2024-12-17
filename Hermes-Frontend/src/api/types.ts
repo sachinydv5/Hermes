@@ -133,7 +133,7 @@ type GET_Wishlist_ERROR_CODES  = "INTERNAL_ERROR"
 export type GetWishlistRequest = {} | undefined
 
 export type  GetWishlistResponse = Error<GET_Wishlist_ERROR_CODES > | {
-  products: Product[] 
+  wishlist: Product[] 
 }
 
 

@@ -4,6 +4,7 @@ import { InfoIcon, ShoppingCart, X } from 'lucide-react'
 import axios from 'axios'
 import { GetWishlistResponse } from '../../api/types'
 import { getWishlist } from '../../api/api'
+import { Product } from '../../api/common.types'
 const wishlistItems: WishlistItem[] = [
     {
       id: "1",
@@ -45,9 +46,9 @@ const wishlistItems: WishlistItem[] = [
   ]
   
 const Wishlist = () => {
-const [wishlistData, setWishlistData] = useState();
+const [wishlistData, setWishlistData] = useState<Product[]>([]);
 const [error, setError] = useState<string | null>(null)
-
+console.log("wishlistdata",wishlistData)
 
 useEffect(() => {
     const fetchData = async () => {
@@ -56,9 +57,9 @@ useEffect(() => {
         if ("error_code" in response) {
           setError(response.description);
         }
-       else if ("product" in response) {
-        //  setProductData(response.product);
-        console.log("product detail",response)
+       else if ("status" in response) {
+         setWishlistData(response.wishlist);
+        // console.log("product detail",response)
         } 
       } catch (err) {
         console.error("Sign up error:", err);
@@ -71,22 +72,22 @@ useEffect(() => {
 
   return (
     <div className="container mx-auto py-8">
-    <h1 className="text-2xl font-bold mb-6">Wishlist</h1>
     <div className="bg-white rounded-lg shadow">
-      <div className="grid grid-cols-12 gap-4 p-4 border-b text-sm font-medium text-muted-foreground">
+    <h1 className="text-xl font-medium font-[poppins] text-[#191C1F'] p-2">Wishlist</h1>
+      <div className="grid grid-cols-12 gap-4 p-4 border-b text-sm font-medium text-muted-foreground bg-gray-100">
         <div className="col-span-6 lg:col-span-7">PRODUCTS</div>
         <div className="col-span-2">PRICE</div>
         <div className="hidden lg:block lg:col-span-1">STOCK STATUS</div>
         <div className="col-span-4 lg:col-span-2">ACTIONS</div>
       </div>
       <div className="divide-y">
-        {wishlistItems.map((item) => (
-          <div key={item.id} className="grid grid-cols-12 gap-4 p-4 items-center">
+        {wishlistData.map((item) => (
+          <div key={item.id} className="grid grid-cols-12 gap-4 p-4 items-center cursor-pointer">
             <div className="col-span-6 lg:col-span-7">
               <div className="flex gap-4 items-center">
-                <div className="w-20 h-20 relative">
+                <div className="w-1/12 relative">
                   <img
-                    src={item.image}
+                    src={"https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png"}
                     alt={item.name}
                     className="object-cover rounded-md"
                   />
@@ -100,37 +101,36 @@ useEffect(() => {
             </div>
             <div className="col-span-2">
               <div className="space-y-1">
-                <div className="font-medium">${item.price.toFixed(2)}</div>
-                {item.originalPrice && (
+                <div className="font-medium">${item.price}</div>
+                {/* {item.discount && (
                   <div className="text-sm text-muted-foreground line-through">
-                    ${item.originalPrice.toFixed(2)}
+                    ${item.discount.toFixed(2)}
                   </div>
-                )}
+                )} */}
               </div>
             </div>
             <div className="hidden lg:block lg:col-span-1">
               <span
-                className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${
-                  item.inStock
-                    ? "bg-green-50 text-green-700"
-                    : "bg-red-50 text-red-700"
-                }`}
+                className="inline-flex items-center rounded-full px-2 py-1 text-xs font-medium 
+                
+                    bg-red-50 text-red-700"
+              
               >
-                {item.inStock ? "IN STOCK" : "OUT OF STOCK"}
+                {/* {item.inStock ? "IN STOCK" : "OUT OF STOCK"} */}
               </span>
             </div>
             <div className="col-span-4 lg:col-span-2">
               <div className="flex items-center gap-2">
                 <Button
-                  variant={item.inStock ? "default" : "secondary"}
+                  // variant={item.inStock ? "default" : "secondary"}
                   size="sm"
-                  className="w-full bg-[#FCB857]"
-                  disabled={!item.inStock}
+                  className="w-full bg-[#FCB857] hover:bg-orange-300"
+                  // disabled={!item.inStock}
                 >
                   <ShoppingCart className="w-4 h-4 mr-2" />
                   <span className="hidden sm:inline">Add to Cart</span>
                 </Button>
-                <Button variant="ghost" size="icon" className="shrink-0"
+                <Button variant="ghost" size="icon" className="shrink-0 border-2 rounded-full"
               >
                   <X className="w-4 h-4" />
                 </Button>
