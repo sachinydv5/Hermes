@@ -41,9 +41,7 @@ const Market = () => {
     const categories = ['Kitchen', 'Televisions', 'Electronics', 'Cleaning', 'Cameras', 'Computers','Audio',]
   
   return (
-    <div className='bg-[#F4F5F6]'>
-      <NavBar/>
-
+    <div className=''>
       <section className=' mb-10 mt-10'>
       <Search/>
       </section>

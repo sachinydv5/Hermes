@@ -83,18 +83,20 @@ const Header = () => {
           </Dialog>
           ):(<Button
             variant="outline"
-            className="flex items-center gap-2 p-5 rounded-full border-2 border-orange-400 text-black"
+            className="flex items-center gap-2 p-3 rounded-full  border-orange-400 text-black"
           >
-            {/* Avatar */}
-            <Avatar className="w-8 h-8">
-              <AvatarImage
-                src="https://via.placeholder.com/150" // Replace with the user's image URL
-                alt="User Profile"
-              />
-              <AvatarFallback>BS</AvatarFallback>
-            </Avatar>
-            {/* User name */}
-            <span className="font-semibold text-sm">{firstName}</span>
+            <Link to="/userprofile" className="flex items-center gap-2">
+              {/* Avatar */}
+              <Avatar className="w-8 h-8">
+                <AvatarImage
+                  src="https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png" // Replace with the user's image URL
+                  alt="User Profile"
+                />
+                <AvatarFallback>BS</AvatarFallback>
+              </Avatar>
+              {/* User name */}
+              <span className="font-semibold text-sm">{firstName}</span>
+            </Link>
             {/* Dropdown arrow */}
             {/* <ChevronDown className="w-4 h-4" /> */}
           </Button>)}

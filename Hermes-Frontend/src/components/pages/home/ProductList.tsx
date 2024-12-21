@@ -46,7 +46,7 @@ const [error, setError] = useState<string | null>(null)
       fetchData();
     }, []);
   return (
-    <div className="container mx-auto py-8">
+    <div className="w-[90vw] mx-auto py-8">
     <div className="flex gap-8">
       <SideBar />
       

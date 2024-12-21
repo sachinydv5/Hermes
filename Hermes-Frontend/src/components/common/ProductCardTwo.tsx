@@ -14,7 +14,7 @@ const ProductCardTwo = ({product}) => {
   
     return (
       <Card 
-        className="w-[280px] overflow-hidden bg-white rounded-2xl border border-gray-100 transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-2"
+        className="overflow-hidden bg-white rounded-2xl border border-gray-100 transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-2"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >

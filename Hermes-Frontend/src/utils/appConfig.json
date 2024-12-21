@@ -1,0 +1,10 @@
+{
+    "title": "vivarent",
+    "styles": {
+        "fontFamily": "poppins",
+        "colors": {
+            "primary": "text-blue-500",
+            "secondary": "text-green-500"
+        }
+    }
+}
