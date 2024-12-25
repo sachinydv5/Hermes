@@ -11,16 +11,18 @@ import { wishlistRouter } from './routes/wishlist/wishlist.router';
 import cors from 'cors';
 import { cartRouter } from './routes/cart/cart.router';
 import { orderRouter } from './routes/order/order.router';
+var compression = require('compression')
+
+
 
 const app = express();
 const port = config.PORT;
-
+app.use(compression())
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({extended : true}))
 // app.use(morgan(config.NODE_ENV === "development" ? "dev" : "combined"))
 app.use(morgan("dev"))
-
 
 app.get('/', (_req: Request, res: Response) => {
   res.json({ status: "UP" })

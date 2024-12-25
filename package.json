@@ -11,6 +11,7 @@
     "run:backend": "cd Hermes-Backend && npm run-script serve"
   },
   "devDependencies": {
-    "@types/cors": "^2.8.17"
+  },
+  "dependencies": {
   }
 }
