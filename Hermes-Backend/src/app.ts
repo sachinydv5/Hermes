@@ -10,6 +10,7 @@ import { configRouter } from './routes/config/config.router';
 import { wishlistRouter } from './routes/wishlist/wishlist.router';
 import cors from 'cors';
 import { cartRouter } from './routes/cart/cart.router';
+import { orderRouter } from './routes/order/order.router';
 
 const app = express();
 const port = config.PORT;
@@ -31,7 +32,7 @@ app.use("/product", productRouter);
 app.use("/collection",collectionRouter)
 app.use("/wishlist", wishlistRouter)
 app.use("/cart", cartRouter)
-
+app.use("/order", orderRouter)
 
 app.post("/api/test", authTokenVerification, (_req, resp) => {
   resp.json({ status: "Passed"});

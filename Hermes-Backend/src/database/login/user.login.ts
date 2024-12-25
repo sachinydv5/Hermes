@@ -4,7 +4,7 @@ import { UserLogin } from '../../types/auth/user.login';
 
 
 
-type PARAM_USER = Omit<UserLogin, "tokenSecret" | "loggedInAt" | "loggedOutAt" | "tokenDeleted" | "loggedOut">
+export type PARAM_USER = Omit<UserLogin, "tokenSecret" | "loggedInAt" | "loggedOutAt" | "tokenDeleted" | "loggedOut">
 
 
 export const createUserLogin = async (user: PARAM_USER) => {

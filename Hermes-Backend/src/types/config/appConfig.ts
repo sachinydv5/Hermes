@@ -1,18 +1,18 @@
 import { z } from "zod";
-import { Error } from "../common/error";
-
+import { emptyObject, Error } from '../common/error';
 
 
 type APP_CONFIG_CODES = "INTERNAL_ERROR"
 
 export const appConfigScheme = z.object({
-  primary_colour: z.string()
+  primary_colour: z.string(),
+  secondary_colour: z.string(),
 });
 
 
 export type AppConfig = z.infer<typeof appConfigScheme>
 
-export type AppConfigRequest = z.infer<typeof appConfigScheme>
+export type AppConfigRequest = typeof emptyObject; 
 
 export type AppConfigResponse = Error<APP_CONFIG_CODES> | {
   status: "SUCCESS",

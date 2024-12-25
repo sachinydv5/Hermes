@@ -15,4 +15,5 @@ export const CART_DB_COLLECTION = "cart"
 
 export const APPCONFIG_COLLECTION_ID = "configID"
 
+export const ORDER_DB_COLLECTION = "order"
 
