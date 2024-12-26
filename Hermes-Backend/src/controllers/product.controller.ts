@@ -3,14 +3,25 @@ import { TypedRequest, TypedResponse } from "../types/express.types";
 import { addProductInDB, findProductByProductId, getProductsFromDB, getTotalRecords } from "../database/product/product";
 
 import express, { Request, Response } from 'express';
+import { getCollectionByCollectionIdAndUserId, getCollectionByNameAndUser } from "../database/collection/collection";
+import { CommonException } from "../types/common/error";
 
 
 export const addProduct = async (req: TypedRequest<ProductRequestSchema>, res: TypedResponse<AddProductResponseSchema>) => {
     try {
+        if(req.body.collectionId){
+            await validateCollectionId(req.body.collectionId,req.body.userId);
+        }
         const a = await addProductInDB(req.body);
         res.json({status:"PRODUCT_ADDED_SUCCESSFULLY", "id": a})
     } catch(error){
-        res.json({ error_code: "INTERNAL_SERVER_ERROR", description: "Some error Occurred" });
+        if(error instanceof CommonException){
+            res.status(400);
+            res.json({ error_code: error.error_code, description: error.description });
+        } else {
+            res.status(500)
+            res.json({ error_code: "INTERNAL_SERVER_ERROR", description: "Some error Occurred" });
+        }
     }
 }
 
@@ -84,9 +95,15 @@ export const getProductID = async (req: Request, res: Response) => {
 
 
 
-
-function validateCollectionId() {
-    throw new Error("Function not implemented.");
+async function validateCollectionId(collectionId:string,userId:string) {
+    try{
+        let collection = await getCollectionByCollectionIdAndUserId(collectionId,userId);
+        if(collection.length<=0){
+            throw new CommonException("BAD_REQUEST","Collection does not exist");
+        }
+    } catch(error){
+        throw error;
+    }
 }
 function validateCategory() {
     throw new Error("Function not implemented.");

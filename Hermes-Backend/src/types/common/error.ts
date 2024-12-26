@@ -14,6 +14,16 @@ export type ERROR_RESPONSE = {
   description: string
 }
 
+export class CommonException<P> extends Error{
+  error_code: GLOBAL_ERROR_CODE | P;
+  description: string;
 
+  constructor(error_code: GLOBAL_ERROR_CODE | P, description: string) {
+      super(description);
+      this.name = "ERROR_RESPONSE";
+      this.error_code = error_code;
+      this.description = description;
+  }
+}
 
 export const emptyObject = z.object({}).optional();

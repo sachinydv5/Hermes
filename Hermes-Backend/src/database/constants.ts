@@ -17,3 +17,4 @@ export const APPCONFIG_COLLECTION_ID = "configID"
 
 export const ORDER_DB_COLLECTION = "order"
 
+export const COLLECTION_DB_CDOLLECTION = "collection"
