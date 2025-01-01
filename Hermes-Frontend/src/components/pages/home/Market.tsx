@@ -258,7 +258,7 @@ const Market = () => {
   <Collection/>
 
   {/* AD  */}
-  <div className="relative w-[90vw] mx-auto bg-black overflow-hidden rounded-3xl">
+  <div className="relative w-[90vw] mx-auto bg-black overflow-hidden rounded-3xl mt-10">
       <div className="container relative mx-auto px-4 flex flex-col md:flex-row items-center justify-between">
         {/* Left Section */}
         <div className="z-10 mb-8 md:mb-0 ">

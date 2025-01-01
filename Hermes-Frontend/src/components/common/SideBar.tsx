@@ -47,7 +47,7 @@ const SideBar = () => {
         <div className="space-y-2">
           {categories.map((category) => (
             <div key={category} className="flex items-center space-x-2">
-              <Checkbox id={category} />
+              <Checkbox id={category} className="rounded-full"/>
               <label htmlFor={category} className="text-sm">
                 {category}
               </label>
@@ -71,15 +71,15 @@ const SideBar = () => {
       </div>
 
       <div>
-        <h3 className="font-semibold mb-3">PRICE</h3>
+        {/* <h3 className="font-semibold mb-3">PRICE</h3> */}
         <div className="space-y-2">
           {priceRanges.map((range) => (
             <div key={range} className="flex items-center justify-between text-sm">
               <label htmlFor={range} className="flex items-center space-x-2">
-                <Checkbox id={range} />
+                <Checkbox id={range} className="rounded-full"/>
                 <span>{range}</span>
               </label>
-              <span className="text-muted-foreground">(10)</span>
+              {/* <span className="text-muted-foreground">(10)</span> */}
             </div>
           ))}
         </div>

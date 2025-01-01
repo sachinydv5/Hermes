@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
@@ -11,28 +11,30 @@ import {
 } from "@/components/ui/select"
 
 const BillingForm = () => {
+  
   return (
     <div className="space-y-4 shadow-sm bg-white rounded-lg p-6">
       <h2 className="font-semibold text-sm border-b-2">BILLING ADDRESS</h2>
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="firstName">First Name</Label>
-          <Input id="firstName" defaultValue="Britney" />
+          <Input id="firstName" type="text" defaultValue="" />
         </div>
         <div className="space-y-2">
           <Label htmlFor="lastName">Last Name</Label>
-          <Input id="lastName" defaultValue="Spears" />
+          <Input id="lastName" type="text" defaultValue="" />
         </div>
       </div>
       <div className="space-y-2">
         <Label htmlFor="company">Company Name (Optional)</Label>
-        <Input id="company" />
+        <Input id="company" type="text"/>
       </div>
       <div className="space-y-2">
         <Label htmlFor="address">Address</Label>
         <Input 
           id="address" 
-          defaultValue="Road No. 13/k, House no. 1320/C, Flat No. 5D"
+          defaultValue=""
+          type="text"
         />
       </div>
       <div className="space-y-2">
@@ -43,8 +45,6 @@ const BillingForm = () => {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="USA">USA</SelectItem>
-            <SelectItem value="UK">UK</SelectItem>
-            <SelectItem value="CA">Canada</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -56,8 +56,6 @@ const BillingForm = () => {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="minnesota">Minnesota</SelectItem>
-            <SelectItem value="california">California</SelectItem>
-            <SelectItem value="texas">Texas</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -75,7 +73,7 @@ const BillingForm = () => {
         </div>
         <div className="space-y-2">
           <Label htmlFor="zipCode">Zip Code</Label>
-          <Input id="zipCode" defaultValue="528" />
+          <Input id="zipCode" type="text" defaultValue="" />
         </div>
       </div>
       <div className="space-y-2">
@@ -83,7 +81,7 @@ const BillingForm = () => {
         <Input 
           id="email" 
           type="email" 
-          defaultValue="Britney@gmail.com"
+          defaultValue=""
         />
       </div>
       <div className="space-y-2">
@@ -91,10 +89,10 @@ const BillingForm = () => {
         <Input 
           id="phone" 
           type="tel" 
-          defaultValue="+1-202-555-0118"
+          defaultValue=""
         />
       </div>
-      <Button className="w-full bg-gray-900 hover:bg-gray-800 mt-4">
+      <Button className="bg-gray-900 hover:bg-gray-800 mt-4">
         SAVE CHANGES
       </Button>
     </div>

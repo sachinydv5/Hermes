@@ -2,7 +2,7 @@
 
 export const AppRoutes = {
     ANY: '*',
-    HOME: '/home',
+    HOME: '/',
     CREATINGLIST:'/creatinglist',
     CREATESINGLE:'/createsingle',
     MARKET:'/market',

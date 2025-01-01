@@ -37,21 +37,19 @@ const HeroSection = () => {
         
         {/* Top-left label */}
         
-        <div className="absolute top-5 left-8 transform -translate-x-2/3 bg-white rounded-full px-4 py-1 z-10">
-        <p className="text-sm">lorem Ipsum</p>   
+        <div className="absolute top-5 left-8 transform -translate-x-2/3  bg-white bg-opacity-45 rounded-full p-1">
+        <p className="text-sm  px-4 py-1 bg-white rounded-full">lorem Ipsum</p>   
         </div>
 
         {/* Top-right rating */}
-        <div className="absolute top-8  right-8  transform translate-x-2/3 bg-white rounded-full px-4 py-1 shadow-lg flex items-center z-10">
-          <p className="text-sm">0.0</p>
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-yellow-500 ml-1" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M9.049 2.927a1 1 0 011.902 0l1.15 3.536a1 1 0 00.95.69h3.708a1 1 0 01.588 1.81l-3.002 2.18a1 1 0 00-.364 1.118l1.15 3.536a1 1 0 01-1.54 1.118L10 13.236a1 1 0 00-1.178 0l-3.002 2.18a1 1 0 01-1.54-1.118l1.15-3.536a1 1 0 00-.364-1.118l-3.002-2.18a1 1 0 01.588-1.81h3.708a1 1 0 00.95-.69l1.15-3.536z"/>
-          </svg>
+        <div className="absolute top-8  right-8  transform translate-x-2/3 bg-white bg-opacity-45 rounded-full  p-1 shadow-lg flex items-center z-10">
+          <p className="text-sm bg-white px-4 py-1  rounded-full">0.0 <span className="text-yellow-400 ml-1">★</span></p>
+          
         </div>
 
         {/* Bottom-left label */}
-        <div className="absolute bottom-5 left-10 transform -translate-x-2/3 bg-white rounded-full px-4 py-1 shadow-lg z-10">
-          <p className="text-sm">Dummy</p>
+        <div className="absolute bottom-5 left-10 transform -translate-x-2/3 bg-white bg-opacity-45 p-1 rounded-full shadow-lg ">
+          <p className="text-sm bg-white px-4 py-1 rounded-full ">Dummy</p>
         </div>
       </div>
 </div>

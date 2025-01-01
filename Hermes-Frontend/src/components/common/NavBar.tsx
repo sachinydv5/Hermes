@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 
 
 const categories = [
@@ -30,7 +30,7 @@ const NavBar = () => {
   return (
     <nav className="w-full  bg-[#F4F5F6]">
     <div className="container mx-auto flex h-12 items-center justify-between px-4 text-[#313131] font-[poppins]">
-      <div className="flex items-center space-x-6 ">
+      <div className="flex items-center space-x-1 ">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 space-x-1 hover:bg-transparent">
@@ -58,32 +58,31 @@ const NavBar = () => {
           Recently Viewed
         </Button>
 
-        <Button variant="ghost" className="h-8 space-x-2 hover:bg-transparent">
+        <Button variant="ghost" className="h-8 space-x-1 hover:bg-transparent">
           <ShoppingBag className="h-4 w-4 text-orange-500" />
           <span>Order Tracking</span>
         </Button>
 
-        <Button variant="ghost" className="h-8 space-x-2 hover:bg-transparent">
+        <Button variant="ghost" className="h-8 space-x-1 hover:bg-transparent">
           <RefreshCw className="h-4 w-4 text-orange-500" />
           <span>Compare</span>
         </Button>
-      </div>
-
-      <div className="flex items-center space-x-6">
-        <Button variant="ghost" className="h-8 space-x-2 hover:bg-transparent">
+        <Button variant="ghost" className="h-8 space-x-1 hover:bg-transparent">
           <Headphones className="h-4 w-4 text-orange-500" />
           <span>Customer Support</span>
         </Button>
-
-        <Button variant="ghost" className="h-8 space-x-2 hover:bg-transparent">
+        <Button variant="ghost" className="h-8 space-x-1 hover:bg-transparent">
           <CircleHelp className="h-4 w-4 text-orange-500" />
           <span>Need Help</span>
         </Button>
+      </div>
 
-        <Separator orientation="vertical" className="h-6" />
-
+      <div className="flex items-center space-x-1">
+        {/* <Separator orientation="vertical" className="h-6" /> */}
         <Button variant="ghost" className="h-8 px-2 hover:bg-orange-100">
-         <Link to='/wishlist'> <Heart className="h-4 w-4 text-orange-500" /></Link>
+         <NavLink to='/wishlist' className={({isActive}) => 
+              `hover:text-[#f8a93a] font-semibold ${isActive ? "text-[#f8a93a]": "text-gray-700"}`}> <Heart className="h-4 w-4" />
+              </NavLink>
         </Button>
 
         <Button variant="ghost" className="h-8 hover:bg-transparent">

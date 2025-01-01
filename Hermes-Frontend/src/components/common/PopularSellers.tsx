@@ -40,7 +40,7 @@ const sellers = [
 const PopularSellers = () => {
   
   return (
-    <div className="bg-[#F4F5F6] p-10">
+    <div className="p-10">
     <div className=" w-[90vw] mx-auto p-8 ">
       <div className="mb-8 flex items-center justify-between ">
         <h2 className="text-3xl font-bold">

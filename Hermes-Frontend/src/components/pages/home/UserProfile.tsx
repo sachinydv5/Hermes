@@ -37,31 +37,31 @@ const UserProfile = () => {
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label>Display name</Label>
-                  <Input defaultValue="Britney S" />
+                  <Input defaultValue="" />
                 </div>
                 <div className="space-y-2">
                   <Label>Username</Label>
-                  <Input defaultValue="Display name" />
+                  <Input defaultValue="" />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label>Full Name</Label>
-                  <Input defaultValue="Britney Spears" />
+                  <Input defaultValue="" />
                 </div>
                 <div className="space-y-2">
                   <Label>Email</Label>
-                  <Input defaultValue="Britney@gmail.com" />
+                  <Input defaultValue="" />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label>Secondary Email</Label>
-                  <Input defaultValue="kevin12345@gmail.com" />
+                  <Input defaultValue="" />
                 </div>
                 <div className="space-y-2">
                   <Label>Phone Number</Label>
-                  <Input defaultValue="+1-202-555-0118" />
+                  <Input defaultValue="" />
                 </div>
               </div>
               <div className="grid grid-cols-3 gap-4">
@@ -69,7 +69,7 @@ const UserProfile = () => {
                   <Label>Country/Region</Label>
                   <Select defaultValue="usa">
                     <SelectTrigger>
-                      <SelectValue placeholder="Select country" />
+                      <SelectValue placeholder="" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="usa">USA</SelectItem>
@@ -80,7 +80,7 @@ const UserProfile = () => {
                   <Label>States</Label>
                   <Select defaultValue="minnesota">
                     <SelectTrigger>
-                      <SelectValue placeholder="Select state" />
+                      <SelectValue placeholder="" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="minnesota">Minnesota</SelectItem>

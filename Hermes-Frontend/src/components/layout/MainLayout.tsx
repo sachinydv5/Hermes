@@ -7,8 +7,10 @@ import NavBar from '../common/NavBar';
 export function MainLayout({ children }: any) {
     const location = useLocation();
 
-    const noFooterPaths = [AppRoutes.USERPROFILE, AppRoutes.DASHBOARD,AppRoutes.WISHLIST,AppRoutes.TRACKORDER];
-    const noNavBar = ["/",AppRoutes.HOME];
+
+    const noFooterPaths = [AppRoutes.USERPROFILE, AppRoutes.DASHBOARD,AppRoutes.WISHLIST];
+    const noNavBar = [AppRoutes.MARKET,AppRoutes.CREATINGLIST,AppRoutes.TRACKORDER,AppRoutes.CREATESINGLE,AppRoutes.PRODUCTDETAIL,AppRoutes.PRODUCTLIST,AppRoutes.USERPROFILE, AppRoutes.DASHBOARD,AppRoutes.WISHLIST];
+
 
     const hideNavBar = noNavBar.some((path) => location.pathname.startsWith(path));
     const hideFooter = noFooterPaths.some((path) => location.pathname.startsWith(path));
@@ -18,7 +20,7 @@ export function MainLayout({ children }: any) {
     <header>
             <Header />
         </header>
-        {!hideNavBar && <NavBar/>}
+        {hideNavBar && <NavBar/>}
         <div className="">
             {children}
         </div>
