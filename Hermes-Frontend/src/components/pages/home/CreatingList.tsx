@@ -37,7 +37,7 @@ const CreatingList = () => {
               className=" mb-6"
             />
             <button className="py-2 px-4 bg-gray-800 text-white rounded-full hover:bg-gray-700 transition duration-300">
-              Create Multiple
+            <Link to='/multipleproduct'>Create Multiple</Link> 
             </button>
           </div>
         </div>

@@ -20,6 +20,7 @@ import UserProfile from './components/pages/home/UserProfile';
 import UserDashboard from './components/pages/home/UserDashboard';
 import SidebarLayout from './components/layout/SidebarLayout';
 import TrackOrder from './components/pages/home/TrackOrder';
+import MultipleProduct from './components/pages/home/MultipleProduct';
 
 
 
@@ -32,7 +33,7 @@ const getMainLayout = () => {
       {/* <Route element={<AuthGuard/>}>
       </Route> */}
       <Route path={AppRoutes.CREATESINGLE} element={<SingleList/>} />
-
+      <Route path={AppRoutes.MULTIPLEPRODUCT} element={<MultipleProduct/>} />
       <Route path={AppRoutes.MARKET} element={<Market/>} />
       <Route path={AppRoutes.PRODUCTLIST} element={<ProductList/>} />
       <Route path={AppRoutes.PRODUCTDETAIL} element={<ProductDetail/>} />

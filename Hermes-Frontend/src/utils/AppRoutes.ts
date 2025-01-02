@@ -1,3 +1,4 @@
+import MultipleProduct from "../components/pages/home/MultipleProduct";
 
 
 export const AppRoutes = {
@@ -6,12 +7,11 @@ export const AppRoutes = {
     CREATINGLIST:'/creatinglist',
     CREATESINGLE:'/createsingle',
     MARKET:'/market',
-   PRODUCTLIST:'/productlist',
+    PRODUCTLIST:'/productlist',
     PRODUCTDETAIL:'/productdetail/:productid',
-     WISHLIST:'/wishlist',
-     USERPROFILE:'/userprofile',
-     DASHBOARD:'/dashboard',
-     TRACKORDER:'/trackorder',
-
-     
+    WISHLIST:'/wishlist',
+    USERPROFILE:'/userprofile',
+    DASHBOARD:'/dashboard',
+    TRACKORDER:'/trackorder',
+   MULTIPLEPRODUCT: '/multipleproduct'  
 }

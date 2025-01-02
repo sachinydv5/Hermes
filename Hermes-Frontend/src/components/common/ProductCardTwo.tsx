@@ -14,11 +14,11 @@ const ProductCardTwo = ({product}) => {
   
     return (
       <Card 
-        className="overflow-hidden bg-white rounded-2xl border border-gray-100 transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-2"
+        className="overflow-hidden max-w-[350px] bg-white rounded-2xl border border-gray-100 transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-2"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <div className="p-4 rounded-lg ">
+        <div className=" p-4 rounded-lg ">
           <div className="relative mb-3 rounded-lg border-2 border-orange-100">
             {isHovered ? (
               <Carousel className="w-full aspect-square">
@@ -28,7 +28,7 @@ const ProductCardTwo = ({product}) => {
                       <img
                         src={src}
                         alt={`Product view ${index + 1}`}
-                        className="w-full aspect-square object-cover rounded-lg"
+                        className="aspect-square object-cover rounded-lg"
                       />
                     </CarouselItem>
                   ))}
@@ -40,7 +40,7 @@ const ProductCardTwo = ({product}) => {
               <img
                 src={images[0]}
                 alt="TOZO T6 True Wireless Earbuds"
-                className="w-full aspect-square object-cover rounded-lg "
+                className="aspect-square object-cover rounded-lg "
               />
             )}
             
