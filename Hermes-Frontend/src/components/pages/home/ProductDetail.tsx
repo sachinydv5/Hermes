@@ -19,7 +19,7 @@ const ProductDetail = () => {
   const id = useParams();
     const [currentImage, setCurrentImage] = useState(0)
     const [error, setError] = useState<string | null>(null)
-    const [productData , setProductData] =  useState<Product>();
+    const [productdetail , setProductDetail] =  useState<Product | null>(null);
     const [productid, setProductId]= useState(id.productid)
     const images = [
       'https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png',
@@ -39,20 +39,25 @@ const ProductDetail = () => {
     const fetchData = async () => {
       try {
         const response: GetProductIdResponse = await getProductIdRequest("", `/product/getProduct/${productid}`);
+        // console.log("product detail response",response)
         if ("error_code" in response) {
+          console.log("product detail response")
           setError(response.description);
         }
-       else if ("product" in response) {
-        //  setProductData(response.product);
-        console.log("product detail",response)
-        } 
+        else {
+          setProductDetail(response);
+          console.log("Fetched product details:", response);
+        }
       } catch (err) {
         console.error("Sign up error:", err);
         setError("");
       }
     };
-    fetchData();
-  }, []);
+    if(productid){
+      fetchData();
+    }
+    
+  }, [productid]);
 
 
   const handleApi = async (id:string) => {
@@ -128,24 +133,25 @@ const ProductDetail = () => {
                 <div className="flex items-center gap-2">
                   <div className="flex">
                     {[...Array(4)].map((_, i) => (
-                      <Star key={i} className="w-5 h-5 fill-primary text-primary" />
+                      <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
                     ))}
-                    <StarHalf className="w-5 h-5 fill-primary text-primary" />
+                    <StarHalf className="w-5 h-5 fill-yellow-400 text-yellow-400" />
                   </div>
                   <span className="text-sm text-muted-foreground">4.7 Star Rating (21,671 User feedback)</span>
                 </div>
                 <h1 className="text-2xl font-bold">
-                  2020 Apple MacBook Pro with Apple M1 Chip (13-inch, 8GB RAM, 256GB SSD Storage) - Space Gray
+                  {/* 2020 Apple MacBook Pro with Apple M1 Chip (13-inch, 8GB RAM, 256GB SSD Storage) - Space Gray */}
+                  {productdetail?.name}
                 </h1>
               </div>
     
               <div className="grid gap-4">
                 <div className="flex justify-between text-sm">
-                  <span>P ID: A264671</span>
-                  <span className="text-green-600">Availability: In Stock</span>
+                  <span>P ID: </span>
+                  <span className="text-green-600">{`Availability: ${productdetail?.qty} In Stock`}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span>Deposit: $150</span>
+                  <span>Deposit: </span>
                   <span className="text-sm text-muted-foreground">100% refund grantee</span>
                 </div>
               </div>
@@ -165,10 +171,10 @@ const ProductDetail = () => {
                   </Select>
                   <div className="flex items-center gap-2 mt-2">
                     <span className='text-sm'>Available: 05 weeks</span>
-                    <span className="text-2xl font-bold text-orange-400">$299</span>
+                    <span className="text-2xl font-bold text-orange-400">${productdetail?.price}</span>
                     <span>/week</span>
-                    <span className="line-through text-muted-foreground">$499.00</span>
-                    <Badge variant="secondary">21% OFF</Badge>
+                    {/* <span className="line-through text-muted-foreground">$499.00</span>
+                    <Badge variant="secondary">21% OFF</Badge> */}
                   </div>
                 </div>
     
@@ -246,17 +252,7 @@ const ProductDetail = () => {
               <h2 className="text-xl font-semibold">Description</h2>
               <div className="space-y-4 text-muted-foreground">
                 <p>
-                  The most powerful MacBook Pro ever is here. With the blazing-fast M1 Pro or M1 Max chip — the
-                  first Apple silicon designed for pros — you get groundbreaking performance and amazing
-                  battery life. Add to that a stunning Liquid Retina XDR display, the best camera and audio ever in
-                  a Mac notebook, and all the ports you need. The first notebook of its kind, this MacBook Pro is a
-                  beast.
-                </p>
-                <p>
-                  M1 Pro takes the exceptional performance of the M1 architecture to a whole new level for
-                  pro users. Even the most ambitious projects are easily handled with up to 10 CPU cores, up to 16 GPU cores,
-                  a 16-core Neural Engine, and dedicated encode and decode media engines that support H.264,
-                  HEVC, and ProRes codecs.
+                  {productdetail?.description}
                 </p>
               </div>
             </div>
