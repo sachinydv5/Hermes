@@ -21,6 +21,7 @@ import UserDashboard from './components/pages/home/UserDashboard';
 import SidebarLayout from './components/layout/SidebarLayout';
 import TrackOrder from './components/pages/home/TrackOrder';
 import MultipleProduct from './components/pages/home/MultipleProduct';
+import ErrorPage from './components/pages/home/ErrorPage';
 
 
 
@@ -28,7 +29,7 @@ const getMainLayout = () => {
   return (<MainLayout>
     <Routes>
       <Route path={AppRoutes.HOME} element={<HomeScreen />} />
-      <Route path={AppRoutes.ANY} element={<HomeScreen />} />
+      <Route path={AppRoutes.ANY} element={<ErrorPage/>} />
       <Route path={AppRoutes.CREATINGLIST} element={<CreatingList/>} />
       {/* <Route element={<AuthGuard/>}>
       </Route> */}
