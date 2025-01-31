@@ -30,8 +30,7 @@ const UserProfile = React.lazy(() => import("./components/pages/home/UserProfile
 const UserDashboard = React.lazy(() => import("./components/pages/home/UserDashboard"));
 const TrackOrder = React.lazy(() => import("./components/pages/home/TrackOrder"));
 const ErrorPage = React.lazy(() => import("./components/pages/home/ErrorPage"));
-
-const getMainLayout = (
+const getMainLayout = () => {
   return (
     <MainLayout>
       <Suspense fallback={<LoadingSpinner />}>
