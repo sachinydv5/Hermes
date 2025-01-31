@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 
 const ListYourProduct = () => {
   return (
-    <div className="container mx-auto px-4 py-12">
+    <div className="container mx-auto px-4 py-12 mb-20">
     <div className="flex flex-col md:flex-row gap-12 items-start md:items-center justify-between">
       <div className="space-y-16">
         <h1 className=" text-[#22262e] text-5xl font-bold font-['Poppins'] leading-[56px]">List your product</h1>

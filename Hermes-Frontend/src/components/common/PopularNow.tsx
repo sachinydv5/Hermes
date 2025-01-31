@@ -7,7 +7,10 @@ const PopularNow = () => {
       <div className="container mx-auto relative z-10 -mt-16"> {/* Adjusted the margin-top to lift it up */}
         {/* Heading */}
         <h2 className="text-3xl font-bold mb-10 text-gray-900 -mt-44 relative z-20"> {/* Negative margin added */}
-          Popular Now
+          Popular  <span className="relative inline-block">
+              Now
+            <span className="absolute left-0 -bottom-1 w-full h-1 bg-[#FCB857] rounded"></span>
+           </span>
           {/* <span className="block w-12 h-1 bg-yellow-500 mx-auto mt-2" /> */}
         </h2>
 

@@ -34,7 +34,7 @@ const sellers = [
   ...badge,
   name: "Payton Harris",
   items: "2,456",
-  image: "/placeholder.svg?height=100&width=100"
+  image: "https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png"
 }))
 
 const PopularSellers = () => {
@@ -43,7 +43,7 @@ const PopularSellers = () => {
     <div className="p-10">
     <div className=" w-[90vw] mx-auto p-8 ">
       <div className="mb-8 flex items-center justify-between ">
-        <h2 className="text-3xl font-bold">
+        <h2 className="text-4xl font-bold">
           Popular <span className="text-orange-500">Sellers</span>
         </h2>
         <div className="flex items-center gap-2">
@@ -75,7 +75,7 @@ const PopularSellers = () => {
               <div className="p-1">
                 <Card>
                   <CardContent className="flex flex-col p-6">
-                    <div className="mb-6 flex items-center justify-between">
+                    <div className="mb-6 flex items-center justify-between border-b-2 pb-2">
                       <span className={`rounded-full ${seller.color} px-3 py-1 text-sm text-white`}>
                         {seller.rank}
                       </span>

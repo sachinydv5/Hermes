@@ -41,9 +41,9 @@ const categories = [
   
 const SideBar = () => {
   return (
-    <div className="w-64 space-y-6">
+    <div className="w-1/6 space-y-6">
       <div>
-        <h3 className="font-semibold mb-3">CATEGORY</h3>
+        <h3 className="font-medium text-base mb-3">CATEGORY</h3>
         <div className="space-y-2">
           {categories.map((category) => (
             <div key={category} className="flex items-center space-x-2">

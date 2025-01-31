@@ -30,7 +30,7 @@ const ProductCard = () => {
         </div>
         {/* Cart Button */}
         <div className="">
-        <button className="bg-orange-400 text-white p-2 rounded-full">
+        <button className="bg-[#FCB857] text-white p-2 rounded-full">
         <ShoppingCart className="h-6 w-6" />
         </button>
       </div>

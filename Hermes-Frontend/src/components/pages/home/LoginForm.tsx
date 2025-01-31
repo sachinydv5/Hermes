@@ -8,7 +8,11 @@ import { updateUserLoggedIn } from '../../../app/store/user';
 import { useAppDispatch } from '../../../app/hooks';
 import { Loader } from 'lucide-react';
 
-function LoginForm() {
+interface LoginFormProps {
+  onLoginSuccess?: () => void;
+}
+
+const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: 'yogeshk4142@gmail.com',
@@ -40,8 +44,8 @@ function LoginForm() {
         }
         console.log(storePayload)
         dispatch(updateUserLoggedIn(storePayload))
-        navigate("/home");
-
+        navigate("/");
+        onLoginSuccess?.()
      }
      
      else if("error_code" in response){

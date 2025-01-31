@@ -185,21 +185,28 @@ const Market = () => {
    <section className=''>
       <div className="w-[90vw] mb-10 p-6 mx-auto bg-[#F6EBDA] space-y-6 rounded-3xl">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <h2 className="text-2xl font-bold text-gray-900">Best Weekly Deals</h2>
+          <h2 className="text-4xl font-bold text-gray-900">Best Weekly Deals</h2>
+          {/* <Button
+                      variant="outline"
+                      size="icon"
+                      // onClick={() => scroll("right")}
+                      className="rounded-full"
+                    >
+                      <ChevronRight className="h-4 w-4" />
+                    </Button> */}
         </div>
 
-        <div className="flex overflow-x-auto gap-4 pb-2 -mx-2 px-2">
+        <div className="flex items-center justify-around overflow-hidden gap-4 pb-2 -mx-2 px-2">
           {categories.map((category) => (
             <Button
               key={category}
-              variant={selectedCategory === category ? "default" : "outline"}
-              className={`rounded-lg whitespace-nowrap ${selectedCategory === category ? 'bg-gray-900 text-white' : ''}`}
+              variant={selectedCategory === category ? "default" : ""}
+              className={`  rounded-lg  font-semibold text-2xl text-[#313131] py-6 ${selectedCategory === category ? 'bg-gray-900 text-[#F9D9AA]' : 'border-none bg-transparent shadow-none'}`}
               onClick={() => setSelectedCategory(category)}
             >
               {category}
             </Button>
           ))}
-
         </div>
        
 
@@ -217,6 +224,11 @@ const Market = () => {
           <ProductCardTwo product={undefined}/>
           <ProductCardTwo product={undefined}/>
           <ProductCardTwo product={undefined}/>
+          <ProductCardTwo product={undefined}/>
+          <ProductCardTwo product={undefined}/>
+          <ProductCardTwo product={undefined}/>
+          <ProductCardTwo product={undefined}/>
+
           {/* {filteredProducts.length > 0 ? (
             filteredProducts.map(product => (
               <ProductCard key={product.id} product={product} />
@@ -237,8 +249,8 @@ const Market = () => {
      {/* Trending Search */}
      <section className='w-[90vw] mx-auto mb-10'>
     <div className="p-6  text-black">
-      <h2 className="text-xl font-bold mb-4">Trending Search</h2>
-      <div className="flex flex-wrap gap-3">
+      <h2 className="text-4xl font-bold">Trending Search</h2>
+      <div className="flex flex-wrap gap-3 mt-10">
         {trendingItems.map((item, index) => (
           <div
             key={index}
@@ -258,7 +270,7 @@ const Market = () => {
   <Collection/>
 
   {/* AD  */}
-  <div className="relative w-[90vw] mx-auto bg-black overflow-hidden rounded-3xl mt-10">
+  <div className="relative w-[90vw] mx-auto bg-black overflow-hidden rounded-3xl mt-20 mb-20">
       <div className="container relative mx-auto px-4 flex flex-col md:flex-row items-center justify-between">
         {/* Left Section */}
         <div className="z-10 mb-8 md:mb-0 ">

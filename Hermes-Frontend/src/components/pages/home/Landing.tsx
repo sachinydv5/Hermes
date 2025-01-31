@@ -12,9 +12,12 @@ const Landing = () => {
        <PopularNow/>
       </section>
       {/* feature section */}
-      <section className="py-16 mb-10">
+      <section className="p-16 mb-10">
       <div className="container mx-auto">
-        <h2 className="text-4xl font-bold mb-8">Lorem Impsum</h2>
+        <h2 className="text-3xl font-semibold mb-8">Lorem <span className="relative inline-block">
+              Impsum
+            <span className="absolute left-0 -bottom-1 w-full h-1 bg-[#FCB857] rounded"></span>
+           </span></h2>
         <div className="flex items-center justify-around">
           <div className="text-center">
             <img src="logo.png" alt="" className="mx-auto mb-4 max-w-40"/>
@@ -37,7 +40,7 @@ const Landing = () => {
     </section>
     
     {/* about */}
-    <section className="relative p-8 lg:p-16 bg-[#F6EBDA] mt-20 mb-20 font-[poppins]">
+    <section className="relative p-8 lg:p-16 bg-[#F6EBDA] mt-20 mb-20 ">
       <div className="flex flex-col lg:flex-row items-center justify-between lg:space-x-8 relative">
         {/* Image Section */}
         <div className="relative lg:mb-0 mb-20 w-full lg:w-1/2 flex justify-center">
@@ -49,17 +52,21 @@ const Landing = () => {
         </div>
         {/* Text Section */}
         <div className="text-pretty w-full lg:w-1/2 text-center lg:text-left">
-          <h2 className="text-3xl font-extrabold mb-4 text-gray-900">
-            About us
+          <h2 className="text-3xl font-semibold mb-4 text-gray-900">
+            About <span className="relative inline-block">
+              us
+            <span className="absolute left-0 -bottom-1 w-full h-1 bg-[#FCB857] rounded"></span>
+           </span>
           </h2>
-          <h3 className="text-2xl font-semibold mb-4 text-gray-800">
+          <h3 className="text-2xl font-semibold mb-4 text-gray-800 break-words tracking-[0.96]">
             Lorem Ipsum is simply dummy text of the printing and typesetting industry.
           </h3>
-          <p className="text-gray-600 mb-6">
+          <p className="font-normal text-[#7E7D7A] mb-6 break-words">
             Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-            when an unknown printer took a galley of type and scrambled it.
+            when an unknown printer took a galley of type and scrambled.
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit.
           </p>
-          <button className="bg-[#313131] text-[#F4AE26] py-3 px-8 rounded-full font-bold shadow-md transition-all  hover:text-orange-100">
+          <button className="bg-[#313131] text-[#F4AE26] py-3 px-6 rounded-full font-bold text-xs hover:bg-gray-700 cursor-pointer relative z-10">
             Get in touch
           </button>
         </div>

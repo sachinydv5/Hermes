@@ -1,53 +1,68 @@
 import * as React from 'react';
 import {
   Routes,
-  Route,
+  Route
 } from "react-router-dom";
+import { Suspense } from 'react';
 import MainLayout from "./components/layout/MainLayout";
-import HomeScreen from "./components/screens/home/HomeScreen";
 import { AppRoutes } from "./utils/AppRoutes";
-import CreatingList from "./components/pages/home/CreatingList";
-import SingleList from "./components/pages/home/SingleList";
-import LoginForm from "./components/pages/home/LoginForm";
-import SignupForm from './components/pages/home/SignupForm';
-import PopularCategory from './components/common/PopularCategory';
-import Market from './components/pages/home/Market';
-import ProductList from './components/pages/home/ProductList';
-import ProductDetail from './components/pages/home/ProductDetail';
-import Wishlist from './components/pages/Wishlist';
 import AuthGuard from './guards/AuthGuard';
-import UserProfile from './components/pages/home/UserProfile';
-import UserDashboard from './components/pages/home/UserDashboard';
 import SidebarLayout from './components/layout/SidebarLayout';
-import TrackOrder from './components/pages/home/TrackOrder';
-import MultipleProduct from './components/pages/home/MultipleProduct';
-import ErrorPage from './components/pages/home/ErrorPage';
 
 
+// Loading component
+const LoadingSpinner = () => (
+  <div className="flex items-center justify-center h-screen">
+    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+  </div>
+);
 
-const getMainLayout = () => {
-  return (<MainLayout>
-    <Routes>
-      <Route path={AppRoutes.HOME} element={<HomeScreen />} />
-      <Route path={AppRoutes.ANY} element={<ErrorPage/>} />
-      <Route path={AppRoutes.CREATINGLIST} element={<CreatingList/>} />
-      {/* <Route element={<AuthGuard/>}>
-      </Route> */}
-      <Route path={AppRoutes.CREATESINGLE} element={<SingleList/>} />
-      <Route path={AppRoutes.MULTIPLEPRODUCT} element={<MultipleProduct/>} />
-      <Route path={AppRoutes.MARKET} element={<Market/>} />
-      <Route path={AppRoutes.PRODUCTLIST} element={<ProductList/>} />
-      <Route path={AppRoutes.PRODUCTDETAIL} element={<ProductDetail/>} />
-      <Route path={AppRoutes.WISHLIST} element={<Wishlist/>} />
-      <Route element={<SidebarLayout/>}>
-      <Route path={AppRoutes.USERPROFILE} element={<UserProfile/>} />
-      <Route path={AppRoutes.DASHBOARD} element={<UserDashboard/>} />
-      <Route path={AppRoutes.TRACKORDER} element={<TrackOrder/>} />
+// Lazy load components
+const HomeScreen = React.lazy(() => import("./components/screens/home/HomeScreen"));
+const Market = React.lazy(() => import("./components/pages/home/Market"));
+const ProductList = React.lazy(() => import("./components/pages/home/ProductList"));
+const ProductDetail = React.lazy(() => import("./components/pages/home/ProductDetail"));
+const CreatingList = React.lazy(() => import("./components/pages/home/CreatingList"));
+const SingleList = React.lazy(() => import("./components/pages/home/SingleList"));
+const MultipleProduct = React.lazy(() => import("./components/pages/home/MultipleProduct"));
+const Wishlist = React.lazy(() => import("./components/pages/Wishlist"));
+const UserProfile = React.lazy(() => import("./components/pages/home/UserProfile"));
+const UserDashboard = React.lazy(() => import("./components/pages/home/UserDashboard"));
+const TrackOrder = React.lazy(() => import("./components/pages/home/TrackOrder"));
+const ErrorPage = React.lazy(() => import("./components/pages/home/ErrorPage"));
 
-      </Route>  
-    </Routes>
-  </MainLayout>)
-
+const getMainLayout = (
+  return (
+    <MainLayout>
+      <Suspense fallback={<LoadingSpinner />}>
+        <Routes>
+          {/* Public Routes */}
+          <Route path={AppRoutes.HOME} element={<HomeScreen />} />
+          <Route path={AppRoutes.MARKET} element={<Market />} />
+          <Route path={AppRoutes.PRODUCTLIST} element={<ProductList />} />
+          <Route path={AppRoutes.PRODUCTDETAIL} element={<ProductDetail />} />
+          
+          {/* Protected Routes */}
+          <Route element={<AuthGuard />}>
+            <Route path={AppRoutes.CREATINGLIST} element={<CreatingList />} />
+            <Route path={AppRoutes.CREATESINGLE} element={<SingleList />} />
+            <Route path={AppRoutes.MULTIPLEPRODUCT} element={<MultipleProduct />} />
+            <Route path={AppRoutes.WISHLIST} element={<Wishlist />} />
+            
+            {/* Protected Routes with Sidebar */}
+            <Route element={<SidebarLayout />}>
+              <Route path={AppRoutes.USERPROFILE} element={<UserProfile />} />
+              <Route path={AppRoutes.DASHBOARD} element={<UserDashboard />} />
+              <Route path={AppRoutes.TRACKORDER} element={<TrackOrder />} />
+            </Route>
+          </Route>
+  
+          {/* Error Route */}
+          <Route path={AppRoutes.ANY} element={<ErrorPage />} />
+        </Routes>
+      </Suspense>
+    </MainLayout>
+  )
 }
 
 function App() {

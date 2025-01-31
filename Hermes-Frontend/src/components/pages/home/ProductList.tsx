@@ -46,10 +46,9 @@ const [error, setError] = useState<string | null>(null)
       fetchData();
     }, []);
   return (
-    <div className="w-[90vw] mx-auto py-8">
-    <div className="flex gap-8">
+    <div className="w-[90vw] mx-auto py-20">
+    <div className="flex gap-20">
       <SideBar />
-      
       <div className="flex-1">
         <div className="flex flex-col gap-4 mb-6">
           <div className="flex items-center justify-between">

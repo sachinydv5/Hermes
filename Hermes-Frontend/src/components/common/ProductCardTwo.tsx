@@ -14,7 +14,7 @@ const ProductCardTwo = ({product}) => {
   
     return (
       <Card 
-        className="overflow-hidden max-w-[350px] bg-white rounded-2xl border border-gray-100 transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-2"
+        className="overflow-hidden max-w-[300px] h-full bg-white rounded-2xl border border-gray-100 transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-2"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -57,7 +57,7 @@ const ProductCardTwo = ({product}) => {
             </Button>
           </div>
   
-          <h3 className="font-medium text-sm mb-2 line-clamp-2">
+          <h3 className="font-medium text-sm mb-2 line-clamp-2 uppercase text-wrap">
            {product?.name}
           </h3>
   

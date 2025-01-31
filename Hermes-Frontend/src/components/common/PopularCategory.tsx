@@ -41,7 +41,7 @@ const PopularCategory = () => {
           </button>
         </div>
         
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-10 gap-4 ">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-10 gap-3">
           {categories.map((category) => (
             <div
               key={category.label}
@@ -61,18 +61,18 @@ const PopularCategory = () => {
               }}
             >
               <div className={`
-                w-20 h-20 rounded-full bg-[#fbe6d4] flex items-center justify-center
+                w-28 h-28 rounded-full bg-[#F9D9AA] flex items-center justify-center
                 ${selectedCategory === category.label ? 'ring-2 ring-primary ring-offset-2' : ''}
               `}>
                 <img 
                   src={category.imageSrc}
                   alt={`${category.label} icon`}
-                  width={40}
-                  height={40}
+                  width={50}
+                  height={50}
                   className="object-contain"
                 />
               </div>
-              <span className="text-xs font-bold text-center text-gray-900">
+              <span className="text-xs font-bold text-center text-[#313131]">
                 {category.label}
               </span>
             </div>

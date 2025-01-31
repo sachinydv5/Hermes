@@ -35,7 +35,7 @@ const RecentlyView = () => {
   ];
 
   return (
-    <div className="p-6 w-[90vw] mx-auto bg-white rounded-lg shadow mt-10">
+    <div className="p-6 w-[90vw] mx-auto bg-white rounded-lg shadow mb-40">
       {/* Header Section */}
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center gap-4">

@@ -25,7 +25,7 @@ const Header = () => {
 
   return (
     <div className='w-full bg-[#F6EBDA]'>
-    <nav className="  px-4 sm:px-6 py-4 sm:py-5 lg:py-7">
+    <nav className=" px-4  py-4 sm:px-6 sm:py-5 lg:py-7">
       <div className="container mx-auto flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center space-x-2 cursor-pointerr">
@@ -39,25 +39,25 @@ const Header = () => {
         </div>
 
         {/* Links */}
-        <div className=" md:block lg:flex lg:items-center lg:w-auto gap-10">
-        <ul className="flex  md:flex-row md:gap-6 lg:gap-10">
+        <div className="md:block lg:flex lg:items-center lg:w-auto gap-10 ">
+        <ul className="flex  md:flex-row md:gap-6 lg:gap-10 ">
             <NavLink to='/' 
              className={({ isActive}) =>
-              `hover:text-[#f8a93a] font-semibold ${isActive ? "text-[#f8a93a]": "text-gray-700"}`
+              `hover:text-[#f8a93a]  font-normal text-lg  ${isActive ? "text-[#f8a93a]": "text-[#000000]"}`
             }>Home</NavLink>
           
           <NavLink to='/market' 
              className={({ isActive}) =>
-              `hover:text-[#f8a93a] font-semibold ${isActive ? "text-[#f8a93a]": "text-gray-700"}`
+              `hover:text-[#f8a93a] font-normal text-lg  ${isActive ? "text-[#f8a93a]": "text-[#000000]"}`
             }>Market</NavLink>
 
             <NavLink to='/company' 
              className={({ isActive}) =>
-              `hover:text-[#f8a93a] font-semibold ${isActive ? "text-[#f8a93a]": "text-gray-700"}`
+              `hover:text-[#f8a93a] font-normal text-lg  ${isActive ? "text-[#f8a93a]": "text-[#000000]"}`
             }>Company</NavLink>
 
             {/* <NavLink to="/cart" className={({isActive}) => 
-              `hover:text-[#f8a93a] font-semibold ${isActive ? "text-[#f8a93a]": "text-gray-700"}`}>
+              `hover:text-[#f8a93a] font-semibold ${isActive ? "text-[#f8a93a]": ""}`}>
             <ShoppingCart className="h-6 w-6 "/>
             </NavLink>  */}
             </ul>
@@ -75,11 +75,11 @@ const Header = () => {
             />
           </div> */}
           <NavLink to="/cart" className={({isActive}) => 
-              `hover:text-[#f8a93a] font-semibold ${isActive ? "text-[#f8a93a]": "text-gray-700"}`}>
+              `hover:text-[#f8a93a] font-semibold ${isActive ? "text-[#f8a93a]": ""}`}>
             <ShoppingCart className="h-6 w-6 "/>
             </NavLink> 
           {/* Create Listing Button */}
-          <button className="bg-white text-[#f8a93a] px-3 py-1 lg:px-4 lg:py-2 rounded-full font-semibold hover:text-black text-sm lg:text-base">
+          <button className="font-[Roboto] bg-white text-[#f8a93a] px-3 py-1 lg:px-4 lg:py-2 rounded-full font-medium hover:text-black  lg:text-base">
            <Link to='/creatinglist'>Create listing</Link> 
           </button>
 
@@ -87,7 +87,7 @@ const Header = () => {
           {!isLogIn ? (
             <Dialog>
             <DialogTrigger asChild>
-              <Button variant="outline" className="border border-[#f8a93a] text-black px-4 py-2 rounded-full font-semibold">
+              <Button variant="outline" className="border-2 border-[#FCB857] text-black px-4 py-2 rounded-full font-medium text-base hover:bg-[#F6EBDA]">
                 Log In
               </Button>
             </DialogTrigger>

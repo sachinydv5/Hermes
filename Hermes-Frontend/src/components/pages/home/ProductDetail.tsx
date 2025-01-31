@@ -128,7 +128,7 @@ const ProductDetail = () => {
             </div>
     
             {/* Product Info */}
-            <div className="space-y-6">
+            <div className="space-y-10">
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
                   <div className="flex">
@@ -178,7 +178,7 @@ const ProductDetail = () => {
                   </div>
                 </div>
     
-                <div className="space-y-2">
+                <div className="space-y-4">
                   <label className="text-sm font-medium">Check Delivery</label>
                   <div className="flex gap-4">
                     <Input type="text" placeholder="PIN" className="w-1/2" />
@@ -188,8 +188,8 @@ const ProductDetail = () => {
                   </div>
                 </div>
     
-                <div className="flex gap-4">
-                  <Button variant="outline" className="flex-1"
+                <div className="flex gap-4 pt-10 pb-10">
+                  <Button variant="outline" className="flex-1 "
                   onClick={()=>{handleApi(productid ?? "")}}
                   >
                     ADD TO WISHLIST
@@ -198,7 +198,7 @@ const ProductDetail = () => {
                   <Button variant="secondary" className="flex-1">BUY NOW</Button>
                 </div>
     
-                <div className="flex justify-between items-center pt-4 border-t">
+                <div className="flex justify-between items-center pt-6 border-t">
                   <button className="text-sm text-muted-foreground flex items-center gap-2">
                     <Share2 className="w-4 h-4" /> Add to Compare
                   </button>
@@ -224,7 +224,7 @@ const ProductDetail = () => {
             </div>
           </div>
     
-          <div className="flex gap-2 mt-6">
+          <div className="flex gap-2 mt-6 mb-20">
             <Badge variant="outline">Macbook M1</Badge>
             <Badge variant="outline">Laptop</Badge>
             <Badge variant="outline">Electronics</Badge>
@@ -233,7 +233,7 @@ const ProductDetail = () => {
 
       {/* Product Information Tabs */}
 
-          <Tabs defaultValue="description" className="w-full mt-20">
+          <Tabs defaultValue="description" className="w-full  mb-40">
         <TabsList className="w-full justify-start border-b rounded-none h-auto p-0 bg-transparent">
           {["description", "additional", "specification", "review"].map((tab) => (
             <TabsTrigger 
