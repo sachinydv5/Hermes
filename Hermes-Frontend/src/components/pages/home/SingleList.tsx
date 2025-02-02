@@ -1,40 +1,88 @@
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Switch } from "@/components/ui/switch"
-import { Label } from "@/components/ui/label"
+import { Button } from "../../../components/ui/button"
+import { Input } from "../../../components/ui/input"
+import { Textarea } from "../../../components/ui/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../components/ui/select"
+import { Switch } from "../../../components/ui/switch"
+import { Label } from "../../../components/ui/label"
 import { Upload, DollarSign, MapPin, Loader, Plus } from 'lucide-react'
 import { Heart } from 'lucide-react'
-import { Card } from "@/components/ui/card"
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
+import { Card } from "../../../components/ui/card"
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "../../../components/ui/carousel"
 import { callApi } from '../../../api/api'
 import { ProductRequest, ProductResponse } from '../../../api/types'
 import { useNavigate } from 'react-router-dom';
 
+interface FormData {
+  itemName: string;
+  price: string;
+  putOnLease: boolean;
+  collectionId: string;
+  preference: {
+    type: string;
+    distance: string;
+    duration: string;
+  };
+}
 
 const SingleList = () => {
   const [isHovered, setIsHovered] = useState(false)
-  const { register, handleSubmit, formState: { errors }, } = useForm()
-  const [uploadedFile, setUploadedFile] = useState(null);
+  const { register, handleSubmit, formState: { errors }, } = useForm({
+    defaultValues: {
+      title: "",
+      description: "",
+      price: "",
+      category: "",
+      duration: "",
+      address: "",
+      productValue: "",
+      cancellationTerms: "",
+      putOnLease: false,
+      preference: {
+        type: "",
+        distance: "",
+        duration: ""
+      }
+    },
+    mode: "onBlur"
+  })
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null)
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     itemName: "Default Item Name",
     price: "0.00",
+    putOnLease: false,
+    collectionId: '',
+    preference: {
+      type: "",
+      distance: "",
+      duration: ""
+    }
   });
   let navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+
   const handleFileChange = (event) => {
-    setUploadedFile(event.target.files[0]);
+    const file = event.target.files[0];
+    setUploadedFile(file);
+    
+    // Create preview URL for the image
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
   };
-  const images = [
-    "productimage.png",
-    "/placeholder.svg?height=200&width=200&text=Image+2",
-    "/placeholder.svg?height=200&width=200&text=Image+3",
-    "/placeholder.svg?height=200&width=200&text=Image+4"
-  ]
+  // const images = [
+  //   "productimage.png",
+  //   "/placeholder.svg?height=200&width=200&text=Image+2",
+  //   "/placeholder.svg?height=200&width=200&text=Image+3",
+  //   "/placeholder.svg?height=200&width=200&text=Image+4"
+  // ]
   const onSubmit = async (data) => {
     setIsSubmitting(true); // Show loader
     console.log("Form data submitted:", data);
@@ -60,15 +108,13 @@ const SingleList = () => {
         userId: '',
         collectionId: ''
       }
-      const response: ProductResponse = await callApi(req,"/api/product/addProduct");
+      const response: ProductResponse = await callApi(req,"/product/addProduct");
       if("status" in response){
-        alert(response.status)
+        alert("Product created successfully!")
         navigate(`/productdetail/${response.id}`)
+      } else {
+        setError(response.description || "Failed to create product")
       }
-     else if("error_code" in response ){
-        setError(response.description)
-      }
-    
     }
     catch(err){
       console.error("Sign up error:", err)
@@ -78,9 +124,10 @@ const SingleList = () => {
     setIsSubmitting(false); // Hide loader after submission
     
   };
+
   return (
-    <div className="container mx-auto p-4">
-      <div className="flex flex-col lg:flex-row gap-8">
+    <div className="container mx-auto p-4 mt-10">
+      <div className="flex flex-col lg:flex-row md:flex-row gap-40">
         <div className="lg:w-2/3">
           <div className='flex justify-between items-center mb-6'>
             <h1 className="text-3xl font-bold">Create Single Product</h1>
@@ -103,12 +150,13 @@ const SingleList = () => {
                       className="hidden" 
                       accept=".png,.gif,.webp,.mp4,.mp3" 
                       onChange={handleFileChange}
+                      disabled={false}
                     />
                     <Upload className="mx-auto mb-4 h-12 w-12 text-gray-400" />
                     <p className="text-sm text-gray-500">Drag or choose your file to upload</p>
                     <p className="text-xs text-gray-400 mt-2">PNG, GIF, WEBP, MP4 or MP3. Max 1GB.</p>
                   </label>
-                  {/* {uploadedFile && <p>{uploadedFile.name}</p>} */}
+                  {uploadedFile && <p>{uploadedFile.name}</p>}
                 </div>
               </div>
             </div>
@@ -119,27 +167,35 @@ const SingleList = () => {
                 <Label htmlFor="title">Item Name</Label>
                 <Input
                   id="title"
-                  {...register('title')}
+                  disabled={false}
+                  {...register('title', { 
+                    required: "Item name is required",
+                    minLength: { value: 3, message: "Title must be at least 3 characters" }
+                  })}
                   placeholder='e.g. "Redeemable Bitcoin Card with logo"'
                   onChange={(e)=>setFormData({...formData , itemName: e.target.value})}
                 />
-                {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title.message as string}</p>}
+                {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>}
               </div>
 
               <div>
                 <Label htmlFor="description">Description</Label>
                 <Textarea
                   id="description"
-                  {...register('description')}
+                  disabled={false}
+                  {...register('description', { 
+                    required: "Description is required",
+                    minLength: { value: 10, message: "Description must be at least 10 characters" }
+                  })}
                   placeholder='e.g. "After purchasing you will able to received the logo..."'
                 />
-                {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description.message as string}</p>}
+                {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
               </div>
 
               <div className="grid grid-cols-3 gap-4">
                 <div>
                   <Label htmlFor="category">Category</Label>
-                  <Select onValueChange={(value) => register('category').onChange({ target: { value } })}>
+                  <Select disabled={true} onValueChange={(value) => register('category').onChange({ target: { value } })}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select category" />
                     </SelectTrigger>
@@ -154,7 +210,7 @@ const SingleList = () => {
                 
                 <div>
                   <Label htmlFor="duration">Duration</Label>
-                  <Select onValueChange={(value ) => register('duration').onChange({ target: { value } })}>
+                  <Select disabled={true} onValueChange={(value ) => register('duration').onChange({ target: { value } })}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select duration" />
                     </SelectTrigger>
@@ -173,13 +229,21 @@ const SingleList = () => {
                     <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                     <Input
                       id="price"
-                      {...register('price')}
+                      disabled={false}
+                      {...register('price', { 
+                        required: "Price is required",
+                        pattern: { 
+                          value: /^\d+(\.\d{1,2})?$/,
+                          message: "Please enter a valid price"
+                        },
+                        min: { value: 0.01, message: "Price must be greater than 0" }
+                      })}
                       className="pl-10"
                       placeholder="0.00"
                       onChange={(e)=>setFormData({...formData , price: e.target.value})}
                     />
                   </div>
-                  {errors.price && <p className="text-red-500 text-sm mt-1">{errors.price.message as string}</p>}
+                  {errors.price && <p className="text-red-500 text-sm mt-1">{errors.price.message}</p>}
                 </div>
               </div>
 
@@ -190,8 +254,11 @@ const SingleList = () => {
                 </div>
                 <Switch
                   id="putOnLease"
-                  {...register('putOnLease')}
+                  disabled={true}
+                  checked={formData.putOnLease}
+                  onCheckedChange={(checked) => setFormData({...formData, putOnLease: checked})}
                 />
+
               </div>
 
               
@@ -200,17 +267,21 @@ const SingleList = () => {
                     <Label htmlFor="productValue">Value of the product</Label>
                     <Input
                       id="productValue"
+                      disabled={true}
                       {...register('productValue')}
                       placeholder="Enter the value of the product"
                     />
+
                   </div>
                   <div>
                     <Label htmlFor="cancellationTerms">Cancellation terms</Label>
                     <Input
                       id="cancellationTerms"
+                      disabled={true}
                       {...register('cancellationTerms')}
                       placeholder="Enter cancellation terms"
                     />
+
                   </div>
                 </>
             
@@ -222,6 +293,7 @@ const SingleList = () => {
                   <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                   <Input
                     id="address"
+                    disabled={false}
                     {...register('address')}
                     className="pl-10"
                     placeholder="Enter location"
@@ -233,7 +305,7 @@ const SingleList = () => {
               <div>
                 <Label className="mb-2 block">Preference</Label>
                 <div className="grid grid-cols-3 gap-4">
-                  <Select onValueChange={(value) => register('preference.type').onChange({ target: { value } })}>
+                  <Select disabled={false} onValueChange={(value) => setFormData({...formData, preference: {...formData.preference, type: value}})}>
                     <SelectTrigger>
                       <SelectValue placeholder="Type" />
                     </SelectTrigger>
@@ -242,7 +314,7 @@ const SingleList = () => {
                       <SelectItem value="custom">Custom</SelectItem>
                     </SelectContent>
                   </Select>
-                  <Select onValueChange={(value) => register('preference.distance').onChange({ target: { value } })}>
+                  <Select disabled={false} onValueChange={(value) => setFormData({...formData, preference: {...formData.preference, distance: value}})}>
                     <SelectTrigger>
                       <SelectValue placeholder="Distance" />
                     </SelectTrigger>
@@ -252,7 +324,7 @@ const SingleList = () => {
                       <SelectItem value="20_miles">20 miles</SelectItem>
                     </SelectContent>
                   </Select>
-                  <Select onValueChange={(value) => register('preference.duration').onChange({ target: { value } })}>
+                  <Select disabled={false} onValueChange={(value) => setFormData({...formData, preference: {...formData.preference, duration: value}})}>
                     <SelectTrigger>
                       <SelectValue placeholder="Duration" />
                     </SelectTrigger>
@@ -300,30 +372,46 @@ const SingleList = () => {
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <div className="p-4 rounded-lg ">
+        <div className="p-4 rounded-lg">
           <div className="relative mb-3 rounded-lg border-2 border-orange-100">
             {isHovered ? (
               <Carousel className="w-full aspect-square">
                 <CarouselContent>
-                  {images.map((src, index) => (
-                    <CarouselItem key={index}>
+                  {previewImage ? (
+                    <CarouselItem>
                       <img
-                        src={src}
-                        alt={`Product view ${index + 1}`}
+                        src={previewImage}
+                        alt="Product preview"
                         className="w-full aspect-square object-cover rounded-lg"
                       />
                     </CarouselItem>
-                  ))}
+                  ) : (
+                    <CarouselItem>
+                      <div className="w-full aspect-square bg-gray-100 rounded-lg flex items-center justify-center">
+                        <span className="text-gray-400">No image uploaded</span>
+                      </div>
+                    </CarouselItem>
+                  )}
                 </CarouselContent>
-                <CarouselPrevious className="left-2" />
-                <CarouselNext className="right-2" />
+                {previewImage && (
+                  <>
+                    <CarouselPrevious className="left-2" />
+                    <CarouselNext className="right-2" />
+                  </>
+                )}
               </Carousel>
             ) : (
-              <img
-                src={images[0]}
-                alt="TOZO T6 True Wireless Earbuds"
-                className="w-full aspect-square object-cover rounded-lg "
-              />
+              previewImage ? (
+                <img
+                  src={previewImage}
+                  alt="Product preview"
+                  className="w-full aspect-square object-cover rounded-lg"
+                />
+              ) : (
+                <div className="w-full aspect-square bg-gray-100 rounded-lg flex items-center justify-center">
+                  <span className="text-gray-400">No image uploaded</span>
+                </div>
+              )
             )}
             
             <div className="absolute top-2 left-2 flex items-center bg-white rounded-md px-2 py-1 shadow-sm">
@@ -340,19 +428,22 @@ const SingleList = () => {
           </div>
   
           <h3 className="font-medium text-sm mb-2 line-clamp-2">
-            {/* TOZO T6 True Wireless Earbuds Bluetooth Headphon... */}
-            {formData.itemName}
+            {formData.itemName || "Untitled Product"}
           </h3>
   
           <div className="flex items-baseline gap-2 mb-2">
-            <span className="text-gray-400 line-through text-sm">$49</span>
-            <span className="text-2xl font-semibold text-[#f4a340]">${formData.price}</span>
+            <span className="text-gray-400 line-through text-sm">
+              ${Number(formData.price || 0) + 10}
+            </span>
+            <span className="text-2xl font-semibold text-[#f4a340]">
+              ${formData.price || "0.00"}
+            </span>
             <span className="text-sm text-gray-500">/per week</span>
           </div>
   
           <div className="flex items-center justify-between">
             <span className="text-sm text-gray-500">
-              3 Available in stock
+              Available for lease
             </span>
             <Button 
               size="sm" 

@@ -13,6 +13,8 @@ import { callApi, getProductIdRequest } from '../../../api/api'
 import { GetAddToWishlistRequest, GetAddToWishlistResponse, GetProductIdResponse } from '../../../api/types'
 import { useNavigate } from 'react-router-dom';
 import { Product } from '../../../api/common.types'
+// import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Loader2 } from "lucide-react"
 
 
 const ProductDetail = () => {
@@ -33,54 +35,83 @@ const ProductDetail = () => {
   
 
   let navigate = useNavigate(); 
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-  
     const fetchData = async () => {
+      setLoading(true)
       try {
         const response: GetProductIdResponse = await getProductIdRequest("", `/product/getProduct/${productid}`);
-        // console.log("product detail response",response)
         if ("error_code" in response) {
-          console.log("product detail response")
           setError(response.description);
         }
         else {
           setProductDetail(response);
-          console.log("Fetched product details:", response);
+          setError(null);
         }
       } catch (err) {
-        console.error("Sign up error:", err);
-        setError("");
+        console.error("Product fetch error:", err);
+        setError("Failed to load product details. Please try again later.");
+      } finally {
+        setLoading(false)
       }
     };
+
     if(productid){
       fetchData();
     }
-    
   }, [productid]);
 
 
   const handleApi = async (id:string) => {
-    try{
+    try {
       let req: GetAddToWishlistRequest = {
          productId:id,
       }
       const response: GetAddToWishlistResponse = await callApi(req,"/wishlist/add");
       if("status" in response){
         alert(response.status)
-       
       }
-     else if("error_code" in response ){
+      else if("error_code" in response ){
         setError(response.description)
       }
-    
     }
     catch(err){
-      console.error("Sign up error:", err)
-      setError("faild to signup")
+      console.error("Wishlist error:", err)
+      setError("Failed to add item to wishlist")
     }
   }
+
+  if (loading) {
     return (
+      <div className="w-full h-[50vh] flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <span className="ml-2">Loading product details...</span>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="w-[90vw] mx-auto py-8">
+        <Alert variant="destructive">
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      </div>
+    )
+  }
+
+  if (!productdetail) {
+    return (
+      <div className="w-[90vw] mx-auto py-8">
+        <Alert>
+          <AlertDescription>Product not found</AlertDescription>
+        </Alert>
+      </div>
+    )
+  }
+
+  return (
         <>
         <div className="w-[90vw] mx-auto  py-8">
           <div className="grid md:grid-cols-2 gap-8 ">
