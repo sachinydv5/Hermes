@@ -5,45 +5,7 @@ import axios from 'axios'
 import { GetWishlistResponse } from '../../api/types'
 import { getWishlist } from '../../api/api'
 import { Product } from '../../api/common.types'
-const wishlistItems: WishlistItem[] = [
-    {
-      id: "1",
-      name: "Bose Sport Earbuds  Wireless Earphones - ",
-      price: 99.99,
-      originalPrice: 199.99,
-      image: "productimage.png",
-      inStock: true,
-    },
-    {
-      id: "2",
-      name: "Simple Mobile 5G LTE Galaxy 12 Mini 512GB Gaming Phone",
-      price: 2300.00,
-      image: "productimage.png",
-      inStock: true,
-    },
-    {
-      id: "3",
-      name: "Portable Writing Machine, 11lbs capacity Model RNMFMM",
-      price: 70.00,
-      image: "productimage.png",
-      inStock: true,
-    },
-    {
-      id: "4",
-      name: "TOZO T6 True Wireless Earbuds Bluetooth ",
-      price: 229.00,
-      originalPrice: 299.00,
-      image: "productimage.png",
-      inStock: false,
-    },
-    {
-      id: "5",
-      name: "Wyze Cam Pan v2 1080p Pan/Tilt/Zoom ",
-      price: 1499.99,
-      image: "productimage.png",
-      inStock: true,
-    },
-  ]
+
   
 const Wishlist = () => {
 const [wishlistData, setWishlistData] = useState<Product[]>([]);

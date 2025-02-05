@@ -25,15 +25,16 @@ const Header = () => {
 
   return (
     <div className='w-full bg-[#F6EBDA]'>
-    <nav className=" px-4  py-4 sm:px-6 sm:py-5 lg:py-7">
+    <nav className="w-full px-4  py-4 sm:px-6 sm:py-5 lg:py-7">
       <div className="container mx-auto flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center space-x-2 cursor-pointerr">
+
           <Link to="/">
           <img
             src="vivarent.png"
             alt="Vivarrent logo"
-            className="h-6 sm:h-8"
+            className="h-2/3"
           />
           </Link>
         </div>
@@ -79,7 +80,7 @@ const Header = () => {
             <ShoppingCart className="h-6 w-6 "/>
             </NavLink> 
           {/* Create Listing Button */}
-          <button className="font-[Roboto] bg-white text-[#f8a93a] px-3 py-1 lg:px-4 lg:py-2 rounded-full font-medium hover:text-black  lg:text-base">
+          <button className=" bg-white text-[#f8a93a] px-3 py-1 lg:px-4 lg:py-2 rounded-full font-medium hover:text-black  lg:text-base">
            <Link to='/creatinglist'>Create listing</Link> 
           </button>
 

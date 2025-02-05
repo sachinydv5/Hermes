@@ -7,28 +7,28 @@ const ListYourProduct = () => {
     <div className="container mx-auto px-4 py-12 mb-20">
     <div className="flex flex-col md:flex-row gap-12 items-start md:items-center justify-between">
       <div className="space-y-16">
-        <h1 className=" text-[#22262e] text-5xl font-bold font-['Poppins'] leading-[56px]">List your product</h1>
+        <h1 className=" text-[#22262e] text-5xl font-bold leading-[56px]">List your product</h1>
         
         <div className="space-y-14">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-full bg-purple-500 flex items-center justify-center">
               <Wallet className="w-6 h-6 text-white" />
             </div>
-            <span className="w-64 text-[#22262e] text-2xl font-semibold font-['Poppins'] leading-loose">Create a profile</span>
+            <span className="w-64 text-[#22262e] text-2xl font-semibold  leading-loose">Create a profile</span>
           </div>
           
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center">
               <Wallet className="w-6 h-6 text-white" />
             </div>
-            <span className="w-64 text-[#22262e] text-2xl font-semibold font-['Poppins'] leading-loose">Get verified</span>
+            <span className="w-64 text-[#22262e] text-2xl font-semibold  leading-loose">Get verified</span>
           </div>
           
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center">
               <Wallet className="w-6 h-6 text-white" />
             </div>
-            <span className="w-64 text-[#22262e] text-2xl font-semibold font-['Poppins'] leading-loose">Upload product</span>
+            <span className="w-64 text-[#22262e] text-2xl font-semibold leading-loose">Upload product</span>
           </div>
         </div>
 

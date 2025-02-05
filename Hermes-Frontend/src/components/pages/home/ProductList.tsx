@@ -15,7 +15,7 @@ import SideBar from '../../common/SideBar'
 import { GetProductRequest, GetProductResponse } from '../../../api/types'
 import { getProduct } from '../../../api/api'
 import { Product } from '../../../api/common.types'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 // Define type for sort options
 type SortOption = 'most-popular' | 'price-low' | 'price-high' | 'newest';
@@ -28,6 +28,9 @@ const ProductList = () => {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [sortBy, setSortBy] = useState<SortOption>('most-popular');
+
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -78,8 +81,17 @@ const ProductList = () => {
 
   if (isLoading) {
     return (
+
+      <div className="w-[90vw] mx-auto py-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[...Array(8)].map((_, index) => (
+            <ProductCardTwo key={index} product={undefined} />
+          ))}
+        </div>
+
       <div className="w-[90vw] mx-auto py-20 flex justify-center items-center">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
+
       </div>
     );
   }
@@ -155,9 +167,17 @@ const ProductList = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {productData.map((item) => (
+
+              <div key={item.id} className="relative">
+                <div className="cursor-pointer" onClick={() => navigate(`/productdetail/${item.id}`)}>
+                  <ProductCardTwo product={item} />
+                </div>
+              </div>
+
               <Link key={item.id} to={`/productdetail/${item.id}`}>
                 <ProductCardTwo product={item} />
               </Link>
+
             ))}     
           </div>
 

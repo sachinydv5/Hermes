@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Search from '../../common/SearchBar'
 import PopularCategory from '../../common/PopularCategory'
 import { ChevronRight } from 'lucide-react'
@@ -11,6 +11,10 @@ import Collection from '../../common/HotCollection'
 import RecentlyView from '../../common/RecentlyView'
 import { Link } from 'react-router-dom'
 import ProductCardTwo from '../../common/ProductCardTwo'
+import { Product } from '@/api/common.types'
+import { GetProductResponse } from '@/api/types'
+import { getProduct } from '@/api/api'
+import { Skeleton } from "@/components/ui/skeleton"
 
 
 const trendingItems = [
@@ -31,18 +35,111 @@ const trendingItems = [
   "Apple Watch",
 ];
 
+const ProductSkeleton = () => (
+  <div className="rounded-2xl bg-white p-4 shadow">
+    <Skeleton className="h-[200px] w-full rounded-xl" />
+    <div className="mt-4 space-y-3">
+      <Skeleton className="h-4 w-2/3" />
+      <Skeleton className="h-4 w-1/2" />
+      <div className="flex justify-between items-center">
+        <Skeleton className="h-6 w-24" />
+        <Skeleton className="h-8 w-8 rounded-full" />
+      </div>
+    </div>
+  </div>
+)
+
 const Market = () => {
 
     const [selectedCategory, setSelectedCategory] = useState('Kitchen')
+    const [productData, setProductData] = useState<Product[]>([]);
+    const [error, setError] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     // Filter products based on the selected category
     // const filteredProducts = allProducts.filter(product => product.category === selectedCategory)
   
     const categories = ['Kitchen', 'Televisions', 'Electronics', 'Cleaning', 'Cameras', 'Computers','Audio',]
+
+    useEffect(() => {
+      const fetchData = async () => {
+        setIsLoading(true);
+        try {
+          const response: GetProductResponse = await getProduct("", "/product/getProduct");
+          if ("error_code" in response) {
+            setError(response.description);
+          } else if ("status" in response) {
+            setProductData(response.products);
+          }
+        } catch (err) {
+          console.error("Product fetch error:", err);
+          setError("Failed to fetch products. Please try again later.");
+        } finally {
+          setIsLoading(false);
+        }
+      };
+      
+      fetchData();
+    }, []);
+
+    if (isLoading) {
+      return (
+        <div className=''>
+          <section className='mb-10 mt-10'>
+            {/* Search Bar Skeleton */}
+            <div className="w-[90vw] mx-auto flex justify-center">
+              <Skeleton className="h-14 w-[600px] rounded-full" />
+            </div>
+          </section>
+
+          {/* Weekly Deals Section Skeleton */}
+          <section className=''>
+            <div className="w-[90vw] mb-10 p-6 mx-auto bg-[#F6EBDA] space-y-6 rounded-3xl">
+              {/* Title Skeleton */}
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <Skeleton className="h-10 w-64" />
+              </div>
+
+              {/* Categories Skeleton */}
+              <div className="flex items-center justify-around overflow-hidden gap-4 pb-2 -mx-2 px-2">
+                {[...Array(7)].map((_, index) => (
+                  <Skeleton key={index} className="h-14 w-32 rounded-lg" />
+                ))}
+              </div>
+
+              {/* Products Grid Skeleton */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+                {[...Array(8)].map((_, index) => (
+                  <ProductCardTwo key={index} product={undefined} />
+                ))}
+              </div>
+
+              {/* See All Button Skeleton */}
+              <div className="flex justify-center">
+                <Skeleton className="h-10 w-32 rounded-full" />
+              </div>
+            </div>
+          </section>
+
+          {/* Trending Search Section Skeleton */}
+          <section className='w-[90vw] mx-auto mb-10'>
+            <div className="p-6 text-black">
+              <Skeleton className="h-10 w-48 mb-6" />
+              <div className="flex flex-wrap gap-3">
+                {[...Array(10)].map((_, index) => (
+                  <Skeleton key={index} className="h-8 w-24 rounded-full" />
+                ))}
+              </div>
+            </div>
+          </section>
+        </div>
+      );
+    }
+
   
   return (
     <div className=''>
-      <section className=' mb-10 mt-10'>
+      <section className='mb-10 mt-10'>
       <Search/>
       </section>
 
@@ -51,7 +148,7 @@ const Market = () => {
         </section>
 
         {/* AD SECTION*/}
-        <section>
+        <section className=''>
         <div className="w-[90vw] mx-auto mb-24">
       <div className="flex flex-col gap-6 md:gap-8">
         <div className="flex flex-col lg:flex-row gap-6 md:gap-8">
@@ -200,10 +297,11 @@ const Market = () => {
           {categories.map((category) => (
             <Button
               key={category}
-              variant={selectedCategory === category ? "default" : ""}
+              variant={selectedCategory === category ? "default" : "outline"}
               className={`  rounded-lg  font-semibold text-2xl text-[#313131] py-6 ${selectedCategory === category ? 'bg-gray-900 text-[#F9D9AA]' : 'border-none bg-transparent shadow-none'}`}
               onClick={() => setSelectedCategory(category)}
             >
+
               {category}
             </Button>
           ))}
@@ -211,31 +309,15 @@ const Market = () => {
        
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
-          {/* Map through filtered products and render ProductCard for each */}
-          {/* <ProductCard/>
-          <ProductCard/>
-          <ProductCard/>
-          <ProductCard/>
-          <ProductCard/>
-          <ProductCard/>
-          <ProductCard/>
-          <ProductCard/> */}
-          <ProductCardTwo product={undefined}/>
-          <ProductCardTwo product={undefined}/>
-          <ProductCardTwo product={undefined}/>
-          <ProductCardTwo product={undefined}/>
-          <ProductCardTwo product={undefined}/>
-          <ProductCardTwo product={undefined}/>
-          <ProductCardTwo product={undefined}/>
-          <ProductCardTwo product={undefined}/>
-
-          {/* {filteredProducts.length > 0 ? (
-            filteredProducts.map(product => (
-              <ProductCard key={product.id} product={product} />
+          {error ? (
+            <div className="col-span-full text-center text-red-500">{error}</div>
+          ) : productData.length > 0 ? (
+            productData.slice(0, 8).map((product) => (
+              <ProductCardTwo key={product.id} product={product} />
             ))
           ) : (
             <div className="col-span-full text-center text-gray-500">No products available in this category.</div>
-          )} */}
+          )}
         </div>
 
         <div className="flex justify-center">

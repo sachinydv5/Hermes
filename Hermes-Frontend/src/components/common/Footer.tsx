@@ -1,7 +1,8 @@
-import React from 'react';
+import * as React from 'react';
 const Footer = () => {
     return (
       <footer className="mb-20">
+
         <div className="max-w-6xl mx-auto px-4">
           <div className="bg-black h-96 bg-opacity-20 backdrop-blur-md rounded-2xl p-8 flex flex-col justify-center "
           style={{ backgroundImage: `url('/footerbg.png')` }}>

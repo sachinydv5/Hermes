@@ -1,24 +1,88 @@
-import React from 'react'
-import { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Heart } from 'lucide-react'
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
+import { callApi, getWishlist } from "@/api/api"
+import { GetAddToWishlistRequest, GetWishlistRequest, GetWishlistResponse } from "@/api/types"
+import { Product } from "@/api/common.types"
 
-const ProductCardTwo = ({product}) => {
+interface ProductCardTwoProps {
+  product?: Product;  // Make product optional
+}
+
+const ProductCardTwo = ({product}: ProductCardTwoProps) => {
     const [isHovered, setIsHovered] = useState(false)
+    const [isInWishlist, setIsInWishlist] = useState(false)
+
+    useEffect(() => {
+      const checkWishlistStatus = async () => {
+        if (!product?.id) return;
+        try {
+          const response = await getWishlist({}, "/wishlist/get") as GetWishlistResponse;
+          if ("wishlist" in response) {
+            const isProductInWishlist = response.wishlist.some(
+              (item: Product) => item.id === product.id
+            );
+            console.log('Product in wishlist:', isProductInWishlist); // Debug log
+            setIsInWishlist(isProductInWishlist);
+          }
+        } catch (error) {
+          console.error('Error checking wishlist status:', error);
+        }
+      };
+      
+      checkWishlistStatus();
+    }, [product?.id]);
+
+    const handleAddToWishlist = async (e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      if (!product?.id || isInWishlist) {
+        console.log('Product already in wishlist or invalid ID'); // Debug log
+        return;
+      }
+
+      try {
+        const request: GetAddToWishlistRequest = {
+          productId: product.id
+        }
+        const response = await callApi(request, "/wishlist/add")
+        if ('status' in response) {
+          setIsInWishlist(true)
+          alert(`${product.name || 'Product'} has been added to your wishlist`)
+        }
+      } catch (error) {
+        console.error('Error adding to wishlist:', error)
+        alert('Failed to add item to wishlist')
+      }
+    }
 
     const images = [
       "https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png",
     ]
   
+    if (!product) {
+      return (
+        <Card className="overflow-hidden max-w-[300px] h-full bg-white rounded-2xl border border-gray-100">
+          <div className="p-4 rounded-lg animate-pulse">
+            <div className="relative mb-3 rounded-lg bg-gray-200 aspect-square"></div>
+            <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+            <div className="h-6 bg-gray-200 rounded w-1/4 mb-2"></div>
+            <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+          </div>
+        </Card>
+      );
+    }
+
     return (
       <Card 
         className="overflow-hidden max-w-[300px] h-full bg-white rounded-2xl border border-gray-100 transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-2"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <div className=" p-4 rounded-lg ">
+        <div className="p-4 rounded-lg">
           <div className="relative mb-3 rounded-lg border-2 border-orange-100">
             {isHovered ? (
               <Carousel className="w-full aspect-square">
@@ -33,14 +97,14 @@ const ProductCardTwo = ({product}) => {
                     </CarouselItem>
                   ))}
                 </CarouselContent>
-                <CarouselPrevious className="left-2" />
-                <CarouselNext className="right-2" />
+                <CarouselPrevious className="left-2" onClick={(e) => e.stopPropagation()} />
+                <CarouselNext className="right-2" onClick={(e) => e.stopPropagation()} />
               </Carousel>
             ) : (
               <img
                 src={images[0]}
-                alt="TOZO T6 True Wireless Earbuds"
-                className="aspect-square object-cover rounded-lg "
+                alt={product.name || 'Product image'}
+                className="aspect-square object-cover rounded-lg"
               />
             )}
             
@@ -51,29 +115,32 @@ const ProductCardTwo = ({product}) => {
             <Button 
               variant="ghost" 
               size="icon" 
-              className="absolute top-2 right-2 h-8 w-8 bg-white rounded-full"
+              className={`absolute top-2 right-2 h-8 w-8 rounded-full ${isInWishlist ?'bg-red-300' : 'bg-white '}`}
+              onClick={handleAddToWishlist}
             >
-              <Heart className="h-5 w-5 text-gray-400" />
+
+              <Heart className={`h-5 w-5 ${isInWishlist ? 'text-red-400' : 'text-gray-400'}`} />
             </Button>
           </div>
   
           <h3 className="font-medium text-sm mb-2 line-clamp-2 uppercase text-wrap">
-           {product?.name}
+           {product.name || 'Untitled Product'}
           </h3>
   
           <div className="flex items-baseline gap-2 mb-2">
             <span className="text-gray-400 line-through text-sm"></span>
-            <span className="text-2xl font-semibold text-[#f4a340]">${product?.price}</span>
+            <span className="text-2xl font-semibold text-[#f4a340]">${product.price || 0}</span>
             <span className="text-sm text-gray-500">/per week</span>
           </div>
   
           <div className="flex items-center justify-between">
             <span className="text-sm text-gray-500">
-              3 Available in stock
+              {product.qty || 0} Available in stock
             </span>
             <Button 
               size="sm" 
               className="bg-[#f4a340] hover:bg-[#e59635] rounded-full w-10 h-10 flex items-center justify-center"
+              onClick={(e) => e.stopPropagation()}
             >
               <span className="sr-only">Add to cart</span>
               🛒
@@ -81,7 +148,7 @@ const ProductCardTwo = ({product}) => {
           </div>
         </div>
       </Card>
-  )
+    )
 }
 
 export default ProductCardTwo

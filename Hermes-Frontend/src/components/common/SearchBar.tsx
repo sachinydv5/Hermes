@@ -1,39 +1,87 @@
-import React from "react";
-import { Search} from 'lucide-react'
+import React, { useState, useCallback } from "react";
+import { Search, X } from 'lucide-react';
+import debounce from 'lodash/debounce';
 
-const SearchBar = () => {
+interface SearchBarProps {
+  onSearch?: (query: string) => Promise<void>;
+  placeholder?: string;
+  className?: string;
+}
+
+const SearchBar: React.FC<SearchBarProps> = ({
+  onSearch,
+  placeholder = "Search for products",
+  className = "",
+}) => {
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  // Debounced search function
+  const debouncedSearch = useCallback(
+    debounce((query: string) => {
+      if (onSearch) {
+        setIsLoading(true);
+        onSearch(query)
+          .finally(() => setIsLoading(false));
+      }
+    }, 500),
+    [onSearch]
+  );
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+    debouncedSearch(value);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (onSearch) {
+      onSearch(searchQuery);
+    }
+  };
+
+  const clearSearch = () => {
+    setSearchQuery("");
+    if (onSearch) {
+      onSearch("");
+    }
+  };
+
   return (
-    <div className=" flex justify-center py-6">
-      <div className="bg-white rounded-full shadow-2xl  flex items-center w-full max-w-4xl p-2">
-        {/* Input field */}
+    <form onSubmit={handleSubmit} className={`flex justify-center py-6 ${className}`}>
+      <div className="bg-white rounded-full shadow-2xl flex items-center w-full max-w-4xl p-2 relative">
         <input
           type="text"
-          placeholder="Lorem Ipsum"
+          value={searchQuery}
+          onChange={handleInputChange}
+          placeholder={placeholder}
           className="flex-grow px-4 py-2 rounded-l-full focus:outline-none"
+          aria-label="Search input"
+          role="searchbox"
         />
 
-        {/* Duration */}
-        <div className="border-l border-gray-300 px-6 flex flex-col items-start">
-          <label className="text-gray-500 text-sm">Duration</label>
-          <select className="text-gray-800 text-sm focus:outline-none">
-            <option>Choose dates</option>
-          </select>
-        </div>
+        {searchQuery && (
+          <button
+            type="button"
+            onClick={clearSearch}
+            className="p-2 hover:bg-gray-100 rounded-full"
+            aria-label="Clear search"
+          >
+            <X className="w-5 h-5 text-gray-400" />
+          </button>
+        )}
 
-        {/* Distance */}
-        <div className="border-l border-gray-300 px-6 flex flex-col items-start">
-          <label className="text-gray-500 text-sm">Distance</label>
-          <select className="text-gray-800 text-sm focus:outline-none">
-            <option>Choose distance</option>
-          </select>
-        </div>
-
-        {/* Search Icon */}
-        <button className="bg-white hover:bg-gray-100 text-gray-600 p-3 rounded-full">
-        <Search className="text-gray-400"/>
+        <button 
+          type="submit"
+          className={`bg-white hover:bg-gray-100 text-gray-600 p-3 rounded-full transition-all
+            ${isLoading ? 'animate-pulse' : ''}`}
+          aria-label="Submit search"
+        >
+          <Search className={`text-gray-400 ${isLoading ? 'animate-spin' : ''}`}/>
         </button>
       </div>
-    </div>
+    </form>
   );
 };
 

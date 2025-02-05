@@ -9,8 +9,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import RecentlyView from '../../common/RecentlyView'
 import ListYourProduct from '../../common/ListYourProduct'
 import { useParams } from 'react-router-dom'
-import { callApi, getProductIdRequest } from '../../../api/api'
-import { GetAddToWishlistRequest, GetAddToWishlistResponse, GetProductIdResponse } from '../../../api/types'
+import { callApi, getProductIdRequest, getWishlist } from '../../../api/api'
+import { GetAddToWishlistRequest, GetAddToWishlistResponse, GetProductIdResponse, GetWishlistResponse } from '../../../api/types'
 import { useNavigate } from 'react-router-dom';
 import { Product } from '../../../api/common.types'
 // import { Alert, AlertDescription } from "@/components/ui/alert"
@@ -19,43 +19,70 @@ import { Loader2 } from "lucide-react"
 
 const ProductDetail = () => {
   const id = useParams();
-    const [currentImage, setCurrentImage] = useState(0)
-    const [error, setError] = useState<string | null>(null)
-    const [productdetail , setProductDetail] =  useState<Product | null>(null);
-    const [productid, setProductId]= useState(id.productid)
-    const images = [
-      'https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png',
-      'https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png',
-      'https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png',
-      'https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png',
-      'https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png',
-      'https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png'
-    ]
-  
-  
+  const [currentImage, setCurrentImage] = useState(0)
+  const [error, setError] = useState<string | null>(null)
+  const [productdetail, setProductDetail] = useState<Product | null>(null);
+  const [productid, setProductId] = useState(id.productid)
+  const [isInWishlist, setIsInWishlist] = useState(false)
+  const images = [
+    'https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png',
+    'https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png',
+    'https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png',
+    'https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png',
+    'https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png',
+    'https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png'
+  ]
+
 
   let navigate = useNavigate(); 
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchData = async () => {
+
+      if (!productid) return;
+      
+
       setLoading(true)
       try {
         const response: GetProductIdResponse = await getProductIdRequest("", `/product/getProduct/${productid}`);
         if ("error_code" in response) {
           setError(response.description);
-        }
-        else {
+          setProductDetail(null);
+        } else {
           setProductDetail(response);
+
+          // Check if product is in wishlist
+          const wishlistResponse = await getWishlist({}, "/wishlist/get") as GetWishlistResponse;
+          if ("wishlist" in wishlistResponse) {
+            const isProductInWishlist = wishlistResponse.wishlist.some(
+              (item: Product) => item.id === productid
+            );
+            setIsInWishlist(isProductInWishlist);
+          }
+
+
           setError(null);
         }
       } catch (err) {
         console.error("Product fetch error:", err);
         setError("Failed to load product details. Please try again later.");
+
+        setProductDetail(null);
+
       } finally {
         setLoading(false)
       }
     };
+
+
+    fetchData();
+  }, [productid]);
+
+
+  const handleApi = async (id: string) => {
+    if (!id) return;
+    
 
     if(productid){
       fetchData();
@@ -64,10 +91,21 @@ const ProductDetail = () => {
 
 
   const handleApi = async (id:string) => {
+
     try {
       let req: GetAddToWishlistRequest = {
-         productId:id,
+        productId: id,
       }
+
+      const response = await callApi(req, "/wishlist/add");
+      if ("status" in response) {
+        setIsInWishlist(true)
+        alert("Product added to wishlist successfully")
+      } else if ("error_code" in response) {
+        setError(response.description)
+      }
+    } catch (err) {
+
       const response: GetAddToWishlistResponse = await callApi(req,"/wishlist/add");
       if("status" in response){
         alert(response.status)
@@ -77,6 +115,7 @@ const ProductDetail = () => {
       }
     }
     catch(err){
+
       console.error("Wishlist error:", err)
       setError("Failed to add item to wishlist")
     }
@@ -90,6 +129,14 @@ const ProductDetail = () => {
       </div>
     )
   }
+
+  if (error || !productdetail) {
+    return (
+      <div className="w-[90vw] mx-auto py-8">
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
+          <strong className="font-bold">Error: </strong>
+          <span className="block sm:inline">{error || 'Product not found'}</span>
+        </div>
 
   if (error) {
     return (
@@ -107,6 +154,7 @@ const ProductDetail = () => {
         <Alert>
           <AlertDescription>Product not found</AlertDescription>
         </Alert>
+
       </div>
     )
   }
@@ -220,10 +268,13 @@ const ProductDetail = () => {
                 </div>
     
                 <div className="flex gap-4 pt-10 pb-10">
-                  <Button variant="outline" className="flex-1 "
-                  onClick={()=>{handleApi(productid ?? "")}}
+                  <Button 
+                    variant="outline" 
+                    className={`flex-1 ${isInWishlist ? 'bg-gray-100 border-gray-300 text-gray-500 cursor-not-allowed' : ''}`}
+                    onClick={() => handleApi(productid ?? "")}
+                    disabled={isInWishlist}
                   >
-                    ADD TO WISHLIST
+                    {isInWishlist ? 'ALREADY IN WISHLIST' : 'ADD TO WISHLIST'}
                   </Button>
                   <Button className="flex-1">ADD TO CART</Button>
                   <Button variant="secondary" className="flex-1">BUY NOW</Button>
