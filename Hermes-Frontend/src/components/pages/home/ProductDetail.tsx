@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { ChevronLeft, ChevronRight, Star, StarHalf, Share2, PinIcon as Pinterest, Clock, Truck, ShieldCheck, HeadphonesIcon, CreditCard, StarIcon } from 'lucide-react'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Button } from "../../../components/ui/button"
+import { Input } from "../../../components/ui/input"
+import { Badge } from "../../../components/ui/badge"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../components/ui/select"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../components/ui/tabs"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../../components/ui/table"
+import { Alert, AlertDescription } from "../../../components/ui/alert"
 import RecentlyView from '../../common/RecentlyView'
 import ListYourProduct from '../../common/ListYourProduct'
 import { useParams } from 'react-router-dom'
@@ -13,17 +14,17 @@ import { callApi, getProductIdRequest, getWishlist } from '../../../api/api'
 import { GetAddToWishlistRequest, GetAddToWishlistResponse, GetProductIdResponse, GetWishlistResponse } from '../../../api/types'
 import { useNavigate } from 'react-router-dom';
 import { Product } from '../../../api/common.types'
-// import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Loader2 } from "lucide-react"
 
-
 const ProductDetail = () => {
-  const id = useParams();
+  const { productid } = useParams();
   const [currentImage, setCurrentImage] = useState(0)
   const [error, setError] = useState<string | null>(null)
   const [productdetail, setProductDetail] = useState<Product | null>(null);
-  const [productid, setProductId] = useState(id.productid)
   const [isInWishlist, setIsInWishlist] = useState(false)
+  const [loading, setLoading] = useState(true)
+  let navigate = useNavigate();
+
   const images = [
     'https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png',
     'https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png',
@@ -33,71 +34,51 @@ const ProductDetail = () => {
     'https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png'
   ]
 
+  const fetchData = async () => {
+    if (!productid) return;
 
-  let navigate = useNavigate(); 
-  const [loading, setLoading] = useState(true)
+    setLoading(true)
+    try {
+      const response: GetProductIdResponse = await getProductIdRequest("", `/product/getProduct/${productid}`);
+      if ("error_code" in response) {
+        setError(response.description);
+        setProductDetail(null);
+      } else {
+        setProductDetail(response);
+
+        // Check if product is in wishlist
+        const wishlistResponse = await getWishlist({}, "/wishlist/get") as GetWishlistResponse;
+        if ("wishlist" in wishlistResponse) {
+          const isProductInWishlist = wishlistResponse.wishlist.some(
+            (item: Product) => item.id === productid
+          );
+          setIsInWishlist(isProductInWishlist);
+        }
+
+        setError(null);
+      }
+    } catch (err) {
+      console.error("Product fetch error:", err);
+      setError("Failed to load product details. Please try again later.");
+      setProductDetail(null);
+    } finally {
+      setLoading(false)
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-
-      if (!productid) return;
-      
-
-      setLoading(true)
-      try {
-        const response: GetProductIdResponse = await getProductIdRequest("", `/product/getProduct/${productid}`);
-        if ("error_code" in response) {
-          setError(response.description);
-          setProductDetail(null);
-        } else {
-          setProductDetail(response);
-
-          // Check if product is in wishlist
-          const wishlistResponse = await getWishlist({}, "/wishlist/get") as GetWishlistResponse;
-          if ("wishlist" in wishlistResponse) {
-            const isProductInWishlist = wishlistResponse.wishlist.some(
-              (item: Product) => item.id === productid
-            );
-            setIsInWishlist(isProductInWishlist);
-          }
-
-
-          setError(null);
-        }
-      } catch (err) {
-        console.error("Product fetch error:", err);
-        setError("Failed to load product details. Please try again later.");
-
-        setProductDetail(null);
-
-      } finally {
-        setLoading(false)
-      }
-    };
-
-
     fetchData();
   }, [productid]);
 
-
   const handleApi = async (id: string) => {
     if (!id) return;
-    
-
-    if(productid){
-      fetchData();
-    }
-  }, [productid]);
-
-
-  const handleApi = async (id:string) => {
 
     try {
-      let req: GetAddToWishlistRequest = {
+      const req: GetAddToWishlistRequest = {
         productId: id,
       }
 
-      const response = await callApi(req, "/wishlist/add");
+      const response: GetAddToWishlistResponse = await callApi(req, "/wishlist/add");
       if ("status" in response) {
         setIsInWishlist(true)
         alert("Product added to wishlist successfully")
@@ -105,17 +86,6 @@ const ProductDetail = () => {
         setError(response.description)
       }
     } catch (err) {
-
-      const response: GetAddToWishlistResponse = await callApi(req,"/wishlist/add");
-      if("status" in response){
-        alert(response.status)
-      }
-      else if("error_code" in response ){
-        setError(response.description)
-      }
-    }
-    catch(err){
-
       console.error("Wishlist error:", err)
       setError("Failed to add item to wishlist")
     }
@@ -123,20 +93,99 @@ const ProductDetail = () => {
 
   if (loading) {
     return (
-      <div className="w-full h-[50vh] flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        <span className="ml-2">Loading product details...</span>
+      <div className="w-[90vw] mx-auto py-8">
+        <div className="grid md:grid-cols-2 gap-8">
+          {/* Image Skeleton */}
+          <div className="space-y-4">
+            <div className="relative aspect-[4/3] bg-gray-200 rounded-lg animate-pulse" />
+            <div className="flex gap-2 overflow-x-auto pb-2">
+              {[...Array(4)].map((_, idx) => (
+                <div key={idx} className="flex-shrink-0 w-20 aspect-[4/3] bg-gray-200 rounded-lg animate-pulse" />
+              ))}
+            </div>
+          </div>
+
+          {/* Content Skeleton */}
+          <div className="space-y-8">
+            {/* Rating and Title */}
+            <div className="space-y-4">
+              <div className="flex gap-2">
+                <div className="w-32 h-5 bg-gray-200 rounded animate-pulse" />
+                <div className="w-48 h-5 bg-gray-200 rounded animate-pulse" />
+              </div>
+              <div className="w-3/4 h-8 bg-gray-200 rounded animate-pulse" />
+            </div>
+
+            {/* Product Info */}
+            <div className="space-y-4">
+              <div className="flex justify-between">
+                <div className="w-24 h-4 bg-gray-200 rounded animate-pulse" />
+                <div className="w-32 h-4 bg-gray-200 rounded animate-pulse" />
+              </div>
+              <div className="flex justify-between">
+                <div className="w-24 h-4 bg-gray-200 rounded animate-pulse" />
+                <div className="w-40 h-4 bg-gray-200 rounded animate-pulse" />
+              </div>
+            </div>
+
+            {/* Price and Options */}
+            <div className="space-y-6">
+              <div className="w-full h-10 bg-gray-200 rounded animate-pulse" />
+              <div className="flex items-center gap-4">
+                <div className="w-32 h-8 bg-gray-200 rounded animate-pulse" />
+                <div className="w-24 h-8 bg-gray-200 rounded animate-pulse" />
+              </div>
+            </div>
+
+            {/* Buttons */}
+            <div className="flex gap-4 pt-6">
+              <div className="flex-1 h-10 bg-gray-200 rounded animate-pulse" />
+              <div className="flex-1 h-10 bg-gray-200 rounded animate-pulse" />
+              <div className="flex-1 h-10 bg-gray-200 rounded animate-pulse" />
+            </div>
+
+            {/* Additional Info */}
+            <div className="pt-6 border-t">
+              <div className="w-48 h-5 bg-gray-200 rounded animate-pulse mb-4" />
+              <div className="grid grid-cols-4 gap-2">
+                {[...Array(4)].map((_, idx) => (
+                  <div key={idx} className="h-8 bg-gray-200 rounded animate-pulse" />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Tags Skeleton */}
+        <div className="flex gap-2 mt-6">
+          {[...Array(4)].map((_, idx) => (
+            <div key={idx} className="w-20 h-6 bg-gray-200 rounded-full animate-pulse" />
+          ))}
+        </div>
+
+        {/* Tabs Skeleton */}
+        <div className="mt-8">
+          <div className="flex gap-4 border-b">
+            {[...Array(4)].map((_, idx) => (
+              <div key={idx} className="w-24 h-8 bg-gray-200 rounded animate-pulse" />
+            ))}
+          </div>
+          <div className="mt-6 grid md:grid-cols-3 gap-8">
+            {[...Array(3)].map((_, idx) => (
+              <div key={idx} className="space-y-4">
+                <div className="w-32 h-6 bg-gray-200 rounded animate-pulse" />
+                <div className="space-y-2">
+                  {[...Array(3)].map((_, i) => (
+                    <div key={i} className="w-full h-4 bg-gray-200 rounded animate-pulse" />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     )
   }
-
-  if (error || !productdetail) {
-    return (
-      <div className="w-[90vw] mx-auto py-8">
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
-          <strong className="font-bold">Error: </strong>
-          <span className="block sm:inline">{error || 'Product not found'}</span>
-        </div>
 
   if (error) {
     return (
@@ -154,168 +203,166 @@ const ProductDetail = () => {
         <Alert>
           <AlertDescription>Product not found</AlertDescription>
         </Alert>
-
       </div>
     )
   }
 
   return (
-        <>
-        <div className="w-[90vw] mx-auto  py-8">
-          <div className="grid md:grid-cols-2 gap-8 ">
-            {/* Product Images */}
-            <div className="space-y-4">
-              <div className="relative aspect-[4/3] bg-gray-100 rounded-lg overflow-hidden">
-                <button 
-                  onClick={() => setCurrentImage(prev => prev > 0 ? prev - 1 : images.length - 1)}
-                  className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white/80 rounded-full p-2"
-                >
-                  <ChevronLeft className="h-6 w-6" />
-                </button>
+    <div className="w-[90vw] mx-auto py-8">
+      <div className="grid md:grid-cols-2 gap-8 ">
+        {/* Product Images */}
+        <div className="space-y-4">
+          <div className="relative aspect-[4/3] bg-gray-100 rounded-lg overflow-hidden">
+            <button 
+              onClick={() => setCurrentImage(prev => prev > 0 ? prev - 1 : images.length - 1)}
+              className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white/80 rounded-full p-2"
+            >
+              <ChevronLeft className="h-6 w-6" />
+            </button>
+            <img
+              src={images[currentImage]}
+              alt="Product image"
+              
+              className="object-contain"
+            />
+            <button 
+              onClick={() => setCurrentImage(prev => prev < images.length - 1 ? prev + 1 : 0)}
+              className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white/80 rounded-full p-2"
+            >
+              <ChevronRight className="h-6 w-6" />
+            </button>
+          </div>
+          <div className="flex gap-2 overflow-x-auto pb-2">
+            {images.map((img, idx) => (
+              <button
+                key={idx}
+                onClick={() => setCurrentImage(idx)}
+                className={`flex-shrink-0 w-20 aspect-[4/3] border-2 rounded-lg overflow-hidden ${
+                  currentImage === idx ? 'border-primary' : 'border-transparent'
+                }`}
+              >
                 <img
-                  src={images[currentImage]}
-                  alt="Product image"
-                  
-                  className="object-contain"
+                  src={img}
+                  alt={`Thumbnail ${idx + 1}`}
+                  width={80}
+                  height={60}
+                  className="object-cover w-full h-full"
                 />
-                <button 
-                  onClick={() => setCurrentImage(prev => prev < images.length - 1 ? prev + 1 : 0)}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white/80 rounded-full p-2"
-                >
-                  <ChevronRight className="h-6 w-6" />
-                </button>
-              </div>
-              <div className="flex gap-2 overflow-x-auto pb-2">
-                {images.map((img, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => setCurrentImage(idx)}
-                    className={`flex-shrink-0 w-20 aspect-[4/3] border-2 rounded-lg overflow-hidden ${
-                      currentImage === idx ? 'border-primary' : 'border-transparent'
-                    }`}
-                  >
-                    <img
-                      src={img}
-                      alt={`Thumbnail ${idx + 1}`}
-                      width={80}
-                      height={60}
-                      className="object-cover w-full h-full"
-                    />
-                  </button>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Product Info */}
+        <div className="space-y-10">
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <div className="flex">
+                {[...Array(4)].map((_, i) => (
+                  <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
                 ))}
+                <StarHalf className="w-5 h-5 fill-yellow-400 text-yellow-400" />
+              </div>
+              <span className="text-sm text-muted-foreground">4.7 Star Rating (21,671 User feedback)</span>
+            </div>
+            <h1 className="text-2xl font-bold">
+              {/* 2020 Apple MacBook Pro with Apple M1 Chip (13-inch, 8GB RAM, 256GB SSD Storage) - Space Gray */}
+              {productdetail?.name}
+            </h1>
+          </div>
+
+          <div className="grid gap-4">
+            <div className="flex justify-between text-sm">
+              <span>P ID: </span>
+              <span className="text-green-600">{`Availability: ${productdetail?.qty} In Stock`}</span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span>Deposit: </span>
+              <span className="text-sm text-muted-foreground">100% refund grantee</span>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+          <label className="text-sm font-medium">Tenure</label>
+            <div className='flex items-center'>
+              <Select defaultValue="01">
+                <SelectTrigger className="w-1/5">
+                  <SelectValue placeholder="Select weeks"/>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="01">01</SelectItem>
+                  <SelectItem value="02">02</SelectItem>
+                  <SelectItem value="03">03</SelectItem>
+                </SelectContent>
+              </Select>
+              <div className="flex items-center gap-2 mt-2">
+                <span className='text-sm'>Available: 05 weeks</span>
+                <span className="text-2xl font-bold text-orange-400">${productdetail?.price}</span>
+                <span>/week</span>
+                {/* <span className="line-through text-muted-foreground">$499.00</span>
+                <Badge variant="secondary">21% OFF</Badge> */}
               </div>
             </div>
-    
-            {/* Product Info */}
-            <div className="space-y-10">
-              <div className="space-y-2">
-                <div className="flex items-center gap-2">
-                  <div className="flex">
-                    {[...Array(4)].map((_, i) => (
-                      <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-                    ))}
-                    <StarHalf className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-                  </div>
-                  <span className="text-sm text-muted-foreground">4.7 Star Rating (21,671 User feedback)</span>
-                </div>
-                <h1 className="text-2xl font-bold">
-                  {/* 2020 Apple MacBook Pro with Apple M1 Chip (13-inch, 8GB RAM, 256GB SSD Storage) - Space Gray */}
-                  {productdetail?.name}
-                </h1>
+
+            <div className="space-y-4">
+              <label className="text-sm font-medium">Check Delivery</label>
+              <div className="flex gap-4">
+                <Input type="text" placeholder="PIN" className="w-1/2" />
+                <span className="text-sm text-muted-foreground self-center">
+                  Available for delivery on 22nd Oct
+                </span>
               </div>
-    
-              <div className="grid gap-4">
-                <div className="flex justify-between text-sm">
-                  <span>P ID: </span>
-                  <span className="text-green-600">{`Availability: ${productdetail?.qty} In Stock`}</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span>Deposit: </span>
-                  <span className="text-sm text-muted-foreground">100% refund grantee</span>
-                </div>
-              </div>
-    
-              <div className="space-y-4">
-              <label className="text-sm font-medium">Tenure</label>
-                <div className='flex items-center'>
-                  <Select defaultValue="01">
-                    <SelectTrigger className="w-1/5">
-                      <SelectValue placeholder="Select weeks"/>
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="01">01</SelectItem>
-                      <SelectItem value="02">02</SelectItem>
-                      <SelectItem value="03">03</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <div className="flex items-center gap-2 mt-2">
-                    <span className='text-sm'>Available: 05 weeks</span>
-                    <span className="text-2xl font-bold text-orange-400">${productdetail?.price}</span>
-                    <span>/week</span>
-                    {/* <span className="line-through text-muted-foreground">$499.00</span>
-                    <Badge variant="secondary">21% OFF</Badge> */}
-                  </div>
-                </div>
-    
-                <div className="space-y-4">
-                  <label className="text-sm font-medium">Check Delivery</label>
-                  <div className="flex gap-4">
-                    <Input type="text" placeholder="PIN" className="w-1/2" />
-                    <span className="text-sm text-muted-foreground self-center">
-                      Available for delivery on 22nd Oct
-                    </span>
-                  </div>
-                </div>
-    
-                <div className="flex gap-4 pt-10 pb-10">
-                  <Button 
-                    variant="outline" 
-                    className={`flex-1 ${isInWishlist ? 'bg-gray-100 border-gray-300 text-gray-500 cursor-not-allowed' : ''}`}
-                    onClick={() => handleApi(productid ?? "")}
-                    disabled={isInWishlist}
-                  >
-                    {isInWishlist ? 'ALREADY IN WISHLIST' : 'ADD TO WISHLIST'}
-                  </Button>
-                  <Button className="flex-1">ADD TO CART</Button>
-                  <Button variant="secondary" className="flex-1">BUY NOW</Button>
-                </div>
-    
-                <div className="flex justify-between items-center pt-6 border-t">
-                  <button className="text-sm text-muted-foreground flex items-center gap-2">
-                    <Share2 className="w-4 h-4" /> Add to Compare
-                  </button>
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm text-muted-foreground">Share product:</span>
-                    <button className="text-blue-600">facbook</button>
-                    <button className="text-blue-400">twitter</button>
-                    <button className="text-red-600"><Pinterest className="w-5 h-5" /></button>
-                  </div>
-                </div>
-              </div>
-    
-              <div className="pt-6 border-t">
-                <h3 className="text-sm font-medium mb-2">100% Guarantee Safe Checkout</h3>
-                <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
-                  {['Visa', 'Mastercard', 'PayPal', 'AmEx'].map((payment) => (
-                    <div key={payment} className="bg-gray-100 rounded p-2 text-xs text-center">
-                      {payment}
-                    </div>
-                  ))}
-                </div>
+            </div>
+
+            <div className="flex gap-4 pt-10 pb-10">
+              <Button 
+                variant="outline" 
+                className={`flex-1 ${isInWishlist ? 'bg-gray-100 border-gray-300 text-gray-500 cursor-not-allowed' : ''}`}
+                onClick={() => handleApi(productid ?? "")}
+                disabled={isInWishlist}
+              >
+                {isInWishlist ? 'ALREADY IN WISHLIST' : 'ADD TO WISHLIST'}
+              </Button>
+              <Button className="flex-1">ADD TO CART</Button>
+              <Button variant="secondary" className="flex-1">BUY NOW</Button>
+            </div>
+
+            <div className="flex justify-between items-center pt-6 border-t">
+              <button className="text-sm text-muted-foreground flex items-center gap-2">
+                <Share2 className="w-4 h-4" /> Add to Compare
+              </button>
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-muted-foreground">Share product:</span>
+                <button className="text-blue-600">facbook</button>
+                <button className="text-blue-400">twitter</button>
+                <button className="text-red-600"><Pinterest className="w-5 h-5" /></button>
               </div>
             </div>
           </div>
-    
-          <div className="flex gap-2 mt-6 mb-20">
-            <Badge variant="outline">Macbook M1</Badge>
-            <Badge variant="outline">Laptop</Badge>
-            <Badge variant="outline">Electronics</Badge>
-            <Badge variant="outline">Apple</Badge>
+
+          <div className="pt-6 border-t">
+            <h3 className="text-sm font-medium mb-2">100% Guarantee Safe Checkout</h3>
+            <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
+              {['Visa', 'Mastercard', 'PayPal', 'AmEx'].map((payment) => (
+                <div key={payment} className="bg-gray-100 rounded p-2 text-xs text-center">
+                  {payment}
+                </div>
+              ))}
+            </div>
           </div>
+        </div>
+      </div>
+
+      <div className="flex gap-2 mt-6 mb-20">
+        <Badge variant="outline">Macbook M1</Badge>
+        <Badge variant="outline">Laptop</Badge>
+        <Badge variant="outline">Electronics</Badge>
+        <Badge variant="outline">Apple</Badge>
+      </div>
 
       {/* Product Information Tabs */}
 
-          <Tabs defaultValue="description" className="w-full  mb-40">
+      <Tabs defaultValue="description" className="w-full  mb-40">
         <TabsList className="w-full justify-start border-b rounded-none h-auto p-0 bg-transparent">
           {["description", "additional", "specification", "review"].map((tab) => (
             <TabsTrigger 
@@ -464,9 +511,8 @@ const ProductDetail = () => {
       <RecentlyView/>
 
       <ListYourProduct/>
-     </div>
-     </>
-      )
+    </div>
+  )
 }
 
 export default ProductDetail
