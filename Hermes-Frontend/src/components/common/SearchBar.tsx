@@ -1,6 +1,6 @@
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import { Search, X } from 'lucide-react';
-import debounce from 'lodash/debounce';
+
 
 interface SearchBarProps {
   onSearch?: (query: string) => Promise<void>;
@@ -16,30 +16,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  // Debounced search function
-  const debouncedSearch = useCallback(
-    debounce((query: string) => {
-      if (onSearch) {
-        setIsLoading(true);
-        onSearch(query)
-          .finally(() => setIsLoading(false));
-      }
-    }, 500),
-    [onSearch]
-  );
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setSearchQuery(value);
-    debouncedSearch(value);
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (onSearch) {
-      onSearch(searchQuery);
-    }
-  };
+  
 
   const clearSearch = () => {
     setSearchQuery("");
@@ -49,12 +26,13 @@ const SearchBar: React.FC<SearchBarProps> = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} className={`flex justify-center py-6 ${className}`}>
+    <form className={`flex justify-center py-6 ${className}`}>
       <div className="bg-white rounded-full shadow-2xl flex items-center w-full max-w-4xl p-2 relative">
         <input
           type="text"
+
           value={searchQuery}
-          onChange={handleInputChange}
+          // onChange={handleInputChange}
           placeholder={placeholder}
           className="flex-grow px-4 py-2 rounded-l-full focus:outline-none"
           aria-label="Search input"

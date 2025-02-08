@@ -26,7 +26,7 @@ const AuthGuard = () => {
         <Dialog open={showDialog} onOpenChange={setShowDialog}>
           <DialogOverlay className="bg-black/30" />
           <DialogContent className="sm:max-w-[425px] bg-[#313131] text-white border-none fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-            <LoginForm returnPath={location.pathname} />
+            <LoginForm />
           </DialogContent>
         </Dialog>
       )}

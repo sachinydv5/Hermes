@@ -22,8 +22,8 @@ const UserDashboard = () => {
       <CardContent className="flex-grow flex flex-col justify-between">
         <div className="flex items-start gap-4">
           <Avatar className="size-12">
-            <AvatarImage src="/placeholder.svg" alt={name} />
-            <AvatarFallback></AvatarFallback>
+            <AvatarImage src="/placeholder.svg" alt="User Avatar" />
+            <AvatarFallback>B</AvatarFallback>
           </Avatar>
           <div className="space-y-1">
             <h3 className="font-semibold"></h3>

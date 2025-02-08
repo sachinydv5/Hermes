@@ -64,9 +64,11 @@ const SingleList = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [previewImage, setPreviewImage] = useState<string | null>(null);
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    setUploadedFile(file);
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setUploadedFile(file);
+    }
     
     // Create preview URL for the image
     if (file) {
@@ -83,12 +85,13 @@ const SingleList = () => {
   //   "/placeholder.svg?height=200&width=200&text=Image+3",
   //   "/placeholder.svg?height=200&width=200&text=Image+4"
   // ]
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: any) => {
     setIsSubmitting(true); // Show loader
     console.log("Form data submitted:", data);
     try{
       let req: ProductRequest = {
         name: data.title,
+
         description: data.description,
         qty: 1,
         duration: {

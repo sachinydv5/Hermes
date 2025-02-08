@@ -14,7 +14,7 @@ import { Separator } from "@/components/ui/separator"
 import ProductCardTwo from '../../common/ProductCardTwo'
 
 const MultipleProduct = () => {
-  return (
+  return  (
     <div className="container mx-auto p-6">
     <div className="flex items-center justify-between mb-8">
       <h1 className="text-3xl font-bold">Create Multiple Products</h1>
@@ -66,16 +66,18 @@ const MultipleProduct = () => {
             </div>
             <div>
               <Label>DAYS</Label>
-              <Select  className="max-w-[200px]">
-                <SelectTrigger>
-                  <SelectValue placeholder="select days" />
-                </SelectTrigger>
-                <SelectContent>
+              <div className="max-w-[200px]">
+                <Select>
+                  <SelectTrigger>
+                    <SelectValue placeholder="select days" />
+                  </SelectTrigger>
+                  <SelectContent>
                   <SelectItem value="1">1 Month</SelectItem>
                   <SelectItem value="3">3 Months</SelectItem>
                   <SelectItem value="6">6 Months</SelectItem>
                 </SelectContent>
               </Select>
+            </div>
             </div>
             <div>
               <Label>VALUE AS A COLLECTION</Label>
@@ -111,7 +113,9 @@ const MultipleProduct = () => {
 
     </div>
   </div>
+  
   )
 }
+
 
 export default MultipleProduct
