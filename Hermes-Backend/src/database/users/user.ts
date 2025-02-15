@@ -29,7 +29,7 @@ export const findUserByEmail = async (email: string) => {
 
 export const findUserByUserId = async (userId: string) => {
   const db = getFirestore();
-  const snap = await db.collection("users").get();
+  // const snap = await db.collection("users").get();
   // snap.forEach(doc => {
   //   console.log(doc.id, '=>', doc.data());
   // });

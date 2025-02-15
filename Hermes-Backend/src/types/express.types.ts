@@ -1,6 +1,6 @@
 
-import express, { Request, Response } from 'express';
-import { Send } from 'express-serve-static-core';
+import { Request, Response} from 'express';
+import { Query, Send } from 'express-serve-static-core';
 
 export interface TypedRequest<T> extends Request {
   body: T
@@ -19,7 +19,8 @@ export interface PResponse<T> {
 
 
 export interface TypedRequestEmail<T> extends Request {
-  body: T
+  body: T;
+  query: Query;
   email?: string
 }
 

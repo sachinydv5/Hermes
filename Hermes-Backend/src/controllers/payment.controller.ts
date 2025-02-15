@@ -32,11 +32,11 @@ export const paymentController = async (req: TypedRequestEmail<PaymentRequest>, 
         const session = await stripe.checkout.sessions.create({
           line_items: lineItems,
           mode: 'payment',
-          success_url: `${YOUR_DOMAIN}?success=true`,
-          cancel_url: `${YOUR_DOMAIN}?canceled=true`,
+          success_url: `${YOUR_DOMAIN}?orderID=${orderId}&success=true`,
+          cancel_url: `${YOUR_DOMAIN}?orderID=${orderId}canceled=true`,
           automatic_tax: { enabled: true },
         });
-        await updateOrderStatus(orderId, "INITIATED" )
+        await updateOrderStatus(orderId, "INITIATED")
         res.redirect(303, session.url);
       } else {
         res.json({ error_code: "INTERNAL_ERROR", description: "Some error Occurredewf " });
@@ -46,4 +46,24 @@ export const paymentController = async (req: TypedRequestEmail<PaymentRequest>, 
     res.json({ error_code: "INTERNAL_ERROR", description: "Some error Occurredewf " });
   }
 }
+
+
+export const paymentStatusController = async (req: TypedRequestEmail<{}>, res: TypedResponse<{}>) => {
+  try {
+    const { success, canceled, orderID } = req.query;
+    if (orderID && typeof orderID === 'string') {
+      if (success) {
+        await updateOrderStatus(orderID, "PAYMENT_SUCCESS")
+      }
+      if (canceled) {
+        await updateOrderStatus(orderID, "PAYMENT_FAILURE")
+      }
+    } else {
+      res.json({ error_code: "INTERNAL_ERROR", description: "Some error Occurredewf " });
+    }
+  } catch (error) {
+    res.json({ error_code: "INTERNAL_ERROR", description: "Some error Occurredewf " });
+  }
+}
+
 

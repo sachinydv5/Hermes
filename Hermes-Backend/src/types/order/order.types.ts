@@ -6,7 +6,7 @@ import { ProductDO } from "../product/product";
 
 type ORDER_ERROR_CODES = "INTERNAL_ERROR"
 
-export const orderStatusEnum = z.enum([ "INITIATED", "ORDER_PLACED", "FAILURE", "IN_TRANSIT", "REACHED", "REFUNDED", "ABORTED", "CREATED" ])
+export const orderStatusEnum = z.enum([ "INITIATED", "ORDER_PLACED", "FAILURE", "IN_TRANSIT", "REACHED", "REFUNDED", "ABORTED", "CREATED", "PAYMENT_SUCCESS", "PAYMENT_FAILURE" ])
 
 export type ORDER_STATUS = z.infer<typeof orderStatusEnum>
 
