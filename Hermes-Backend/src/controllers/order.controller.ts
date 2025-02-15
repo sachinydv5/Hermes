@@ -1,7 +1,7 @@
-import { createOrder, findOrderByOrderId } from "../database/order/order";
+import { createOrder, findOrderByOrderId, updateOrderStatus } from "../database/order/order";
 import { findProductByProductId } from "../database/product/product";
 import { TypedRequest, TypedRequestEmail, TypedResponse } from "../types/express.types";
-import { OrderCreateRequest, OrderCreateResponse, OrderStatusRequest, OrderStatusResponse } from "../types/order/order.types";
+import { OrderCreateRequest, OrderCreateResponse, OrderStatusRequest, OrderStatusResponse, UpdateOrderRequest, UpdateOrderResponse } from "../types/order/order.types";
 import { ProductDoSchema } from "../types/product/product";
 
 
@@ -56,6 +56,17 @@ export const orderStatusController = async (req: TypedRequest<OrderStatusRequest
     } else {
       res.json(resp);
     }
+  } catch (e) {
+    res.json({ error_code: "INTERNAL_SERVER_ERROR", description: "Some error Occurredewf " });
+  }
+}
+
+
+export const orderUpdateController = async (req: TypedRequest<UpdateOrderRequest>, res: TypedResponse<UpdateOrderResponse>) => {
+  try {
+    const orderId = req.body.orderId;
+    await updateOrderStatus(orderId, req.body.orderStatus);
+    res.json({ status: "SUCCESS"})
   } catch (e) {
     res.json({ error_code: "INTERNAL_SERVER_ERROR", description: "Some error Occurredewf " });
   }

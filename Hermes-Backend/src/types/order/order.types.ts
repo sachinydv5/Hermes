@@ -6,8 +6,11 @@ import { ProductDO } from "../product/product";
 
 type ORDER_ERROR_CODES = "INTERNAL_ERROR"
 
-export const orderStatusEnum = z.enum([ "INITIATED", "ORDER_PLACED", "FAILURE", "IN_TRANSIT", "REACHED", "REFUNDED", "ABORTED" ])
- 
+export const orderStatusEnum = z.enum([ "INITIATED", "ORDER_PLACED", "FAILURE", "IN_TRANSIT", "REACHED", "REFUNDED", "ABORTED", "CREATED" ])
+
+export type ORDER_STATUS = z.infer<typeof orderStatusEnum>
+
+
 export const AddressSchema = z.object({
   city: z.string(),
   country: z.string(),
@@ -15,6 +18,11 @@ export const AddressSchema = z.object({
   addressLine1: z.string().optional(), // Can be empty
   addressLine2: z.string().optional(), // Can be empty
 });
+
+export const updateOrderSchema = z.object({
+  status: z.enum(["SUCCESS"]),
+});
+
 
 
 export const orderScheme = z.object({
@@ -57,5 +65,15 @@ export const orderStatusRequestSchema = z.object({
 export type OrderStatusRequest = z.infer<typeof orderStatusRequestSchema>
 
 export type OrderStatusResponse = Error<ORDER_ERROR_CODES> | z.infer<typeof orderScheme>
+
+
+export const updateOrderRequestSchema = z.object({
+  orderId: z.string(),
+  orderStatus: orderStatusEnum,
+});
+
+export type UpdateOrderRequest = z.infer<typeof updateOrderRequestSchema>
+
+export type UpdateOrderResponse = Error<ORDER_ERROR_CODES> | z.infer<typeof updateOrderSchema>
 
 

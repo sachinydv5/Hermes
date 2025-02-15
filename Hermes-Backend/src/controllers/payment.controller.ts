@@ -1,5 +1,5 @@
 import { getCart } from "../database/cart/cart";
-import { findOrderByOrderId } from "../database/order/order";
+import { findOrderByOrderId, updateOrderStatus } from "../database/order/order";
 import { findProductByProductId } from "../database/product/product";
 import { TypedRequest, TypedRequestEmail, TypedResponse } from "../types/express.types";
 import { PaymentRequest, PaymentResponse } from "../types/payment/payment.types";
@@ -36,6 +36,7 @@ export const paymentController = async (req: TypedRequestEmail<PaymentRequest>, 
           cancel_url: `${YOUR_DOMAIN}?canceled=true`,
           automatic_tax: { enabled: true },
         });
+        await updateOrderStatus(orderId, "INITIATED" )
         res.redirect(303, session.url);
       } else {
         res.json({ error_code: "INTERNAL_ERROR", description: "Some error Occurredewf " });

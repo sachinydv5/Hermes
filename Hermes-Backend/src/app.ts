@@ -38,8 +38,6 @@ app.use("/cart", cartRouter)
 app.use("/order", orderRouter)
 app.use("/payment", paymentController)
 
-
-
 app.post("/api/test", authTokenVerification, (_req, resp) => {
   resp.json({ status: "Passed"});
 })

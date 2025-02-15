@@ -1,6 +1,6 @@
 import { getFirestore } from 'firebase-admin/firestore';
 import { ORDER_DB_COLLECTION } from '../constants';
-import { ORDER } from '../../types/order/order.types';
+import { ORDER, ORDER_STATUS } from '../../types/order/order.types';
 import { randomUUID } from 'crypto';
 
 
@@ -20,7 +20,7 @@ export const createOrder = async (orderValue: PARAM_ORDER) => {
   const order: ORDER = {
     products: orderValue.products,
     totalAmount: orderValue.totalAmount,
-    orderStatus: 'INITIATED',
+    orderStatus: 'CREATED',
     address: orderValue.address,
     lastUpdatedTime: new Date(),
     updateTrace: [],
@@ -33,4 +33,11 @@ export const createOrder = async (orderValue: PARAM_ORDER) => {
   await docRef.set(order);
   return order;
 };
+
+export const updateOrderStatus = async (orderId: string, orderStatus: ORDER_STATUS) => {
+  const db = getFirestore();
+  const snapshot = db.collection(ORDER_DB_COLLECTION).doc(orderId)
+  await snapshot.update({ status: orderStatus })
+}
+
 
