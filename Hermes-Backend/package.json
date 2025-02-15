@@ -30,6 +30,7 @@
     "morgan": "^1.10.0",
     "otp-generator": "^4.0.1",
     "sendmail": "^1.6.1",
+    "stripe": "^17.6.0",
     "uuid": "^11.0.3",
     "winston": "^3.14.2",
     "zod": "^3.23.8"

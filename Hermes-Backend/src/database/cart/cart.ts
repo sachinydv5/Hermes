@@ -44,7 +44,9 @@ export const removeFromCart = async (userEmail: string, productId: string) => {
     // await docRef.set(data);
   }
 };
-;
+
+
+
 // export const addWishlist = async (config: UpdateAppConfig) => {
 //   const db = getFirestore();
 //   const docRef = db.collection(APPCONFIG_DB_COLLECTION).doc(APPCONFIG_COLLECTION_ID);

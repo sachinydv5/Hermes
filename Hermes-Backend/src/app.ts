@@ -11,6 +11,7 @@ import { wishlistRouter } from './routes/wishlist/wishlist.router';
 import cors from 'cors';
 import { cartRouter } from './routes/cart/cart.router';
 import { orderRouter } from './routes/order/order.router';
+import { paymentController } from './controllers/payment.controller';
 var compression = require('compression')
 
 
@@ -35,6 +36,9 @@ app.use("/collection",collectionRouter)
 app.use("/wishlist", wishlistRouter)
 app.use("/cart", cartRouter)
 app.use("/order", orderRouter)
+app.use("/payment", paymentController)
+
+
 
 app.post("/api/test", authTokenVerification, (_req, resp) => {
   resp.json({ status: "Passed"});

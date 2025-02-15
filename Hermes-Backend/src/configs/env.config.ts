@@ -25,5 +25,6 @@ export const config = {
     auth_provider_x509_cert_url: process.env.FIREBASE_AUTH_PROVIDER,
     client_x509_cert_url: process.env.FIREBASE_CLIENT_CERT_URL,
     universe_domain: process.env.FIREBASE_UNIVERSE_DOMAIN,
-  }
+  },
+  STRIPE_ID: process.env.STRIPE_ID
 }
