@@ -13,7 +13,7 @@ import { cartRouter } from './routes/cart/cart.router';
 import { orderRouter } from './routes/order/order.router';
 import { paymentRouter } from './routes/payment/payment.router';
 import { userRouter } from './routes/user/user.router';
-import compression from 'compression';
+var compression = require('compression')
 
 
 
