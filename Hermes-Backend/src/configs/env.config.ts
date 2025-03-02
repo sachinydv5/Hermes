@@ -6,6 +6,7 @@ export const config = {
   PORT: process.env.PORT ?? "3002",
   ATLAS_URI: process.env.mongodb_uri,
   secret_key: process.env.key ?? "",
+  STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET ?? "",
   FIREBASE_API_KEY: process.env.FIREBASE_API_KEY,
   FIREBASE_AUTH_DOMAIN: process.env.FIREBASE_AUTH_DOMAIN,
   FIREBASE_PROJECT_ID: process.env.FIREBASE_PROJECT_ID,

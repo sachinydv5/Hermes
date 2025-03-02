@@ -38,8 +38,20 @@ export const orderCreateController = async (req: TypedRequestEmail<OrderCreateRe
           lastUpdatedTime: new Date(),
           updateTrace: [],
           userEmail: req.email
-        })
-        res.json(orderRes);
+        });
+        res.json({
+          products:products,
+          totalAmount:totalAmount,
+          // paymentGateway: z.array(z.object()),
+          orderStatus: orderRes.orderStatus,
+          address: orderRes.address,
+          lastUpdatedTime: orderRes.lastUpdatedTime,
+          updateTrace: [],
+          // invoice: z.object({}).optional(),
+          userEmail: orderRes.userEmail,
+          orderId: orderRes.orderId,
+          status: "SUCCESS"
+        });
       }
     }
   } catch (error) {
@@ -54,7 +66,19 @@ export const orderStatusController = async (req: TypedRequest<OrderStatusRequest
     if (!resp) {
       res.json({ error_code: "INTERNAL_SERVER_ERROR", description: "Some error Occurredewf " });
     } else {
-      res.json(resp);
+      res.json({
+        products:resp.products,
+          totalAmount:resp.totalAmount,
+          // paymentGateway: z.array(z.object()),
+          orderStatus: resp.orderStatus,
+          address: resp.address,
+          lastUpdatedTime: resp.lastUpdatedTime,
+          updateTrace:resp.updateTrace,
+          // invoice: z.object({}).optional(),
+          userEmail: resp.userEmail,
+          orderId: resp.orderId,
+          status: "SUCCESS"
+      });
     }
   } catch (e) {
     res.json({ error_code: "INTERNAL_SERVER_ERROR", description: "Some error Occurredewf " });

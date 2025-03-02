@@ -13,7 +13,14 @@ export const paymentRequestScheme = z.object({
 
 export type PaymentRequest = z.infer<typeof paymentRequestScheme>
 
-export type PaymentResponse = Error<PAYMENT_ERROR_CODES>
+export const PaymentLinkSchema = z.object({
+  url: z.string(),
+});
+
+export type PaymentLinkResponse = z.infer<typeof PaymentLinkSchema>
+
+
+export type PaymentResponse = Error<PAYMENT_ERROR_CODES> | PaymentLinkResponse
 
 
 

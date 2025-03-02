@@ -39,6 +39,24 @@ export const orderScheme = z.object({
   // invoice: z.object({}).optional(),
   userEmail: z.string(),
   orderId: z.string(),
+  // status: z.enum(["SUCCESS"])
+});
+
+export const orderAPIScheme = z.object({
+  products: z.array(ProductDO),
+  totalAmount: z.number(),
+  // paymentGateway: z.array(z.object()),
+  orderStatus: orderStatusEnum,
+  address: AddressSchema,
+  lastUpdatedTime: z.date(),
+  updateTrace: z.array(z.object({
+    updatedBy: z.enum(["DASHBOARD"]),
+    time: z.date(),
+  })),
+  // invoice: z.object({}).optional(),
+  userEmail: z.string(),
+  orderId: z.string(),
+  status: z.enum(["SUCCESS"])
 });
 
 export type ORDER = z.infer<typeof orderScheme>
@@ -54,7 +72,7 @@ export const orderRequestScheme = z.object({
 
 export type OrderCreateRequest = z.infer<typeof orderRequestScheme>
 
-export type OrderCreateResponse = Error<ORDER_ERROR_CODES> | z.infer<typeof orderScheme>
+export type OrderCreateResponse = Error<ORDER_ERROR_CODES> | z.infer<typeof orderAPIScheme>
 
 
 
@@ -64,7 +82,7 @@ export const orderStatusRequestSchema = z.object({
 
 export type OrderStatusRequest = z.infer<typeof orderStatusRequestSchema>
 
-export type OrderStatusResponse = Error<ORDER_ERROR_CODES> | z.infer<typeof orderScheme>
+export type OrderStatusResponse = Error<ORDER_ERROR_CODES> | z.infer<typeof orderAPIScheme>
 
 
 export const updateOrderRequestSchema = z.object({

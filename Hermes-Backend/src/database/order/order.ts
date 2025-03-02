@@ -5,7 +5,7 @@ import { randomUUID } from 'crypto';
 
 
 
-type PARAM_ORDER = Omit<ORDER, "orderId" | "orderStatus">
+type PARAM_ORDER = Omit<ORDER, "orderId" | "orderStatus" | "status">
 
 
 

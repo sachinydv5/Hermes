@@ -13,6 +13,7 @@ import { cartRouter } from './routes/cart/cart.router';
 import { orderRouter } from './routes/order/order.router';
 import { paymentRouter } from './routes/payment/payment.router';
 import { userRouter } from './routes/user/user.router';
+import { webhookRouter } from './routes/webhook/payment.webhook.router';
 var compression = require('compression')
 
 
@@ -39,6 +40,7 @@ app.use("/cart", cartRouter)
 app.use("/order", orderRouter)
 app.use("/payment", paymentRouter)
 app.use("/user", userRouter)
+app.use("/webhook", webhookRouter)
 
 
 app.post("/api/test", authTokenVerification, (_req, resp) => {

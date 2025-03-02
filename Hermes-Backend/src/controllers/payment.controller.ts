@@ -13,12 +13,13 @@ const YOUR_DOMAIN = 'http://localhost:3002';
 
 export const paymentController = async (req: TypedRequestEmail<PaymentRequest>, res: TypedResponse<PaymentResponse>) => {
   try {
+    req.email = "yogeshk4124@gmail.com"
     if (!req.email) {
       res.json({ error_code: "INTERNAL_SERVER_ERROR", description: "Some error Occurred Email not found " });
     } else {
       const orderId = req.body.orderId;
       const resp = await findOrderByOrderId(orderId);
-
+      console.log(resp)
       if (resp) {
         let productList: ProductDoSchema[] = [];
         const productPromises = resp.products.map(async (i) => {
@@ -28,21 +29,41 @@ export const paymentController = async (req: TypedRequestEmail<PaymentRequest>, 
         const resolvedProduct = await Promise.all(productPromises);
         productList = resolvedProduct.filter((item) => item !== null && item !== undefined);
 
-        const lineItems = productList.map((product: ProductDoSchema) => ({ price: product.price, quantity: product.qty }));
+        // const lineItems = productList.map((product: ProductDoSchema) => ({ price: product.price, quantity: product.qty }));
+        const lineItems = await Promise.all(
+          productList.map(async (product: ProductDoSchema) => {
+            const priceObj = await stripe.prices.create({
+              unit_amount: Number(product.price), // Stripe expects amount in cents (e.g., $10 → 1000)
+              currency: 'usd',
+              product_data: {
+                name: product.name, // Ensure each product has a name
+              },
+            });
+        
+            return { price: priceObj.id, quantity: product.qty };
+          })
+        );
         const session = await stripe.checkout.sessions.create({
           line_items: lineItems,
           mode: 'payment',
-          success_url: `${YOUR_DOMAIN}?orderID=${orderId}&success=true`,
-          cancel_url: `${YOUR_DOMAIN}?orderID=${orderId}canceled=true`,
+          success_url: `${YOUR_DOMAIN}/webhook?orderID=${orderId}&success=true`,
+          cancel_url: `${YOUR_DOMAIN}/webhook?orderID=${orderId}canceled=true`,
           automatic_tax: { enabled: true },
+          metadata: { orderID: orderId }, 
         });
         await updateOrderStatus(orderId, "INITIATED")
-        res.redirect(303, session.url);
+        res.json({
+          "url" :  session.url
+        })
+        // res.redirect(303, session.url);
       } else {
+        console.log("else")
         res.json({ error_code: "INTERNAL_ERROR", description: "Some error Occurredewf " });
       }
     }
   } catch (e) {
+    console.log("error")
+    console.log(e)
     res.json({ error_code: "INTERNAL_ERROR", description: "Some error Occurredewf " });
   }
 }
@@ -66,4 +87,5 @@ export const paymentStatusController = async (req: TypedRequestEmail<{}>, res: T
   }
 }
 
+// stripe.listen()
 
