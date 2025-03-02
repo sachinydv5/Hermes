@@ -19,7 +19,7 @@ const Landing = () => {
         try {
           const data = await getOrderStatus(`/order/status/${orderID}`)
           console.log(data)
-          setOrderStatus(data.orderStatus);
+          // setOrderStatus(data.orderStatus);
         } catch (err) {
           setError("err.message");
         } finally {
