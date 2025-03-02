@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { ChevronLeft, ChevronRight, Star, StarHalf, Share2, PinIcon as Pinterest, Clock, Truck, ShieldCheck, HeadphonesIcon, CreditCard, StarIcon } from 'lucide-react'
 import { Button } from "../../../components/ui/button"
 import { Input } from "../../../components/ui/input"
@@ -10,11 +10,12 @@ import { Alert, AlertDescription } from "../../../components/ui/alert"
 import RecentlyView from '../../common/RecentlyView'
 import ListYourProduct from '../../common/ListYourProduct'
 import { useParams } from 'react-router-dom'
-import { callApi, getProductIdRequest, getWishlist } from '../../../api/api'
-import { GetAddToWishlistRequest, GetAddToWishlistResponse, GetProductIdResponse, GetWishlistResponse } from '../../../api/types'
+import { callApi, getProductIdRequest } from '../../../api/api'
+import { GetAddToWishlistRequest, GetAddToWishlistResponse, GetProductIdResponse, OrderCreateRequest, OrderCreateResponse, PaymentCreateRequest, PaymentCreateResponse } from '../../../api/types'
 import { useNavigate } from 'react-router-dom';
 import { Product } from '../../../api/common.types'
-import { Loader2 } from "lucide-react"
+import ProductDetailSkeleton from '@/components/skeleton/ProductDetailSkeleton'
+import { isProductInWishlist, addProductToWishlistCache } from "@/utils/wishlistCache"
 
 const ProductDetail = () => {
   const { productid } = useParams();
@@ -23,6 +24,8 @@ const ProductDetail = () => {
   const [productdetail, setProductDetail] = useState<Product | null>(null);
   const [isInWishlist, setIsInWishlist] = useState(false)
   const [loading, setLoading] = useState(true)
+  const hasCheckedWishlist = useRef(false);
+  const [orderID, setOrderID] = useState("")
   let navigate = useNavigate();
 
   const images = [
@@ -34,43 +37,48 @@ const ProductDetail = () => {
     'https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png'
   ]
 
-  const fetchData = async () => {
-    if (!productid) return;
 
-    setLoading(true)
-    try {
-      const response: GetProductIdResponse = await getProductIdRequest("", `/product/getProduct/${productid}`);
-      if ("error_code" in response) {
-        setError(response.description);
-        setProductDetail(null);
-      } else {
-        setProductDetail(response);
-
-        // Check if product is in wishlist
-        const wishlistResponse = await getWishlist({}, "/wishlist/get") as GetWishlistResponse;
-        if ("wishlist" in wishlistResponse) {
-          const isProductInWishlist = wishlistResponse.wishlist.some(
-            (item: Product) => item.id === productid
-          );
-          setIsInWishlist(isProductInWishlist);
-        }
-
-        setError(null);
-      }
-    } catch (err) {
-      console.error("Product fetch error:", err);
-      setError("Failed to load product details. Please try again later.");
-      setProductDetail(null);
-    } finally {
-      setLoading(false)
-    }
-  };
+ 
 
   useEffect(() => {
+    // Reset the wishlist check flag when product ID changes
+    hasCheckedWishlist.current = false;
+    
+    const fetchData = async () => {
+      if (!productid) return;
+  
+      setLoading(true)
+      try {
+        const response: GetProductIdResponse = await getProductIdRequest("", `/product/getProduct/${productid}`);
+        if ("error_code" in response) {
+          setError(response.description);
+          setProductDetail(null);
+        } else {
+          setProductDetail(response);
+  
+          // Check if product is in wishlist using our utility, but only if we haven't already checked
+          if (productid && !hasCheckedWishlist.current) {
+            const productInWishlist = await isProductInWishlist(productid);
+            setIsInWishlist(productInWishlist);
+            hasCheckedWishlist.current = true;
+          }
+  
+          setError(null);
+        }
+      } catch (err) {
+        console.error("Product fetch error:", err);
+        setError("Failed to load product details. Please try again later.");
+        setProductDetail(null);
+      } finally {
+        setLoading(false)
+      }
+    };
+
     fetchData();
   }, [productid]);
 
-  const handleApi = async (id: string) => {
+
+  const addtoWishlist = async (id: string) => {
     if (!id) return;
 
     try {
@@ -81,6 +89,12 @@ const ProductDetail = () => {
       const response: GetAddToWishlistResponse = await callApi(req, "/wishlist/add");
       if ("status" in response) {
         setIsInWishlist(true)
+        
+        // Update the wishlist cache
+        if (productdetail) {
+          addProductToWishlistCache(productdetail);
+        }
+        
         alert("Product added to wishlist successfully")
       } else if ("error_code" in response) {
         setError(response.description)
@@ -91,99 +105,75 @@ const ProductDetail = () => {
     }
   }
 
+  // add to cart
+  const addtoCart = async (id: string) => {
+    if (!id) return;
+
+    try {
+      const req: GetAddToWishlistRequest = {
+        productId: id,
+      }
+
+      const response: GetAddToWishlistResponse = await callApi(req, "/cart/add");
+      if ("status" in response) {
+        // setIsInCart(true)
+        alert("Product added to cart successfully")
+      } else if ("error_code" in response) {
+        setError(response.description)
+      }
+    } catch (err) {
+      console.error("Wishlist error:", err)
+      setError("Failed to add item to cart")
+    }
+  }
+   
+  // order create 
+    const handleOrderApi = async (id: string) => {
+      
+      try{
+        const req: OrderCreateRequest = {
+          products: id,
+        } 
+        const response: OrderCreateResponse = await callApi(req,"/order/create");
+        if("status" in response){
+          
+          setOrderID(response.orderId)
+          handlePaymentsApi(response.orderId)
+          // alert("order created successfully!")
+        } else {
+          setError(response.description || "Failed to connect")
+        }
+      }
+    catch(err){
+      console.error("Order creation error:", err)
+      setError("Failed to create order")
+    }
+  }
+  const handlePaymentsApi = async (id: string | null) => {
+    if (id === null || id === "" ) return;
+    try{
+      const req: PaymentCreateRequest = {
+        orderId: id,
+      } 
+      const response: PaymentCreateResponse = await callApi(req,"/payment/create");
+
+      if("status" in response){
+        window.location.href = response.url
+        // alert("order created successfully!")
+      } else {
+        setError(response.description || "Failed to connect")
+      }
+    }
+  catch(err){
+    console.error("Order creation error:", err)
+    setError("Failed to create order")
+  }
+}
+
+
   if (loading) {
     return (
-      <div className="w-[90vw] mx-auto py-8">
-        <div className="grid md:grid-cols-2 gap-8">
-          {/* Image Skeleton */}
-          <div className="space-y-4">
-            <div className="relative aspect-[4/3] bg-gray-200 rounded-lg animate-pulse" />
-            <div className="flex gap-2 overflow-x-auto pb-2">
-              {[...Array(4)].map((_, idx) => (
-                <div key={idx} className="flex-shrink-0 w-20 aspect-[4/3] bg-gray-200 rounded-lg animate-pulse" />
-              ))}
-            </div>
-          </div>
-
-          {/* Content Skeleton */}
-          <div className="space-y-8">
-            {/* Rating and Title */}
-            <div className="space-y-4">
-              <div className="flex gap-2">
-                <div className="w-32 h-5 bg-gray-200 rounded animate-pulse" />
-                <div className="w-48 h-5 bg-gray-200 rounded animate-pulse" />
-              </div>
-              <div className="w-3/4 h-8 bg-gray-200 rounded animate-pulse" />
-            </div>
-
-            {/* Product Info */}
-            <div className="space-y-4">
-              <div className="flex justify-between">
-                <div className="w-24 h-4 bg-gray-200 rounded animate-pulse" />
-                <div className="w-32 h-4 bg-gray-200 rounded animate-pulse" />
-              </div>
-              <div className="flex justify-between">
-                <div className="w-24 h-4 bg-gray-200 rounded animate-pulse" />
-                <div className="w-40 h-4 bg-gray-200 rounded animate-pulse" />
-              </div>
-            </div>
-
-            {/* Price and Options */}
-            <div className="space-y-6">
-              <div className="w-full h-10 bg-gray-200 rounded animate-pulse" />
-              <div className="flex items-center gap-4">
-                <div className="w-32 h-8 bg-gray-200 rounded animate-pulse" />
-                <div className="w-24 h-8 bg-gray-200 rounded animate-pulse" />
-              </div>
-            </div>
-
-            {/* Buttons */}
-            <div className="flex gap-4 pt-6">
-              <div className="flex-1 h-10 bg-gray-200 rounded animate-pulse" />
-              <div className="flex-1 h-10 bg-gray-200 rounded animate-pulse" />
-              <div className="flex-1 h-10 bg-gray-200 rounded animate-pulse" />
-            </div>
-
-            {/* Additional Info */}
-            <div className="pt-6 border-t">
-              <div className="w-48 h-5 bg-gray-200 rounded animate-pulse mb-4" />
-              <div className="grid grid-cols-4 gap-2">
-                {[...Array(4)].map((_, idx) => (
-                  <div key={idx} className="h-8 bg-gray-200 rounded animate-pulse" />
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Tags Skeleton */}
-        <div className="flex gap-2 mt-6">
-          {[...Array(4)].map((_, idx) => (
-            <div key={idx} className="w-20 h-6 bg-gray-200 rounded-full animate-pulse" />
-          ))}
-        </div>
-
-        {/* Tabs Skeleton */}
-        <div className="mt-8">
-          <div className="flex gap-4 border-b">
-            {[...Array(4)].map((_, idx) => (
-              <div key={idx} className="w-24 h-8 bg-gray-200 rounded animate-pulse" />
-            ))}
-          </div>
-          <div className="mt-6 grid md:grid-cols-3 gap-8">
-            {[...Array(3)].map((_, idx) => (
-              <div key={idx} className="space-y-4">
-                <div className="w-32 h-6 bg-gray-200 rounded animate-pulse" />
-                <div className="space-y-2">
-                  {[...Array(3)].map((_, i) => (
-                    <div key={i} className="w-full h-4 bg-gray-200 rounded animate-pulse" />
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+     <ProductDetailSkeleton/>
     )
   }
 
@@ -231,6 +221,13 @@ const ProductDetail = () => {
             >
               <ChevronRight className="h-6 w-6" />
             </button>
+            <Button 
+              onClick={() => addtoCart(productid ?? "")}
+              className="absolute bottom-4 right-4 z-10"
+              size="sm"
+            >
+              Add to Cart
+            </Button>
           </div>
           <div className="flex gap-2 overflow-x-auto pb-2">
             {images.map((img, idx) => (
@@ -318,13 +315,20 @@ const ProductDetail = () => {
               <Button 
                 variant="outline" 
                 className={`flex-1 ${isInWishlist ? 'bg-gray-100 border-gray-300 text-gray-500 cursor-not-allowed' : ''}`}
-                onClick={() => handleApi(productid ?? "")}
+                onClick={() => addtoWishlist(productid ?? "")}
                 disabled={isInWishlist}
               >
                 {isInWishlist ? 'ALREADY IN WISHLIST' : 'ADD TO WISHLIST'}
               </Button>
-              <Button className="flex-1">ADD TO CART</Button>
-              <Button variant="secondary" className="flex-1">BUY NOW</Button>
+           
+              <Button className="flex-1"
+              onClick={() => addtoCart(productid ?? "")}>ADD TO CART</Button>
+              <Button 
+              variant="secondary" 
+              className="flex-1"
+              onClick={() => 
+              handleOrderApi(productid ?? "")
+              }>BUY NOW</Button>
             </div>
 
             <div className="flex justify-between items-center pt-6 border-t">
@@ -383,6 +387,13 @@ const ProductDetail = () => {
                 <p>
                   {productdetail?.description}
                 </p>
+                <Button 
+                  onClick={() => addtoCart(productid ?? "")} 
+                  variant="outline" 
+                  className="mt-4"
+                >
+                  Add to Cart
+                </Button>
               </div>
             </div>
 

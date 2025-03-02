@@ -175,7 +175,71 @@ export type UpdateAppConfigResponse = Error<UPDATE_APP_CONFIG_CODES> | {
 }
 
 
+// order create 
+type ORDER_CREATE_CODES = "INTERNAL_ERROR"
+ 
+export type OrderCreateRequest = {
+  products: string | string[];
+}
+
+export type OrderCreateResponse = Error<ORDER_CREATE_CODES> | {
+  products: {
+    id: string;
+    description: string;
+    name: string;
+    img?: string[];
+    duration: any; // Replace with DurationSchema type
+    discount: number;
+    pickupAddress: any; // Replace with PickupAddressSchema type
+    price: string;
+    qty: number;
+    category: string;
+    userId: string;
+    collectionId: string;
+    createTs: string;
+  }[];
+  totalAmount: number;
+  orderStatus:
+    | "INITIATED"
+    | "ORDER_PLACED"
+    | "FAILURE"
+    | "IN_TRANSIT"
+    | "REACHED"
+    | "REFUNDED"
+    | "ABORTED"
+    | "CREATED"
+    | "PAYMENT_SUCCESS"
+    | "PAYMENT_FAILURE";
+  address: {
+    city: string;
+    country: string;
+    pincode: string;
+    addressLine1?: string;
+    addressLine2?: string;
+  };
+  lastUpdatedTime: Date;
+  updateTrace: {
+    updatedBy: "DASHBOARD";
+    time: Date;
+  }[];
+  userEmail: string;
+  orderId: string;
+  status: "SUCCESS";
+};
 
 
+
+
+
+export type PaymentCreateRequest = {
+  orderId: string;
+}
+
+
+export type PaymentCreateResponse =  Error<ORDER_CREATE_CODES> | {
+  url: string;
+  status: "SUCCESS",
+
+}
 
 

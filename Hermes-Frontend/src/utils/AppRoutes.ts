@@ -13,5 +13,6 @@ export const AppRoutes = {
     USERPROFILE:'/userprofile',
     DASHBOARD:'/dashboard',
     TRACKORDER:'/trackorder',
-   MULTIPLEPRODUCT: '/multipleproduct'  
+    MULTIPLEPRODUCT: '/multipleproduct' ,
+    CART:'/cart' 
 }

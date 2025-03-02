@@ -1,32 +1,31 @@
-import React, { useState, useEffect } from 'react'
-import { Heart } from 'lucide-react'
+import React, { useState, useEffect, useRef } from 'react'
+import { Heart,ShoppingCartIcon } from 'lucide-react'
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
-import { callApi, getWishlist } from "@/api/api"
-import { GetAddToWishlistRequest, GetWishlistRequest, GetWishlistResponse } from "@/api/types"
+import { callApi } from "@/api/api"
+import { GetAddToWishlistRequest } from "@/api/types"
 import { Product } from "@/api/common.types"
+import { isProductInWishlist, addProductToWishlistCache } from "@/utils/wishlistCache"
 
 interface ProductCardTwoProps {
-  product?: Product;  // Make product optional
+  product?: Product;  
 }
 
 const ProductCardTwo = ({product}: ProductCardTwoProps) => {
     const [isHovered, setIsHovered] = useState(false)
     const [isInWishlist, setIsInWishlist] = useState(false)
+    const [error, setError] = useState<string | null>(null)
+    const hasCheckedWishlist = useRef(false);
 
     useEffect(() => {
       const checkWishlistStatus = async () => {
-        if (!product?.id) return;
+        if (!product?.id || hasCheckedWishlist.current) return;
+        
         try {
-          const response = await getWishlist({}, "/wishlist/get") as GetWishlistResponse;
-          if ("wishlist" in response) {
-            const isProductInWishlist = response.wishlist.some(
-              (item: Product) => item.id === product.id
-            );
-            console.log('Product in wishlist:', isProductInWishlist); // Debug log
-            setIsInWishlist(isProductInWishlist);
-          }
+          const isInWishlist = await isProductInWishlist(product.id);
+          setIsInWishlist(isInWishlist);
+          hasCheckedWishlist.current = true;
         } catch (error) {
           console.error('Error checking wishlist status:', error);
         }
@@ -40,7 +39,7 @@ const ProductCardTwo = ({product}: ProductCardTwoProps) => {
       e.stopPropagation();
       
       if (!product?.id || isInWishlist) {
-        console.log('Product already in wishlist or invalid ID'); // Debug log
+        console.log('Product already in wishlist or invalid ID'); 
         return;
       }
 
@@ -51,6 +50,12 @@ const ProductCardTwo = ({product}: ProductCardTwoProps) => {
         const response = await callApi(request, "/wishlist/add")
         if ('status' in response) {
           setIsInWishlist(true)
+          
+          // Update cache with this product
+          if (product) {
+            addProductToWishlistCache(product);
+          }
+          
           alert(`${product.name || 'Product'} has been added to your wishlist`)
         }
       } catch (error) {
@@ -59,6 +64,33 @@ const ProductCardTwo = ({product}: ProductCardTwoProps) => {
       }
     }
 
+    // add to cart
+    const handleAddToCart = async (e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      if (!product?.id) {
+        console.log('Invalid product ID');
+        return;
+      }
+
+      try {
+        const req: GetAddToWishlistRequest = {
+          productId: product.id,
+        }
+  
+        const response = await callApi(req, "/cart/add");
+        if ("status" in response) {
+          alert(`${product.name || 'Product'} added to cart successfully`)
+        } else if ("error_code" in response) {
+          setError(response.description)
+        }
+      } catch (err) {
+        console.error("Cart error:", err)
+        setError("Failed to add item to cart")
+      }
+    }
+    
     const images = [
       "https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png",
     ]
@@ -140,10 +172,10 @@ const ProductCardTwo = ({product}: ProductCardTwoProps) => {
             <Button 
               size="sm" 
               className="bg-[#f4a340] hover:bg-[#e59635] rounded-full w-10 h-10 flex items-center justify-center"
-              onClick={(e) => e.stopPropagation()}
+              onClick={handleAddToCart}
             >
               <span className="sr-only">Add to cart</span>
-              🛒
+              <ShoppingCartIcon/>
             </Button>
           </div>
         </div>

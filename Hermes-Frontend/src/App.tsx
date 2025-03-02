@@ -8,6 +8,7 @@ import MainLayout from "./components/layout/MainLayout";
 import { AppRoutes } from "./utils/AppRoutes";
 import AuthGuard from './guards/AuthGuard';
 import SidebarLayout from './components/layout/SidebarLayout';
+import Cart from './components/pages/home/Cart';
 
 
 // Loading component
@@ -47,6 +48,8 @@ const getMainLayout = () => {
             <Route path={AppRoutes.CREATESINGLE} element={<SingleList />} />
             <Route path={AppRoutes.MULTIPLEPRODUCT} element={<MultipleProduct />} />
             <Route path={AppRoutes.WISHLIST} element={<Wishlist />} />
+            <Route path={AppRoutes.CART} element={<Cart/>} />
+
             
             {/* Protected Routes with Sidebar */}
             <Route element={<SidebarLayout />}>

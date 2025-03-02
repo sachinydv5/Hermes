@@ -1,36 +1,87 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { Button } from "@/components/ui/button"
 import { InfoIcon, ShoppingCart, X } from 'lucide-react'
 import axios from 'axios'
-import { GetWishlistResponse } from '../../api/types'
-import { getWishlist } from '../../api/api'
+import { GetAddToWishlistRequest, GetAddToWishlistResponse } from '../../api/types'
+import { callApi } from '../../api/api'
 import { Product } from '../../api/common.types'
+import { getWishlistWithCache, removeProductFromWishlistCache, invalidateWishlistCache } from "@/utils/wishlistCache"
 
   
 const Wishlist = () => {
 const [wishlistData, setWishlistData] = useState<Product[]>([]);
-const [error, setError] = useState<string | null>(null)
-console.log("wishlistdata",wishlistData)
+const [error, setError] = useState<string | null>(null);
 
 useEffect(() => {
     const fetchData = async () => {
       try {
-        const response: GetWishlistResponse = await getWishlist("", "/wishlist/get");
-        if ("error_code" in response) {
-          setError(response.description);
-        }
-       else if ("status" in response) {
-         setWishlistData(response.wishlist);
-        // console.log("product detail",response)
-        } 
+        // Use our centralized cache utility instead
+        const wishlistItems = await getWishlistWithCache();
+        setWishlistData(wishlistItems);
       } catch (err) {
-        console.error("Sign up error:", err);
+        console.error("Wishlist fetch error:", err);
         setError("");
       }
     };
   
     fetchData();
+    
+    // Cleanup function - invalidate cache on unmount
+    return () => {
+      invalidateWishlistCache();
+    };
   }, []);
+
+  // add to cart handle
+  const addtoCart = async (id: string) => {
+    if (!id) return;
+
+    try {
+      const req: GetAddToWishlistRequest = {
+        productId: id,
+      }
+
+      const response: GetAddToWishlistResponse = await callApi(req, "/cart/add");
+      if ("status" in response) {
+        alert("Product added to cart successfully")
+      } else if ("error_code" in response) {
+        setError(response.description)
+      }
+    } catch (err) {
+      console.error("Cart error:", err)
+      setError("Failed to add item to cart")
+    }
+  }
+
+  // New function to handle removing from wishlist
+  const removeFromWishlist = async (id: string) => {
+    if (!id) return;
+
+    try {
+      // Make API call to remove from wishlist
+      const req: GetAddToWishlistRequest = {
+        productId: id,
+      }
+
+      // Use the correct URL for removing from wishlist
+      const response = await callApi(req, "/wishlist/remove");
+      
+      if ("status" in response) {
+        // Update local state
+        setWishlistData(prevItems => prevItems.filter(item => item.id !== id));
+        
+        // Update cache
+        removeProductFromWishlistCache(id);
+        
+        alert("Product removed from wishlist");
+      } else if ("error_code" in response) {
+        setError(response.description);
+      }
+    } catch (err) {
+      console.error("Failed to remove from wishlist:", err);
+      setError("Failed to remove item from wishlist");
+    }
+  }
 
   return (
     <div className="container mx-auto py-8">
@@ -79,21 +130,26 @@ useEffect(() => {
               
               >
                 {/* {item.inStock ? "IN STOCK" : "OUT OF STOCK"} */}
+                {item.qty > 0 ? "IN STOCK" : "OUT OF STOCK"}
               </span>
             </div>
             <div className="col-span-4 lg:col-span-2">
               <div className="flex items-center gap-2">
                 <Button
-                  // variant={item.inStock ? "default" : "secondary"}
                   size="sm"
                   className="w-full bg-[#FCB857] hover:bg-orange-300"
-                  // disabled={!item.inStock}
+                  disabled={item.qty <= 0}
+                  onClick={() => addtoCart(item.id)}
                 >
                   <ShoppingCart className="w-4 h-4 mr-2" />
                   <span className="hidden sm:inline">Add to Cart</span>
                 </Button>
-                <Button variant="ghost" size="icon" className="shrink-0 border-2 rounded-full"
-              >
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="shrink-0 border-2 rounded-full"
+                  onClick={() => removeFromWishlist(item.id)}
+                >
                   <X className="w-4 h-4" />
                 </Button>
               </div>

@@ -8,7 +8,7 @@ export function MainLayout({ children }: any) {
     const location = useLocation();
 
 
-    const noFooterPaths = [AppRoutes.USERPROFILE, AppRoutes.DASHBOARD,AppRoutes.WISHLIST];
+    const noFooterPaths = [AppRoutes.USERPROFILE, AppRoutes.DASHBOARD,AppRoutes.WISHLIST,AppRoutes.CART];
     const noNavBar = [AppRoutes.MARKET,AppRoutes.CREATINGLIST,AppRoutes.TRACKORDER,AppRoutes.CREATESINGLE,AppRoutes.PRODUCTDETAIL,AppRoutes.PRODUCTLIST,AppRoutes.USERPROFILE, AppRoutes.DASHBOARD,AppRoutes.WISHLIST];
 
 
