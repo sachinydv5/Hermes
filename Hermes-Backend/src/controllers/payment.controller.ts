@@ -8,7 +8,7 @@ import { ProductDoSchema } from "../types/product/product";
 const stripe = require('stripe')('sk_test_51Qmc0oA5UUnJr17qB2vMD75NhzYdTvsNSUkU8Uq2yl5CUGlqpFfFtqVSkrE2Eofj7I5UqeYyk61gYzbICsWnVIff00sLfqWzwl');
 
 
-const YOUR_DOMAIN = 'http://localhost:3002';
+const YOUR_DOMAIN = 'https://hermes-backend-pykc.onrender.com';
 
 
 export const paymentController = async (req: TypedRequestEmail<PaymentRequest>, res: TypedResponse<PaymentResponse>) => {
