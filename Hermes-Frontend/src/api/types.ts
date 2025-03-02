@@ -243,3 +243,8 @@ export type PaymentCreateResponse =  Error<ORDER_CREATE_CODES> | {
 }
 
 
+export type OrderStatusRequest = {
+  orderId: string;
+}
+
+export type OrderStatusResponse = OrderCreateResponse

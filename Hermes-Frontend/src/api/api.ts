@@ -1,12 +1,12 @@
-import { OrderCreateRequest,AppConfigRequest, AppConfigResponse, ERROR_RESPONSE, GetAddToWishlistRequest, GetAddToWishlistResponse, GetProductIdRequest, GetProductIdResponse, GetProductRequest, GetProductResponse, GetWishlistRequest, GetWishlistResponse, ProductRequest, ProductResponse, UpdateAppConfigRequest, UpdateAppConfigResponse, UserLoginRequest, UserLoginResponse, UserLogoutRequest, UserLogoutResponse, UserSignUpRequest, UserSignUpResponse, OrderCreateResponse, PaymentCreateResponse, PaymentCreateRequest } from "./types";
+import { OrderCreateRequest,AppConfigRequest, AppConfigResponse, ERROR_RESPONSE, GetAddToWishlistRequest, GetAddToWishlistResponse, GetProductIdRequest, GetProductIdResponse, GetProductRequest, GetProductResponse, GetWishlistRequest, GetWishlistResponse, ProductRequest, ProductResponse, UpdateAppConfigRequest, UpdateAppConfigResponse, UserLoginRequest, UserLoginResponse, UserLogoutRequest, UserLogoutResponse, UserSignUpRequest, UserSignUpResponse, OrderCreateResponse, PaymentCreateResponse, PaymentCreateRequest, OrderStatusRequest, OrderStatusResponse } from "./types";
 
 import axios, { AxiosResponse } from 'axios';
 
 
 const endpoint = "http://localhost:3002";
 
-type API_REQUEST = UserSignUpRequest | UserLoginRequest | UserLogoutRequest | ProductRequest | ProductResponse | UpdateAppConfigRequest | AppConfigRequest | GetAddToWishlistRequest | OrderCreateRequest | PaymentCreateRequest;
-type API_RESPONSE = UserSignUpResponse | UserLoginResponse | UserLogoutResponse | ProductResponse | GetProductResponse | UpdateAppConfigResponse | AppConfigResponse | ERROR_RESPONSE |GetAddToWishlistResponse | OrderCreateResponse | PaymentCreateResponse;
+type API_REQUEST = UserSignUpRequest | UserLoginRequest | UserLogoutRequest | ProductRequest | ProductResponse | UpdateAppConfigRequest | AppConfigRequest | GetAddToWishlistRequest | OrderCreateRequest | PaymentCreateRequest | OrderStatusRequest;
+type API_RESPONSE = UserSignUpResponse | UserLoginResponse | UserLogoutResponse | ProductResponse | GetProductResponse | UpdateAppConfigResponse | AppConfigResponse | ERROR_RESPONSE |GetAddToWishlistResponse | OrderCreateResponse | PaymentCreateResponse | OrderStatusResponse;
 
 export function callApi(request: UserSignUpRequest, url: "/api/signup"): Promise<UserSignUpResponse | ERROR_RESPONSE>;
 export function callApi(request: UserLoginRequest, url: "/api/login"): Promise<UserLoginResponse | ERROR_RESPONSE>;
@@ -20,6 +20,7 @@ export function callApi(request:GetAddToWishlistRequest, url: "/wishlist/remove"
 export function callApi(request:OrderCreateRequest, url: "/order/create"): Promise<OrderCreateResponse | ERROR_RESPONSE>;
 export function callApi(request:GetAddToWishlistRequest, url: "/cart/add"): Promise<GetAddToWishlistResponse | ERROR_RESPONSE>;
 export function callApi(request:PaymentCreateRequest, url: "/payment/create"): Promise<PaymentCreateResponse | ERROR_RESPONSE>;
+export function callApi(request:OrderStatusRequest, url: "/order/status"): Promise<OrderStatusResponse | ERROR_RESPONSE>;
 
 
 export async function callApi(request: API_REQUEST, url: string): Promise<API_RESPONSE> {
@@ -45,6 +46,16 @@ export async function callApi(request: API_REQUEST, url: string): Promise<API_RE
 export async function getProductIdRequest(request: GetProductIdRequest, url: string): Promise<GetProductIdResponse> {
   try {
     const response: AxiosResponse<GetProductIdResponse> = await axios.get(endpoint + url);
+    return response.data;
+  } catch (error) {
+    console.error('Error making POST request:', error);
+    return { error_code: "INTERNAL_SERVER_ERROR", description: "API Call Failure" } as ERROR_RESPONSE;
+  }
+}
+
+export async function getOrderStatus(url: string): Promise<OrderStatusResponse> {
+  try {
+    const response: AxiosResponse<OrderStatusResponse> = await axios.get(endpoint + url);
     return response.data;
   } catch (error) {
     console.error('Error making POST request:', error);

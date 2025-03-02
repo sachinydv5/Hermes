@@ -61,8 +61,11 @@ export const orderCreateController = async (req: TypedRequestEmail<OrderCreateRe
 
 export const orderStatusController = async (req: TypedRequest<OrderStatusRequest>, res: TypedResponse<OrderStatusResponse>) => {
   try {
-    const orderId = req.body.orderId;
+    const { orderId } = req.params;
+    console.log(orderId)
     const resp = await findOrderByOrderId(orderId);
+    console.log(resp)
+
     if (!resp) {
       res.json({ error_code: "INTERNAL_SERVER_ERROR", description: "Some error Occurredewf " });
     } else {
@@ -81,6 +84,7 @@ export const orderStatusController = async (req: TypedRequest<OrderStatusRequest
       });
     }
   } catch (e) {
+    console.log(e)
     res.json({ error_code: "INTERNAL_SERVER_ERROR", description: "Some error Occurredewf " });
   }
 }
