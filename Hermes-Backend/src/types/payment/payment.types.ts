@@ -15,6 +15,7 @@ export type PaymentRequest = z.infer<typeof paymentRequestScheme>
 
 export const PaymentLinkSchema = z.object({
   url: z.string(),
+  status: z.string(),
 });
 
 export type PaymentLinkResponse = z.infer<typeof PaymentLinkSchema>

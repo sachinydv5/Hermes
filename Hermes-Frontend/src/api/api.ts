@@ -3,7 +3,7 @@ import { OrderCreateRequest,AppConfigRequest, AppConfigResponse, ERROR_RESPONSE,
 import axios, { AxiosResponse } from 'axios';
 
 
-const endpoint = "https://7118-2401-4900-65ae-9e2a-a0f6-5417-6d9d-e7ed.ngrok-free.app";
+const endpoint = "http://localhost:3002";
 
 type API_REQUEST = UserSignUpRequest | UserLoginRequest | UserLogoutRequest | ProductRequest | ProductResponse | UpdateAppConfigRequest | AppConfigRequest | GetAddToWishlistRequest | OrderCreateRequest | PaymentCreateRequest;
 type API_RESPONSE = UserSignUpResponse | UserLoginResponse | UserLogoutResponse | ProductResponse | GetProductResponse | UpdateAppConfigResponse | AppConfigResponse | ERROR_RESPONSE |GetAddToWishlistResponse | OrderCreateResponse | PaymentCreateResponse;

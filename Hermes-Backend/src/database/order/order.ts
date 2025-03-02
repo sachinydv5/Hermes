@@ -17,6 +17,7 @@ export const findOrderByOrderId = async (orderId: string) => {
 }
 
 export const createOrder = async (orderValue: PARAM_ORDER) => {
+  const orderID = randomUUID();
   const order: ORDER = {
     products: orderValue.products,
     totalAmount: orderValue.totalAmount,
@@ -26,10 +27,10 @@ export const createOrder = async (orderValue: PARAM_ORDER) => {
     updateTrace: [],
     // invoice: undefined,
     userEmail: orderValue.userEmail,
-    orderId: randomUUID()
+    orderId: orderID
   }
   const db = getFirestore();
-  const docRef = db.collection(ORDER_DB_COLLECTION).doc();
+  const docRef = db.collection(ORDER_DB_COLLECTION).doc(orderID);
   await docRef.set(order);
   return order;
 };

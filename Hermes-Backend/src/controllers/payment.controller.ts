@@ -53,6 +53,7 @@ export const paymentController = async (req: TypedRequestEmail<PaymentRequest>, 
         });
         await updateOrderStatus(orderId, "INITIATED")
         res.json({
+          status : "SUCCESS",
           "url" :  session.url
         })
         // res.redirect(303, session.url);
