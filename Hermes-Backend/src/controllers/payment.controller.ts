@@ -51,7 +51,7 @@ export const paymentController = async (req: TypedRequestEmail<PaymentRequest>, 
           automatic_tax: { enabled: true },
           metadata: { orderID: orderId }, 
         });
-        await updateOrderStatus(orderId, "INITIATED")
+        await updateOrderStatus(orderId, "INITIATED", "SYSTEM")
         res.json({
           status : "SUCCESS",
           "url" :  session.url
@@ -75,10 +75,10 @@ export const paymentStatusController = async (req: TypedRequestEmail<{}>, res: T
     const { success, canceled, orderID } = req.query;
     if (orderID && typeof orderID === 'string') {
       if (success) {
-        await updateOrderStatus(orderID, "PAYMENT_SUCCESS")
+        await updateOrderStatus(orderID, "PAYMENT_SUCCESS", "SYSTEM")
       }
       if (canceled) {
-        await updateOrderStatus(orderID, "PAYMENT_FAILURE")
+        await updateOrderStatus(orderID, "PAYMENT_FAILURE", "SYSTEM")
       }
     } else {
       res.json({ error_code: "INTERNAL_ERROR", description: "Some error Occurredewf " });

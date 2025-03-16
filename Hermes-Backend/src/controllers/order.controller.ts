@@ -1,7 +1,7 @@
-import { createOrder, findOrderByOrderId, updateOrderStatus } from "../database/order/order";
+import { createOrder, findOrderByOrderId, getAllOrders, updateOrderStatus } from "../database/order/order";
 import { findProductByProductId } from "../database/product/product";
 import { TypedRequest, TypedRequestEmail, TypedResponse } from "../types/express.types";
-import { OrderCreateRequest, OrderCreateResponse, OrderStatusRequest, OrderStatusResponse, UpdateOrderRequest, UpdateOrderResponse } from "../types/order/order.types";
+import { ORDER, OrderCreateRequest, OrderCreateResponse, OrderStatusAllRequest, OrderStatusAllResponse, OrderStatusRequest, OrderStatusResponse, UpdateOrderRequest, UpdateOrderResponse } from "../types/order/order.types";
 import { ProductDoSchema } from "../types/product/product";
 
 
@@ -90,10 +90,28 @@ export const orderStatusController = async (req: TypedRequest<OrderStatusRequest
 }
 
 
+export const orderStatusAllController = async (req: TypedRequest<OrderStatusAllRequest>, res: TypedResponse<OrderStatusAllResponse>) => {
+  try {
+    const resp: ORDER[] = await getAllOrders();
+    console.log(resp)
+
+    if (!resp) {
+      res.json({ error_code: "INTERNAL_SERVER_ERROR", description: "Some error Occurredewf " });
+    } else {
+      res.json({ orders: resp});
+    }
+  } catch (e) {
+    console.log(e)
+    res.json({ error_code: "INTERNAL_SERVER_ERROR", description: "Some error Occurredewf " });
+  }
+}
+
+
+
 export const orderUpdateController = async (req: TypedRequest<UpdateOrderRequest>, res: TypedResponse<UpdateOrderResponse>) => {
   try {
     const orderId = req.body.orderId;
-    await updateOrderStatus(orderId, req.body.orderStatus);
+    await updateOrderStatus(orderId, req.body.orderStatus, "DASHBOARD");
     res.json({ status: "SUCCESS"})
   } catch (e) {
     res.json({ error_code: "INTERNAL_SERVER_ERROR", description: "Some error Occurredewf " });

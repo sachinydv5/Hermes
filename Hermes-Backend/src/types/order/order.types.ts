@@ -33,7 +33,7 @@ export const orderScheme = z.object({
   address: AddressSchema,
   lastUpdatedTime: z.date(),
   updateTrace: z.array(z.object({
-    updatedBy: z.enum(["DASHBOARD"]),
+    updatedBy: z.enum(["DASHBOARD", "SYSTEM"]),
     time: z.date(),
   })),
   // invoice: z.object({}).optional(),
@@ -50,7 +50,7 @@ export const orderAPIScheme = z.object({
   address: AddressSchema,
   lastUpdatedTime: z.date(),
   updateTrace: z.array(z.object({
-    updatedBy: z.enum(["DASHBOARD"]),
+    updatedBy: z.enum(["DASHBOARD", "SYSTEM"]),
     time: z.date(),
   })),
   // invoice: z.object({}).optional(),
@@ -58,6 +58,7 @@ export const orderAPIScheme = z.object({
   orderId: z.string(),
   status: z.enum(["SUCCESS"])
 });
+
 
 export type ORDER = z.infer<typeof orderScheme>
 
@@ -83,6 +84,17 @@ export const orderStatusRequestSchema = z.object({
 export type OrderStatusRequest = z.infer<typeof orderStatusRequestSchema>
 
 export type OrderStatusResponse = Error<ORDER_ERROR_CODES> | z.infer<typeof orderAPIScheme>
+
+
+
+export const orderStatusAllRequestSchema = z.object({
+  orderId: z.string(),
+});
+
+export type OrderStatusAllRequest = z.infer<typeof orderStatusRequestSchema>
+
+export type OrderStatusAllResponse = Error<ORDER_ERROR_CODES> | { "orders": ORDER[] }
+
 
 
 export const updateOrderRequestSchema = z.object({

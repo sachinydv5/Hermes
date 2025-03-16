@@ -35,10 +35,21 @@ export const createOrder = async (orderValue: PARAM_ORDER) => {
   return order;
 };
 
-export const updateOrderStatus = async (orderId: string, orderStatus: ORDER_STATUS) => {
+export const updateOrderStatus = async (orderId: string, orderStatus: ORDER_STATUS, updatedBy: "DASHBOARD" | "SYSTEM") => {
+  const oldOrder = await findOrderByOrderId(orderId);
+  if (!oldOrder) return null;
   const db = getFirestore();
   const snapshot = db.collection(ORDER_DB_COLLECTION).doc(orderId)
-  await snapshot.update({ status: orderStatus })
+  oldOrder.updateTrace.push({
+    updatedBy: updatedBy, 
+    time: new Date() 
+  });
+  // const trace = oldOrder.updateTrace.push[{ updatedBy: "DASHBOARD", time: Date.now() }]
+  await snapshot.update({ status: orderStatus, updateTrace: oldOrder.updateTrace })
 }
 
-
+export const getAllOrders = async (): Promise<ORDER[]> => {
+  const db = getFirestore();
+  const snapshot = await db.collection(ORDER_DB_COLLECTION).get()
+  return snapshot.docs.map(doc => doc.data() as ORDER);
+}

@@ -14,10 +14,10 @@ export const paymentWebHookController = async (req: any, res: TypedResponse<Paym
     const { success, canceled, orderID } = req.query;
     if (orderID && typeof orderID === 'string') {
       if (success) {
-        await updateOrderStatus(orderID, "PAYMENT_SUCCESS")
+        await updateOrderStatus(orderID, "PAYMENT_SUCCESS", "SYSTEM")
       }
       if (canceled) {
-        await updateOrderStatus(orderID, "PAYMENT_FAILURE")
+        await updateOrderStatus(orderID, "PAYMENT_FAILURE", "SYSTEM")
       }
       res.redirect(`http://localhost:5173?orderID=${orderID}`)
     } else {
