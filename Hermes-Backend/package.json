@@ -1,5 +1,5 @@
 {
-  "name": "Hermes-Backend",
+  "name": "hermes-backend",
   "version": "1.0.0",
   "description": "backend for rental service ",
   "main": "index.js",

@@ -74,7 +74,7 @@ export default function OrderTable({ orders: initialOrders }: OrderTableProps) {
 
   return (
     <>
-      <div className="rounded-md border">
+      <div className="rounded-md border overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow>
@@ -103,15 +103,15 @@ export default function OrderTable({ orders: initialOrders }: OrderTableProps) {
                   <TableCell>
                     <span
                       className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                        order.status === "delivered" || order.status === "completed"
+                        order.status === "REACHED" || order.status === "PAYMENT_SUCCESS"
                           ? "bg-green-100 text-green-800"
-                          : order.status === "processing" || order.status === "shipped"
-                            ? "bg-blue-100 text-blue-800"
-                            : order.status === "created" || order.status === "pending"
-                              ? "bg-yellow-100 text-yellow-800"
-                              : order.status === "cancelled"
-                                ? "bg-red-100 text-red-800"
-                                : "bg-gray-100 text-gray-800"
+                          : order.status === "IN_TRANSIT" || order.status === "ORDER_PLACED"
+                          ? "bg-blue-100 text-blue-800"
+                          : order.status === "CREATED" || order.status === "PAYMENT_FAILURE"
+                          ? "bg-yellow-100 text-yellow-800"
+                          : order.status === "FAILURE" || order.status === "ABORTED"
+                          ? "bg-red-100 text-red-800"
+                          : "bg-gray-100 text-gray-800"
                       }`}
                     >
                       {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
@@ -119,16 +119,19 @@ export default function OrderTable({ orders: initialOrders }: OrderTableProps) {
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
-                      <Select value={order.status} onValueChange={(value) => handleStatusChange(order.id, value)}>
+                      <Select value={order.status.toUpperCase()} onValueChange={(value) => handleStatusChange(order.id, value)}>
                         <SelectTrigger className="w-[180px]">
                           <SelectValue placeholder="Update status" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="created">Created</SelectItem>
-                          <SelectItem value="processing">Processing</SelectItem>
-                          <SelectItem value="shipped">Shipped</SelectItem>
-                          <SelectItem value="delivered">Delivered</SelectItem>
-                          <SelectItem value="cancelled">Cancelled</SelectItem>
+                          <SelectItem value="CREATED">Created</SelectItem>
+                          <SelectItem value="ORDER_PLACED">Order Placed</SelectItem>
+                          <SelectItem value="IN_TRANSIT">In Transit</SelectItem>
+                          <SelectItem value="REACHED">Reached</SelectItem>
+                          <SelectItem value="PAYMENT_SUCCESS">Payment Success</SelectItem>
+                          <SelectItem value="PAYMENT_FAILURE">Payment Failure</SelectItem>
+                          <SelectItem value="FAILURE">Failure</SelectItem>
+                          <SelectItem value="ABORTED">Aborted</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -159,4 +162,3 @@ export default function OrderTable({ orders: initialOrders }: OrderTableProps) {
     </>
   )
 }
-

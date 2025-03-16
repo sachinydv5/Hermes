@@ -14,13 +14,13 @@ export default async function DashboardPage() {
   const orders = await getOrders(token.value)
 
   return (
-    <div className="container mx-auto py-8">
-      <div className="mb-8 flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Order Dashboard</h1>
-        <form action="/api/auth/logout" method="POST">
+    <div className="container mx-auto px-4 py-8">
+      <div className="mb-8 flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-0">
+        <h1 className="text-2xl sm:text-3xl font-bold text-center sm:text-left">Order Dashboard</h1>
+        <form action="/api/auth/logout" method="POST" className="w-full sm:w-auto">
           <button
             type="submit"
-            className="rounded-md bg-gray-200 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-300"
+            className="w-full sm:w-auto rounded-md bg-gray-200 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-300"
           >
             Logout
           </button>
@@ -30,4 +30,3 @@ export default async function DashboardPage() {
     </div>
   )
 }
-
