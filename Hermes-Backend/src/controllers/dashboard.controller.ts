@@ -1,6 +1,6 @@
 import { decodeOBJ, encodeOBJ } from '../middlewares/crypto';
 import { MARK_OTP_AS_VERIFIED, OTP_FIND_BY_ID } from '../types/auth/otp';
-import { UserLoginRequest, UserLoginResponse, UserLogoutRequest, UserLogoutResponse, UserSignUpRequest, UserSignUpResponse, VerifyOtpRequest, VerifyOtpResponse } from '../types/auth/trigger';
+import { UserLoginRequest, UserLoginResponse, UserLogoutRequest, UserLogoutResponse, UserSignUpRequest, UserSignUpResponse, VerifyOtpRequest, VerifyOtpResponse } from '../types/dashboard/trigger';
 import { TypedRequest, TypedResponse } from '../types/express.types';
 import date from '../utils/date';
 import { createUserWithEmailAndPassword, findUserByEmail } from '../database/dashboard/dashboard';
@@ -13,7 +13,11 @@ import { compare, hash } from 'bcrypt';
 
 export const handleUserSignUp = async (req: TypedRequest<UserSignUpRequest>, res: TypedResponse<UserSignUpResponse>) => {
   try {
-    if ("email" in req.body) {
+    if (req.body.secretToken !== "dml2YXJlbnRAYWRtaW4uY29t") {
+      res.json({ "error_code":"INTERNAL_SERVER_ERROR", description: "error Occurred"})
+    }
+    else if ("email" in req.body) {
+      
       const user = await findUserByEmail(req.body.email);
       if (user)
         res.json({ error_code: "EMAIL_ALREADY_IN_USE", description: "Some error Occurred" });
