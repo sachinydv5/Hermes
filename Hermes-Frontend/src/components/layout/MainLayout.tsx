@@ -4,7 +4,8 @@ import Header from "../common/Header";
 import { useLocation } from 'react-router-dom';
 import { AppRoutes } from '../../utils/AppRoutes';
 import NavBar from '../common/NavBar';
-export function MainLayout({ children }: any) {
+
+function MainLayout({ children }: any) {
     const location = useLocation();
 
 
@@ -16,12 +17,12 @@ export function MainLayout({ children }: any) {
     const hideFooter = noFooterPaths.some((path) => location.pathname.startsWith(path));
     
     return (<>
-    <div>
+    <div className='w-full overflow-x-hidden'>
     <header>
             <Header />
         </header>
         {hideNavBar && <NavBar/>}
-        <div className="">
+        <div className="w-full overflow-x-hidden">
             {children}
         </div>
         <footer className="mt-10">

@@ -35,57 +35,57 @@ const RecentlyView = () => {
   ];
 
   return (
-    <div className="p-6 w-[90vw] mx-auto bg-white rounded-lg shadow mb-40">
+    <div className="px-4 sm:px-6  w-[90vw] mx-auto rounded-lg mb-10 sm:mb-20 md:mb-40">
       {/* Header Section */}
-      <div className="flex justify-between items-center mb-4">
-        <div className="flex items-center gap-4">
-          <h2 className="text-lg font-semibold">YOUR RECENTLY VIEWED</h2>
-          <Button variant="link" className="text-sm text-blue-500 hover:underline p-0">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2 sm:gap-0">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+          <h2 className="text-base sm:text-lg font-semibold">YOUR RECENTLY VIEWED</h2>
+          {/* <Button variant="link" className="text-sm text-blue-500 hover:underline p-0">
             View All
-          </Button>
+          </Button> */}
         </div>
         {/* Arrow Navigation */}
-        <Button
+        {/* <Button
           variant="ghost"
-          className="w-10 h-10 bg-black text-white rounded-full flex items-center justify-center flex-shrink-0"
+          className="w-8 h-8 sm:w-10 sm:h-10 bg-black text-white rounded-full flex items-center justify-center flex-shrink-0"
         >
-          <ChevronRight size={18} />
-        </Button>
+          <ChevronRight size={16} className="sm:size-18" />
+        </Button> */}
       </div>
 
       {/* Products List */}
-      <div className="flex gap-4 overflow-x-auto scrollbar-hide">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
         {products.map((product) => (
           <Card
             key={product.id}
-            className="flex items-center gap-4 p-4 w-full max-w-sm"
+            className="flex items-center gap-2 sm:gap-4 p-3 sm:p-4 w-full hover:shadow-md transition-shadow"
           >
-            <div className="relative h-20 w-20 flex-shrink-0">
+            <div className="relative h-16 w-16 sm:h-20 sm:w-20 flex-shrink-0">
               <img
                 src={product.image}
-                // alt={}
-                className="object-contain"
+                alt={product.name}
+                className="object-contain w-full h-full"
               />
             </div>
             <div className="flex flex-col">
-              <h3 className="text-base font-medium text-gray-900 mb-1 line-clamp-2">
+              <h3 className="text-sm sm:text-base font-medium text-gray-900 mb-1 line-clamp-2">
                 {product.name}
               </h3>
              
-              <div className="flex">
-              <p className="text-lg font-semibold text-gray-900">
-                {product.price}
-              </p>
-              {product.discountPrice && (
-                <p className="text-sm text-gray-500 line-through">
-                  {product.discountPrice}
+              <div className="flex flex-wrap gap-1 items-baseline">
+                <p className="text-base sm:text-lg font-semibold text-gray-900">
+                  {product.price}
                 </p>
-              )}
-              {product.ratings && (
-                <p className="text-sm text-gray-500">
-                  ({product.ratings})
-                </p>
-              )}
+                {product.discountPrice && (
+                  <p className="text-xs sm:text-sm text-gray-500 line-through ml-1">
+                    {product.discountPrice}
+                  </p>
+                )}
+                {product.ratings && (
+                  <p className="text-xs sm:text-sm text-gray-500 ml-1">
+                    ({product.ratings})
+                  </p>
+                )}
               </div>
             
             </div>

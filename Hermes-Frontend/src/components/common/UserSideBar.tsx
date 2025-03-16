@@ -7,8 +7,11 @@ import { Link, NavLink } from "react-router-dom";
 
 const UserSideBar = () => {
   return (
-    <div className=" h-min min-w-64 bg-white rounded-lg shadow-sm mx-10 my-12">
-      <nav className="py-6 px-2 space-y-0.5">
+    <div className="h-min my-10 bg-white shadow-sm overflow-y-auto">
+      <div className="p-4 border-b">
+        <h3 className="font-semibold text-lg">My Account</h3>
+      </div>
+      <nav className="py-4 px-2 space-y-0.5">
         <NavLink
           to="/dashboard"
           className={({ isActive}) =>
@@ -92,7 +95,7 @@ const UserSideBar = () => {
         </NavLink>
         <Button 
           variant="ghost" 
-          className="w-full justify-start gap-3 px-4 py-5 text-gray-600 hover:bg-orange-100 hover:text-gray-600" 
+          className="w-full justify-start gap-3 px-4 py-2.5 text-gray-600 hover:bg-orange-100 hover:text-gray-600" 
           size="sm"
         >
           <LogOut className="h-4 w-4" />

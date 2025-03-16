@@ -41,14 +41,14 @@ const categories = [
   
 const SideBar = () => {
   return (
-    <div className="w-1/6 space-y-6">
+    <div className="w-full lg:w-64 space-y-6 pb-6">
       <div>
         <h3 className="font-medium text-base mb-3">CATEGORY</h3>
         <div className="space-y-2">
           {categories.map((category) => (
             <div key={category} className="flex items-center space-x-2">
               <Checkbox id={category} className="rounded-full"/>
-              <label htmlFor={category} className="text-sm">
+              <label htmlFor={category} className="text-sm cursor-pointer">
                 {category}
               </label>
             </div>
@@ -57,7 +57,7 @@ const SideBar = () => {
       </div>
 
       <div>
-        <h3 className="font-semibold mb-3">PRICE RANGE</h3>
+        <h3 className="font-medium text-base mb-3">PRICE RANGE</h3>
         <Slider
           defaultValue={[0, 100]}
           max={100}
@@ -71,11 +71,11 @@ const SideBar = () => {
       </div>
 
       <div>
-        {/* <h3 className="font-semibold mb-3">PRICE</h3> */}
+        <h3 className="font-medium text-base mb-3">PRICE</h3>
         <div className="space-y-2">
           {priceRanges.map((range) => (
             <div key={range} className="flex items-center justify-between text-sm">
-              <label htmlFor={range} className="flex items-center space-x-2">
+              <label htmlFor={range} className="flex items-center space-x-2 cursor-pointer">
                 <Checkbox id={range} className="rounded-full"/>
                 <span>{range}</span>
               </label>
@@ -86,12 +86,12 @@ const SideBar = () => {
       </div>
 
       <div>
-        <h3 className="font-semibold mb-3">POPULAR BRANDS</h3>
+        <h3 className="font-medium text-base mb-3">POPULAR BRANDS</h3>
         <div className="space-y-2">
           {brands.map((brand) => (
             <div key={brand} className="flex items-center space-x-2">
               <Checkbox id={brand} />
-              <label htmlFor={brand} className="text-sm">
+              <label htmlFor={brand} className="text-sm cursor-pointer">
                 {brand}
               </label>
             </div>
@@ -100,7 +100,7 @@ const SideBar = () => {
       </div>
 
       <div>
-        <h3 className="font-semibold mb-3">POPULAR TAGS</h3>
+        <h3 className="font-medium text-base mb-3">POPULAR TAGS</h3>
         <div className="flex flex-wrap gap-2">
           {popularTags.map((tag) => (
             <button

@@ -97,12 +97,12 @@ const ProductCardTwo = ({product}: ProductCardTwoProps) => {
   
     if (!product) {
       return (
-        <Card className="overflow-hidden max-w-[300px] h-full bg-white rounded-2xl border border-gray-100">
-          <div className="p-4 rounded-lg animate-pulse">
-            <div className="relative mb-3 rounded-lg bg-gray-200 aspect-square"></div>
-            <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-            <div className="h-6 bg-gray-200 rounded w-1/4 mb-2"></div>
-            <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+        <Card className="overflow-hidden w-full h-full bg-white rounded-2xl border border-gray-100">
+          <div className="p-3 sm:p-4 rounded-lg animate-pulse">
+            <div className="relative mb-2 sm:mb-3 rounded-lg bg-gray-200 aspect-square"></div>
+            <div className="h-3 sm:h-4 bg-gray-200 rounded w-3/4 mb-1 sm:mb-2"></div>
+            <div className="h-4 sm:h-6 bg-gray-200 rounded w-1/4 mb-1 sm:mb-2"></div>
+            <div className="h-3 sm:h-4 bg-gray-200 rounded w-1/2"></div>
           </div>
         </Card>
       );
@@ -110,12 +110,12 @@ const ProductCardTwo = ({product}: ProductCardTwoProps) => {
 
     return (
       <Card 
-        className="overflow-hidden max-w-[300px] h-full bg-white rounded-2xl border border-gray-100 transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-2"
+        className="overflow-hidden w-full h-full bg-white rounded-2xl border border-gray-100 transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-1 sm:hover:-translate-y-2"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <div className="p-4 rounded-lg">
-          <div className="relative mb-3 rounded-lg border-2 border-orange-100">
+        <div className="p-2 xs:p-3 sm:p-4 rounded-lg">
+          <div className="relative mb-2 sm:mb-3 rounded-lg border-2 border-orange-100">
             {isHovered ? (
               <Carousel className="w-full aspect-square">
                 <CarouselContent>
@@ -129,8 +129,8 @@ const ProductCardTwo = ({product}: ProductCardTwoProps) => {
                     </CarouselItem>
                   ))}
                 </CarouselContent>
-                <CarouselPrevious className="left-2" onClick={(e) => e.stopPropagation()} />
-                <CarouselNext className="right-2" onClick={(e) => e.stopPropagation()} />
+                <CarouselPrevious className="left-1 sm:left-2 h-6 w-6 sm:h-8 sm:w-8" onClick={(e) => e.stopPropagation()} />
+                <CarouselNext className="right-1 sm:right-2 h-6 w-6 sm:h-8 sm:w-8" onClick={(e) => e.stopPropagation()} />
               </Carousel>
             ) : (
               <img
@@ -140,42 +140,41 @@ const ProductCardTwo = ({product}: ProductCardTwoProps) => {
               />
             )}
             
-            <div className="absolute top-2 left-2 flex items-center bg-white rounded-md px-2 py-1 shadow-sm">
-              <span className="font-semibold text-sm">4.8</span>
-              <span className="text-yellow-400 ml-1">★</span>
+            <div className="absolute top-1 sm:top-2 left-1 sm:left-2 flex items-center bg-white rounded-md px-1 sm:px-2 py-0.5 sm:py-1 shadow-sm">
+              <span className="font-semibold text-xs sm:text-sm">4.8</span>
+              <span className="text-yellow-400 ml-0.5 sm:ml-1">★</span>
             </div>
             <Button 
               variant="ghost" 
               size="icon" 
-              className={`absolute top-2 right-2 h-8 w-8 rounded-full ${isInWishlist ?'bg-red-300' : 'bg-white '}`}
+              className={`absolute top-1 sm:top-2 right-1 sm:right-2 h-6 w-6 sm:h-8 sm:w-8 rounded-full ${isInWishlist ?'bg-red-300' : 'bg-white '}`}
               onClick={handleAddToWishlist}
             >
-
-              <Heart className={`h-5 w-5 ${isInWishlist ? 'text-red-400' : 'text-gray-400'}`} />
+              <Heart className={`h-3 w-3 sm:h-5 sm:w-5 ${isInWishlist ? 'text-red-400' : 'text-gray-400'}`} />
             </Button>
           </div>
   
-          <h3 className="font-medium text-sm mb-2 line-clamp-2 uppercase text-wrap">
+          <h3 className="font-medium text-xs sm:text-sm mb-1 sm:mb-2 line-clamp-2 uppercase text-wrap">
            {product.name || 'Untitled Product'}
           </h3>
   
-          <div className="flex items-baseline gap-2 mb-2">
-            <span className="text-gray-400 line-through text-sm"></span>
-            <span className="text-2xl font-semibold text-[#f4a340]">${product.price || 0}</span>
-            <span className="text-sm text-gray-500">/per week</span>
+          <div className="flex items-baseline gap-1 sm:gap-2 mb-1 sm:mb-2">
+            <span className="text-gray-400 line-through text-xs sm:text-sm"></span>
+            <span className="text-lg sm:text-xl md:text-2xl font-semibold text-[#f4a340]">${product.price || 0}</span>
+            <span className="text-xs sm:text-sm text-gray-500">/per week</span>
           </div>
   
           <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-500">
-              {product.qty || 0} Available in stock
+            <span className="text-xs sm:text-sm text-gray-500">
+              {product.qty || 0} Available
             </span>
             <Button 
               size="sm" 
-              className="bg-[#f4a340] hover:bg-[#e59635] rounded-full w-10 h-10 flex items-center justify-center"
+              className="bg-[#f4a340] hover:bg-[#e59635] rounded-full w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center"
               onClick={handleAddToCart}
             >
               <span className="sr-only">Add to cart</span>
-              <ShoppingCartIcon/>
+              <ShoppingCartIcon className="h-3 w-3 sm:h-5 sm:w-5"/>
             </Button>
           </div>
         </div>

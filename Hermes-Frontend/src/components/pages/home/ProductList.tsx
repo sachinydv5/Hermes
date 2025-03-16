@@ -82,7 +82,7 @@ const ProductList = () => {
   if (isLoading) {
     return (
       <div className="w-[90vw] mx-auto py-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5 lg:gap-6">
           {[...Array(8)].map((_, index) => (
             <ProductCardTwo key={index} product={undefined} />
           ))}
@@ -103,13 +103,15 @@ const ProductList = () => {
   }
 
   return (
-    <div className="w-[90vw] mx-auto py-20">
-      <div className="flex gap-20">
-        <SideBar />
+    <div className="w-[90vw] mx-auto py-10 sm:py-16">
+      <div className="flex flex-col lg:flex-row lg:gap-8">
+        <div className="hidden lg:block lg:min-w-64">
+          <SideBar />
+        </div>
         <div className="flex-1">
           <div className="flex flex-col gap-4 mb-6">
-            <div className="flex items-center justify-between">
-              <div className="relative w-96">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <div className="relative w-full sm:w-96">
                 <Input
                   placeholder="Search for anything..."
                   className="pl-10"
@@ -121,7 +123,7 @@ const ProductList = () => {
                 defaultValue="most-popular" 
                 onValueChange={(value: SortOption) => handleSortChange(value)}
               >
-                <SelectTrigger className="w-48">
+                <SelectTrigger className="w-full sm:w-48">
                   <SelectValue placeholder="Sort by" />
                 </SelectTrigger>
                 <SelectContent>
@@ -160,7 +162,18 @@ const ProductList = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* Mobile sidebar toggle */}
+          <div className="lg:hidden mb-4">
+            <Button variant="outline" className="w-full flex items-center justify-between" 
+              onClick={() => alert('Mobile sidebar would open here')}>
+              <span>Filters</span>
+              <span className="text-xs text-muted-foreground">
+                {activeFilters.length} active
+              </span>
+            </Button>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5 lg:gap-6">
             {productData.map((item) => (
               <Link key={item.id} to={`/productdetail/${item.id}`}>
                 <ProductCardTwo product={item} />
@@ -173,7 +186,7 @@ const ProductList = () => {
               {[1, 2, 3, 4, 5].map((page) => (
                 <button
                   key={page}
-                  className={`px-4 py-2 text-sm rounded-md ${
+                  className={`px-3 py-1 sm:px-4 sm:py-2 text-sm rounded-md ${
                     page === 1
                       ? "bg-primary text-primary-foreground"
                       : "hover:bg-muted"
