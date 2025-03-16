@@ -45,7 +45,7 @@ export const updateOrderStatus = async (orderId: string, orderStatus: ORDER_STAT
     time: new Date() 
   });
   // const trace = oldOrder.updateTrace.push[{ updatedBy: "DASHBOARD", time: Date.now() }]
-  await snapshot.update({ status: orderStatus, updateTrace: oldOrder.updateTrace })
+  await snapshot.update({ orderStatus: orderStatus, updateTrace: oldOrder.updateTrace })
 }
 
 export const getAllOrders = async (): Promise<ORDER[]> => {
