@@ -7,7 +7,7 @@ import Header from "../../common/Header"
 const CreatingList = () => {
   return (
     <div>
-        <div className="min-h-screen p-6">
+        <div className="min-h-screen p-6 flex items-center justify-center">
       <main className="max-w-4xl mx-auto">
         <h1 className="text-5xl font-bold text-center mb-6">Upload item</h1>
         <p className=" text-sm text-center text-gray-600 mb-12">

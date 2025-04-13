@@ -43,6 +43,7 @@ const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
           firstName: response.user.first_name
         }
         console.log(storePayload)
+        localStorage.setItem("firstName", response.user.first_name);
         dispatch(updateUserLoggedIn(storePayload))
         navigate("/");
         onLoginSuccess?.()

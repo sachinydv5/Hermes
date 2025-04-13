@@ -102,9 +102,9 @@ const Header = () => {
                         src="https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png" 
                         alt="User Profile"
                       />
-                      <AvatarFallback>{firstName.charAt(0)}</AvatarFallback>
+                      <AvatarFallback>{firstName.charAt(0).toUpperCase()}</AvatarFallback>
                     </Avatar>
-                    <span className="font-semibold text-xs md:text-sm hidden sm:inline">{firstName}</span>
+                    <span className="font-semibold text-xs md:text-sm hidden sm:inline">{ firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase()}</span>
                   </Link>
                 </Button>
               )}  

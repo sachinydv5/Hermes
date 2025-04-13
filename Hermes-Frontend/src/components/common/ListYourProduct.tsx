@@ -1,6 +1,7 @@
 import React from 'react'
 import { Wallet } from 'lucide-react'
 import { Button } from "@/components/ui/button"
+import { Link } from 'react-router-dom'
 
 const ListYourProduct = () => {
   return (
@@ -31,13 +32,14 @@ const ListYourProduct = () => {
               <span className="text-[#22262e] text-xl sm:text-2xl font-semibold leading-relaxed sm:leading-loose">Upload product</span>
             </div>
           </div>
-
+      </div>
           <div className="flex justify-center lg:justify-start">
             <Button className="text-[#fcb857] text-sm sm:text-base font-medium font-['Roboto'] leading-normal tracking-wide rounded-[50px] border-2 border-[#f8d9a9] px-6 py-2 sm:px-8 sm:py-3" variant="outline">
               Create listing
             </Button>
           </div>
         </div>
+
 
         <div className="relative w-full sm:w-3/4 md:w-1/2 lg:w-2/5 xl:w-1/3 aspect-square mt-8 lg:mt-0 lg:top-10 flex justify-center">
           <img

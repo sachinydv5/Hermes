@@ -24,7 +24,7 @@ const HeroSection = () => {
         
         {/* Image section - Responsive for all devices */}
         <div className="relative w-full md:w-1/2 flex justify-center md:justify-end md:right-20 lg:right-40">
-          <div className="relative w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 rounded-full flex items-center justify-center">
+          <div className="relative w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 rounded-full flex items-center justify-center ">
             {/* Background image for the circle */}
             <img 
               src="herocircle.png" 
@@ -32,7 +32,7 @@ const HeroSection = () => {
               className="absolute object-cover w-full h-full" 
             />
             {/* Center logo/icon */}
-            <div className="z-10 w-24 sm:w-28 md:w-36">
+            <div className=" relative z-10 w-24 sm:w-28 md:w-52 top-4">
               <img 
                 src="logo.png" 
                 alt="Logo" 
