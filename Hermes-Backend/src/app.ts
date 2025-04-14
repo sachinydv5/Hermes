@@ -20,7 +20,6 @@ import { dashboardRouter } from './routes/dashboard/auth.router';
 var compression = require('compression')
 
 
-
 const app = express();
 const port = config.PORT;
 app.use(compression())

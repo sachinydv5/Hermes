@@ -1,7 +1,7 @@
 // import { collection, getFirestore } from "firebase/firestore";
 import { v4 as uuidv4 } from 'uuid';
 // import { doc, setDoc } from 'firebase/firestore';
-import { User } from "../../types/user/user";
+import { UpdateUserData, User, UserUpdateRequest } from "../../types/user/user";
 import { getFirestore } from 'firebase-admin/firestore';
 
 
@@ -37,3 +37,17 @@ export const findUserByUserId = async (userId: string) => {
   if (!snapshot.exists) return null;
   return snapshot.data() as User;
 }
+
+
+export const findUserAndUpdate = async (email: string, updateData: UserUpdateRequest) => {
+
+  const db = getFirestore();
+  const userRef = db.collection('users').doc(email);
+  const userSnapshot = await userRef.get();
+
+  if (!userSnapshot.exists) return null
+
+  await userRef.update(updateData);
+}
+
+

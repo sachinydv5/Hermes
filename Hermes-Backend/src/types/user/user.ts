@@ -15,17 +15,34 @@ export const UserSchema = z.object({
   user_id: z.string(),
 });
 
+
+
+
+
+export type UpdateUserData = z.infer<typeof UserSchema>;
+
+
+
+
 // Type inference from Zod schema
 export type User = z.infer<typeof UserSchema>;
 
 
 
-export const userRequestSchema = z.object({
-});
+export const userRequestSchema = UserSchema
 
 export type UserRequest = z.infer<typeof userRequestSchema>
 
 export type UserResponse = Error<USER_ERROR_CODES> | z.infer<typeof UserSchema>
+
+
+
+
+export const userPartialSchema = UserSchema.partial()
+
+export type UserUpdateRequest = z.infer<typeof userPartialSchema>
+
+export type UserUpdateResponse = Error<USER_ERROR_CODES> | {status: "USER_UPDATED_SUCCESSFULLY"}
 
 
 
