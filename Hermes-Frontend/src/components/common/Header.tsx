@@ -187,7 +187,7 @@ const NavLinks = () => (
       className={({ isActive }) => 
         isActive ? "text-[#f8a93a] font-normal text-sm sm:text-base md:text-lg" : "text-[#000000] hover:text-[#f8a93a] font-normal text-sm sm:text-base md:text-lg"
       }>Market</NavLink>
-    <NavLink to='/company' 
+    <NavLink to='/about' 
       className={({ isActive }) => 
         isActive ? "text-[#f8a93a] font-normal text-sm sm:text-base md:text-lg" : "text-[#000000] hover:text-[#f8a93a] font-normal text-sm sm:text-base md:text-lg"
       }>Company</NavLink>

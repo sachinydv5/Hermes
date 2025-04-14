@@ -1,5 +1,6 @@
 import { ShoppingCart } from 'lucide-react';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const HeroSection = () => {
   return (
@@ -7,17 +8,17 @@ const HeroSection = () => {
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
         <div className="w-full md:w-1/2 text-center md:text-left mb-8 md:mb-0 text-balance">
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold text-[#313131]">
-            Lorem <span className='text-[#FCB857]'> Ipsum </span> is simply dummy text
+            <span className='text-[#FCB857]'>  Rent</span> From Your Neighbors
           </h1>
           <p className="text-sm sm:text-base md:text-lg text-[#7E7D7A] mt-2 sm:mt-4">
-            Lorem ipsum has been the industry standard dummy text ever since the 1500s lorem.
+          Vivarent is a next-gen rental platform connecting Minneapolis and St. Paul. 
           </p>
           <div className="mt-4 sm:mt-6 flex flex-col sm:flex-row items-center justify-center md:justify-start gap-3 sm:gap-4">
-            <button className="w-full sm:w-auto flex items-center justify-center gap-2 bg-black text-white px-4 py-2 rounded-full">
-              Order Now <ShoppingCart className="bg-[#FCB857] rounded-full p-1" />
-            </button>
+            <Link to='/productlist' className="w-full sm:w-auto flex items-center justify-center gap-2 bg-black text-white px-4 py-2 rounded-full">
+             Rent Now<ShoppingCart className="bg-[#FCB857] rounded-full p-1" />
+            </Link>
             <button className="w-full sm:w-auto border-none font-bold text-[#F4AE26] px-4 py-2 rounded">
-              Explore More
+            <Link to='/creatinglist'>List Now</Link> 
             </button>
           </div>
         </div>

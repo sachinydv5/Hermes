@@ -26,6 +26,7 @@
 //   export default Footer;
   
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const Footer = () => {
   return (
@@ -37,7 +38,7 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4">VIVARENT</h3>
             <ul className="space-y-2">
-              <li>About Us</li>
+             <Link to='/about'><li>About Us</li></Link> 
               <li>Terms & Conditions</li>
               <li>FAQ</li>
             </ul>
@@ -56,7 +57,7 @@ const Footer = () => {
 
           {/* Social Media Links */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Follow Us</h3>
+            <h3 className="text-lg font-semibold mb-4">FOLLOW US</h3>
             <div className="flex space-x-4">
               <a href="#" className="hover:text-gray-300"></a>
               <a href="#" className="hover:text-gray-300"></a>
