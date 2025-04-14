@@ -57,19 +57,27 @@ const Landing = () => {
           <section className="p-4 sm:p-8 md:p-12 lg:p-16 mb-6 sm:mb-8 md:mb-10">
             <div className="container mx-auto px-4">
               <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold mb-6 sm:mb-8">
-                Lorem <span className="relative inline-block">
-                  Ipsum
+              How Vivarent  <span className="relative inline-block">
+              Works
                   <span className="absolute left-0 -bottom-1 w-full h-1 bg-[#FCB857] rounded"></span>
                 </span>
               </h2>
               <div className="flex flex-wrap items-center justify-around gap-y-8 gap-x-4">
-                {[1, 2, 3].map((num) => (
-                  <div key={num} className="text-center w-full sm:w-[45%] md:w-[30%] lg:w-[22%] xl:w-[18%]">
+                  <div className="text-center w-full sm:w-[45%] md:w-[30%] lg:w-[22%] xl:w-[18%]">
                     <img src="logo.png" alt="" className="mx-auto mb-3 sm:mb-4 max-w-28 sm:max-w-32 md:max-w-40" />
-                    <h3 className="text-lg sm:text-xl font-bold">Feature {num}</h3>
-                    <p className="text-gray-500 text-sm sm:text-base">Lorem ipsum dolor sit amet.</p>
+                    <h3 className="text-lg sm:text-xl font-bold">Explore our rentals or list your own</h3>
+                    <p className="text-gray-500 text-sm sm:text-base">Find the item you need or list yours on our peer-to-peer rental platform.</p>
                   </div>
-                ))}
+                  <div className="text-center w-full sm:w-[45%] md:w-[30%] lg:w-[22%] xl:w-[18%]">
+                    <img src="logo.png" alt="" className="mx-auto mb-3 sm:mb-4 max-w-28 sm:max-w-32 md:max-w-40" />
+                    <h3 className="text-lg sm:text-xl font-bold">Connect with the owner or renter.</h3>
+                    <p className="text-gray-500 text-sm sm:text-base">Connect with owners and renters on our local rental marketplace.</p>
+                  </div>
+                  <div className="text-center w-full sm:w-[45%] md:w-[30%] lg:w-[22%] xl:w-[18%]">
+                    <img src="logo.png" alt="" className="mx-auto mb-3 sm:mb-4 max-w-28 sm:max-w-32 md:max-w-40" />
+                    <h3 className="text-lg sm:text-xl font-bold">Make or accept an offer!</h3>
+                    <p className="text-gray-500 text-sm sm:text-base">Share and rent items with the community in just a few clicks!</p>
+                  </div>
               </div>
             </div>
           </section>
@@ -94,12 +102,10 @@ const Landing = () => {
                   </span>
                 </h2>
                 <h3 className="text-lg sm:text-xl md:text-2xl font-semibold mb-3 sm:mb-4 text-gray-800 break-words tracking-[0.96]">
-                  Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                You've got the goods. Vivarent connects you with people who need them.
                 </h3>
                 <p className="font-normal text-sm sm:text-base text-[#7E7D7A] mb-4 sm:mb-6 break-words">
-                  Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-                  when an unknown printer took a galley of type and scrambled.
-                  Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                Need a pro camera just for the day? Or maybe you've got a truck that could be out hauling. Vivarent lets you rent stuff locally and earn money renting items to your friends and neighbors across the Twin Cities. 
                 </p>
                 <button className="bg-[#313131] text-[#F4AE26] py-2 sm:py-3 px-4 sm:px-6 rounded-full font-bold text-xs hover:bg-gray-700 cursor-pointer relative z-10">
                   Get in touch

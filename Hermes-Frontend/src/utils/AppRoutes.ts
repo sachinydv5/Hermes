@@ -1,4 +1,4 @@
-import MultipleProduct from "../components/pages/home/MultipleProduct";
+
 
 
 export const AppRoutes = {
@@ -14,5 +14,6 @@ export const AppRoutes = {
     DASHBOARD:'/dashboard',
     TRACKORDER:'/trackorder',
     MULTIPLEPRODUCT: '/multipleproduct' ,
-    CART:'/cart' 
+    CART:'/cart' ,
+    COMPANY:'/about'
 }

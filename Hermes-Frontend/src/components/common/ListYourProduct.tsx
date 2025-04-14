@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 
 const ListYourProduct = () => {
   return (
+    <div>
     <div className="container mx-auto px-4 py-8 sm:py-12 mb-10 sm:mb-20">
       <div className="flex flex-col lg:flex-row gap-8 sm:gap-12 items-center lg:items-start justify-between">
         <div className="space-y-8 sm:space-y-12 lg:space-y-16 w-full lg:w-auto">
@@ -32,21 +33,19 @@ const ListYourProduct = () => {
               <span className="text-[#22262e] text-xl sm:text-2xl font-semibold leading-relaxed sm:leading-loose">Upload product</span>
             </div>
           </div>
-      </div>
           <div className="flex justify-center lg:justify-start">
             <Button className="text-[#fcb857] text-sm sm:text-base font-medium font-['Roboto'] leading-normal tracking-wide rounded-[50px] border-2 border-[#f8d9a9] px-6 py-2 sm:px-8 sm:py-3" variant="outline">
-              Create listing
+            <Link to='/creatinglist'>Create listing</Link> 
             </Button>
           </div>
-        </div>
-
-
-        <div className="relative w-full sm:w-3/4 md:w-1/2 lg:w-2/5 xl:w-1/3 aspect-square mt-8 lg:mt-0 lg:top-10 flex justify-center">
+      </div>
+      <div className="relative w-full sm:w-3/4 md:w-1/2 lg:w-2/5 xl:w-1/3 aspect-square mt-8 lg:mt-0 lg:top-10 flex justify-center">
           <img
             src="geometricshapes.png"
             alt="Decorative illustration showing geometric shapes"
             className="h-full sm:h-5/6 object-contain"
           />
+        </div>
         </div>
       </div>
     </div>
