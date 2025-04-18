@@ -221,13 +221,13 @@ const ProductDetail = () => {
             >
               <ChevronRight className="h-6 w-6" />
             </button>
-            <Button 
+            {/* <Button 
               onClick={() => addtoCart(productid ?? "")}
               className="absolute bottom-4 right-4 z-10"
               size="sm"
             >
               Add to Cart
-            </Button>
+            </Button> */}
           </div>
           <div className="flex gap-2 overflow-x-auto pb-2">
             {images.map((img, idx) => (
@@ -263,9 +263,9 @@ const ProductDetail = () => {
               <span className="text-sm text-muted-foreground">4.7 Star Rating (21,671 User feedback)</span>
             </div>
             <h1 className="text-2xl font-bold">
-              {/* 2020 Apple MacBook Pro with Apple M1 Chip (13-inch, 8GB RAM, 256GB SSD Storage) - Space Gray */}
               {productdetail?.name}
             </h1>
+            {productdetail.description}
           </div>
 
           <div className="grid gap-4">
@@ -295,7 +295,7 @@ const ProductDetail = () => {
               <div className="flex items-center gap-2 mt-2">
                 <span className='text-sm'>Available: 05 weeks</span>
                 <span className="text-2xl font-bold text-orange-400">${productdetail?.price}</span>
-                <span>/week</span>
+                <span>/Month</span>
                 {/* <span className="line-through text-muted-foreground">$499.00</span>
                 <Badge variant="secondary">21% OFF</Badge> */}
               </div>

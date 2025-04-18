@@ -11,14 +11,21 @@ import { Heart } from 'lucide-react'
 import { Card } from "../../../components/ui/card"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "../../../components/ui/carousel"
 import { callApi } from '../../../api/api'
-import { ProductRequest, ProductResponse } from '../../../api/types'
+import { ProductRequest, ProductResponse, UploadProductImageRequest, UploadProductImageRespose } from '../../../api/types'
 import { useNavigate } from 'react-router-dom';
 
+// Extended form data type to include the file field
 interface FormData {
-  itemName: string;
+  title: string;
+  description: string;
   price: string;
+  category: string;
+  duration: string;
+  address: string;
+  productValue: string;
+  cancellationTerms: string;
   putOnLease: boolean;
-  collectionId: string;
+  file: FileList;
   preference: {
     type: string;
     distance: string;
@@ -28,7 +35,14 @@ interface FormData {
 
 const SingleList = () => {
   const [isHovered, setIsHovered] = useState(false)
-  const { register, handleSubmit, formState: { errors }, } = useForm({
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const navigate = useNavigate();
+  
+  // Initialize form with proper types and default values
+  const { register, handleSubmit, formState: { errors }, watch, setValue } = useForm<FormData>({
     defaultValues: {
       title: "",
       description: "",
@@ -46,32 +60,21 @@ const SingleList = () => {
       }
     },
     mode: "onBlur"
-  })
-  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-  const [error, setError] = useState<string | null>(null)
-  const [formData, setFormData] = useState<FormData>({
-    itemName: "Default Item Name",
-    price: "0.00",
-    putOnLease: false,
-    collectionId: '',
-    preference: {
-      type: "",
-      distance: "",
-      duration: ""
-    }
   });
-  let navigate = useNavigate();
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
+  
+  // Watch form values for preview
+  const watchedTitle = watch("title");
+  const watchedPrice = watch("price");
+  const watchedPutOnLease = watch("putOnLease");
 
+  // Handle file input change
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       setUploadedFile(file);
     }
-    
-    // Create preview URL for the image
     if (file) {
+      // Create preview URL for the image
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreviewImage(reader.result as string);
@@ -79,53 +82,70 @@ const SingleList = () => {
       reader.readAsDataURL(file);
     }
   };
-  // const images = [
-  //   "productimage.png",
-  //   "/placeholder.svg?height=200&width=200&text=Image+2",
-  //   "/placeholder.svg?height=200&width=200&text=Image+3",
-  //   "/placeholder.svg?height=200&width=200&text=Image+4"
-  // ]
-  const onSubmit = async (data: any) => {
-    setIsSubmitting(true); // Show loader
-    console.log("Form data submitted:", data);
-    try{
-      let req: ProductRequest = {
-        name: data.title,
-
-        description: data.description,
-        qty: 1,
-        duration: {
-          value: 3,
-          unit: 'month'
-        },
-        discount: 0,
-        pickupAddress: {
-          city: 'menesota',
-          country: 'USA',
-          pincode: '',
-          addressLine1: data.address,
-          addressLine2: undefined
-        },
-        price: data.price,
-        category: '',
-        userId: '',
-        collectionId: ''
-      }
-      const response: ProductResponse = await callApi(req,"/product/addProduct");
-      if("status" in response){
-        alert("Product created successfully!")
-        navigate(`/productdetail/${response.id}`)
-      } else {
-        setError(response.description || "Failed to create product")
-      }
-    }
-    catch(err){
-      console.error("Sign up error:", err)
-      setError("faild to signup")
-    }
-   
-    setIsSubmitting(false); // Hide loader after submission
+console.log("imaGE NAME",previewImage)
+  const onSubmit = async (data: FormData) => {
+    setIsSubmitting(true);
+    setError(null);
     
+    try {
+      // Upload the image first
+      if (!data.file || data.file.length === 0) {
+        throw new Error("Please select a file to upload");
+      }
+
+      let imageUploadRequest: UploadProductImageRequest = {
+        image: [data.file[0]],
+      };
+      
+      const imageUploadResponse: UploadProductImageRespose = await callApi(
+        imageUploadRequest,
+        "/product/uploadProduct"
+      );
+
+      if ("status" in imageUploadResponse) {
+        const imageUrl = imageUploadResponse.url;
+        
+        // Prepare product data in the format expected by the API
+        let req: ProductRequest = {
+          name: data.title,
+          description: data.description,
+          img: [imageUrl],
+          qty: 1,
+          duration: {
+            value: data.duration ? parseInt(data.duration.split('_')[0]) : 3,
+            unit: data.duration ? data.duration.split('_')[1] || 'month' : 'month'
+          },
+          discount: 0,
+          pickupAddress: {
+            city: 'menesota', // These should be dynamic in a real implementation
+            country: 'USA',
+            pincode: '',
+            addressLine1: data.address,
+            addressLine2: undefined
+          },
+          price: parseFloat(data.price),
+          category: data.category || '',
+          userId: '',
+          collectionId: ''
+        };
+        
+        const response: ProductResponse = await callApi(req, "/product/addProduct");
+        
+        if ("status" in response) {
+          alert("Product created successfully!");
+          navigate(`/productdetail/${response.id}`);
+        } else {
+          setError(response.description || "Failed to create product");
+        }
+      } else {
+        setError(imageUploadResponse.description || "Failed to upload image");
+      }
+    } catch (err: any) {
+      console.error("Product creation error:", err);
+      setError(err.message || "Failed to create product");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -152,14 +172,17 @@ const SingleList = () => {
                       id="file-upload" 
                       className="hidden" 
                       accept=".png,.gif,.webp,.mp4,.mp3" 
-                      onChange={handleFileChange}
-                      disabled={false}
+                      {...register("file", { 
+                        required: "File is required",
+                        onChange: handleFileChange
+                      })}
                     />
                     <Upload className="mx-auto mb-4 h-12 w-12 text-gray-400" />
                     <p className="text-sm text-gray-500">Drag or choose your file to upload</p>
                     <p className="text-xs text-gray-400 mt-2">PNG, GIF, WEBP, MP4 or MP3. Max 1GB.</p>
                   </label>
                   {uploadedFile && <p>{uploadedFile.name}</p>}
+                  {errors.file && <p className="text-red-500 text-sm mt-1">{errors.file.message}</p>}
                 </div>
               </div>
             </div>
@@ -170,13 +193,11 @@ const SingleList = () => {
                 <Label htmlFor="title">Item Name</Label>
                 <Input
                   id="title"
-                  disabled={false}
                   {...register('title', { 
                     required: "Item name is required",
                     minLength: { value: 3, message: "Title must be at least 3 characters" }
                   })}
                   placeholder='e.g. "Redeemable Bitcoin Card with logo"'
-                  onChange={(e)=>setFormData({...formData , itemName: e.target.value})}
                 />
                 {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>}
               </div>
@@ -185,7 +206,6 @@ const SingleList = () => {
                 <Label htmlFor="description">Description</Label>
                 <Textarea
                   id="description"
-                  disabled={false}
                   {...register('description', { 
                     required: "Description is required",
                     minLength: { value: 10, message: "Description must be at least 10 characters" }
@@ -198,7 +218,7 @@ const SingleList = () => {
               <div className="grid grid-cols-3 gap-4">
                 <div>
                   <Label htmlFor="category">Category</Label>
-                  <Select disabled={true} onValueChange={(value) => register('category').onChange({ target: { value } })}>
+                  <Select onValueChange={(value) => setValue('category', value)}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select category" />
                     </SelectTrigger>
@@ -208,12 +228,12 @@ const SingleList = () => {
                       <SelectItem value="furniture">Furniture</SelectItem>
                     </SelectContent>
                   </Select>
-                  {errors.category && <p className="text-red-500 text-sm mt-1">{errors.category.message as string}</p>}
+                  {errors.category && <p className="text-red-500 text-sm mt-1">{errors.category.message}</p>}
                 </div>
                 
                 <div>
                   <Label htmlFor="duration">Duration</Label>
-                  <Select disabled={true} onValueChange={(value ) => register('duration').onChange({ target: { value } })}>
+                  <Select onValueChange={(value) => setValue('duration', value)}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select duration" />
                     </SelectTrigger>
@@ -223,7 +243,7 @@ const SingleList = () => {
                       <SelectItem value="6_months">6 Months</SelectItem>
                     </SelectContent>
                   </Select>
-                  {errors.duration && <p className="text-red-500 text-sm mt-1">{errors.duration.message as string}</p>}
+                  {errors.duration && <p className="text-red-500 text-sm mt-1">{errors.duration.message}</p>}
                 </div>
                 
                 <div>
@@ -232,7 +252,6 @@ const SingleList = () => {
                     <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                     <Input
                       id="price"
-                      disabled={false}
                       {...register('price', { 
                         required: "Price is required",
                         pattern: { 
@@ -243,7 +262,6 @@ const SingleList = () => {
                       })}
                       className="pl-10"
                       placeholder="0.00"
-                      onChange={(e)=>setFormData({...formData , price: e.target.value})}
                     />
                   </div>
                   {errors.price && <p className="text-red-500 text-sm mt-1">{errors.price.message}</p>}
@@ -257,37 +275,31 @@ const SingleList = () => {
                 </div>
                 <Switch
                   id="putOnLease"
-                  disabled={true}
-                  checked={formData.putOnLease}
-                  onCheckedChange={(checked) => setFormData({...formData, putOnLease: checked})}
+                  checked={watchedPutOnLease}
+                  onCheckedChange={(checked) => setValue('putOnLease', checked)}
                 />
-
               </div>
 
-              
+              {watchedPutOnLease && (
                 <>
                   <div>
                     <Label htmlFor="productValue">Value of the product</Label>
                     <Input
                       id="productValue"
-                      disabled={true}
                       {...register('productValue')}
                       placeholder="Enter the value of the product"
                     />
-
                   </div>
                   <div>
                     <Label htmlFor="cancellationTerms">Cancellation terms</Label>
                     <Input
                       id="cancellationTerms"
-                      disabled={true}
                       {...register('cancellationTerms')}
                       placeholder="Enter cancellation terms"
                     />
-
                   </div>
                 </>
-            
+              )}
 
               <div>
                 <Label htmlFor="address">Address</Label>
@@ -296,19 +308,20 @@ const SingleList = () => {
                   <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                   <Input
                     id="address"
-                    disabled={false}
-                    {...register('address')}
+                    {...register('address', {
+                      required: "Address is required"
+                    })}
                     className="pl-10"
                     placeholder="Enter location"
                   />
                 </div>
-                {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address.message as string}</p>}
+                {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address.message}</p>}
               </div>
 
               <div>
                 <Label className="mb-2 block">Preference</Label>
                 <div className="grid grid-cols-3 gap-4">
-                  <Select disabled={false} onValueChange={(value) => setFormData({...formData, preference: {...formData.preference, type: value}})}>
+                  <Select onValueChange={(value) => setValue('preference.type', value)}>
                     <SelectTrigger>
                       <SelectValue placeholder="Type" />
                     </SelectTrigger>
@@ -317,7 +330,7 @@ const SingleList = () => {
                       <SelectItem value="custom">Custom</SelectItem>
                     </SelectContent>
                   </Select>
-                  <Select disabled={false} onValueChange={(value) => setFormData({...formData, preference: {...formData.preference, distance: value}})}>
+                  <Select onValueChange={(value) => setValue('preference.distance', value)}>
                     <SelectTrigger>
                       <SelectValue placeholder="Distance" />
                     </SelectTrigger>
@@ -327,7 +340,7 @@ const SingleList = () => {
                       <SelectItem value="20_miles">20 miles</SelectItem>
                     </SelectContent>
                   </Select>
-                  <Select disabled={false} onValueChange={(value) => setFormData({...formData, preference: {...formData.preference, duration: value}})}>
+                  <Select onValueChange={(value) => setValue('preference.duration', value)}>
                     <SelectTrigger>
                       <SelectValue placeholder="Duration" />
                     </SelectTrigger>
@@ -364,100 +377,104 @@ const SingleList = () => {
               ) : null}
               {isSubmitting ? "Submitting..." : "Create item"}
             </Button>
-            {error && <p className='text-red-500'>{error}</p>}
+            {error && (
+              <div className="p-3 bg-red-50 border border-red-200 rounded-md">
+                <p className='text-red-500'>{error}</p>
+              </div>
+            )}
           </form>
         </div>
 
         <div className="lg:w-1/3">
           <h2 className="text-xl font-semibold mb-5">Preview</h2>
           <Card 
-        className="w-[280px] overflow-hidden bg-white rounded-2xl border border-gray-100 transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-2"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      >
-        <div className="p-4 rounded-lg">
-          <div className="relative mb-3 rounded-lg border-2 border-orange-100">
-            {isHovered ? (
-              <Carousel className="w-full aspect-square">
-                <CarouselContent>
-                  {previewImage ? (
-                    <CarouselItem>
-                      <img
-                        src={previewImage}
-                        alt="Product preview"
-                        className="w-full aspect-square object-cover rounded-lg"
-                      />
-                    </CarouselItem>
+            className="w-[280px] overflow-hidden bg-white rounded-2xl border border-gray-100 transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-2"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+            <div className="p-4 rounded-lg">
+              <div className="relative mb-3 rounded-lg border-2 border-orange-100">
+                {isHovered ? (
+                  <Carousel className="w-full aspect-square">
+                    <CarouselContent>
+                      {previewImage ? (
+                        <CarouselItem>
+                          <img
+                            src={previewImage}
+                            alt="Product preview"
+                            className="w-full aspect-square object-cover rounded-lg"
+                          />
+                        </CarouselItem>
+                      ) : (
+                        <CarouselItem>
+                          <div className="w-full aspect-square bg-gray-100 rounded-lg flex items-center justify-center">
+                            <span className="text-gray-400">No image uploaded</span>
+                          </div>
+                        </CarouselItem>
+                      )}
+                    </CarouselContent>
+                    {previewImage && (
+                      <>
+                        <CarouselPrevious className="left-2" />
+                        <CarouselNext className="right-2" />
+                      </>
+                    )}
+                  </Carousel>
+                ) : (
+                  previewImage ? (
+                    <img
+                      src={previewImage}
+                      alt="Product preview"
+                      className="w-full aspect-square object-cover rounded-lg"
+                    />
                   ) : (
-                    <CarouselItem>
-                      <div className="w-full aspect-square bg-gray-100 rounded-lg flex items-center justify-center">
-                        <span className="text-gray-400">No image uploaded</span>
-                      </div>
-                    </CarouselItem>
-                  )}
-                </CarouselContent>
-                {previewImage && (
-                  <>
-                    <CarouselPrevious className="left-2" />
-                    <CarouselNext className="right-2" />
-                  </>
+                    <div className="w-full aspect-square bg-gray-100 rounded-lg flex items-center justify-center">
+                      <span className="text-gray-400">No image uploaded</span>
+                    </div>
+                  )
                 )}
-              </Carousel>
-            ) : (
-              previewImage ? (
-                <img
-                  src={previewImage}
-                  alt="Product preview"
-                  className="w-full aspect-square object-cover rounded-lg"
-                />
-              ) : (
-                <div className="w-full aspect-square bg-gray-100 rounded-lg flex items-center justify-center">
-                  <span className="text-gray-400">No image uploaded</span>
+                
+                <div className="absolute top-2 left-2 flex items-center bg-white rounded-md px-2 py-1 shadow-sm">
+                  <span className="font-semibold text-sm">4.8</span>
+                  <span className="text-yellow-400 ml-1">★</span>
                 </div>
-              )
-            )}
-            
-            <div className="absolute top-2 left-2 flex items-center bg-white rounded-md px-2 py-1 shadow-sm">
-              <span className="font-semibold text-sm">4.8</span>
-              <span className="text-yellow-400 ml-1">★</span>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="absolute top-2 right-2 h-8 w-8 bg-white rounded-full"
+                >
+                  <Heart className="h-5 w-5 text-gray-400" />
+                </Button>
+              </div>
+      
+              <h3 className="font-medium text-sm mb-2 line-clamp-2">
+                {watchedTitle || "Untitled Product"}
+              </h3>
+      
+              <div className="flex items-baseline gap-2 mb-2">
+                <span className="text-gray-400 line-through text-sm">
+                  ${Number(watchedPrice || 0) + 10}
+                </span>
+                <span className="text-2xl font-semibold text-[#f4a340]">
+                  ${watchedPrice || "0.00"}
+                </span>
+                <span className="text-sm text-gray-500">/per week</span>
+              </div>
+      
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-500">
+                  {watchedPutOnLease ? "Available for lease" : "Available for Rent"}
+                </span>
+                <Button 
+                  size="sm" 
+                  className="bg-[#f4a340] hover:bg-[#e59635] rounded-full w-10 h-10 flex items-center justify-center"
+                >
+                  <span className="sr-only">Add to cart</span>
+                  🛒
+                </Button>
+              </div>
             </div>
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="absolute top-2 right-2 h-8 w-8 bg-white rounded-full"
-            >
-              <Heart className="h-5 w-5 text-gray-400" />
-            </Button>
-          </div>
-  
-          <h3 className="font-medium text-sm mb-2 line-clamp-2">
-            {formData.itemName || "Untitled Product"}
-          </h3>
-  
-          <div className="flex items-baseline gap-2 mb-2">
-            <span className="text-gray-400 line-through text-sm">
-              ${Number(formData.price || 0) + 10}
-            </span>
-            <span className="text-2xl font-semibold text-[#f4a340]">
-              ${formData.price || "0.00"}
-            </span>
-            <span className="text-sm text-gray-500">/per week</span>
-          </div>
-  
-          <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-500">
-              Available for lease
-            </span>
-            <Button 
-              size="sm" 
-              className="bg-[#f4a340] hover:bg-[#e59635] rounded-full w-10 h-10 flex items-center justify-center"
-            >
-              <span className="sr-only">Add to cart</span>
-              🛒
-            </Button>
-          </div>
-        </div>
-      </Card>
+          </Card>
         </div>
       </div>
     </div>

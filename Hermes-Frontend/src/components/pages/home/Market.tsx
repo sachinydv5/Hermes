@@ -82,7 +82,7 @@ const Market = () => {
                   <Button
                     key={category}
                     variant={selectedCategory === category ? "default" : "outline"}
-                    className={`whitespace-nowrap rounded-lg font-semibold text-base sm:text-lg md:text-xl lg:text-2xl text-[#313131] py-2 sm:py-4 md:py-6 px-3 sm:px-4 flex-shrink-0 ${
+                    className={`whitespace-nowrap rounded-lg font-semibold text-base  md:text-lg lg:text-xl text-[#313131] py-2 sm:py-4 md:py-6 px-3 sm:px-4 flex-shrink-0 ${
                       selectedCategory === category 
                         ? 'bg-gray-900 text-[#F9D9AA]' 
                         : 'border-none bg-transparent shadow-none'
@@ -108,7 +108,7 @@ const Market = () => {
               )}
             </div>
             <div className="flex justify-center pt-2 sm:pt-4">
-              <Button variant="outline" className="rounded-full px-6 sm:px-8 md:px-10 py-2 sm:py-4 md:py-6 text-base sm:text-lg font-bold">
+              <Button variant="outline" className="rounded-full px-6 sm:px-8 md:px-10 py-2 sm:py-6 md:py-8 text-base sm:text-lg md:text-2xl font-bold">
                 <Link to='/productlist'>See All Products</Link>
               </Button>
             </div>

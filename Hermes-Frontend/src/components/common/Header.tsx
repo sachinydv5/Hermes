@@ -75,7 +75,7 @@ const Header = () => {
               </NavLink> 
               {/* Create Listing Button */}
               <button className="bg-white text-[#f8a93a] px-2 py-1 sm:px-3 md:px-3 lg:px-4 md:py-1 lg:py-2 rounded-full text-xs sm:text-sm md:text-base font-medium hover:text-black transition-colors">
-                <Link to='/creatinglist'>Create listing</Link> 
+                <Link to='/creatinglist'>Create Listing</Link> 
               </button>
 
               {/* Login/Profile Button */}

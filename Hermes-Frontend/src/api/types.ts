@@ -248,3 +248,17 @@ export type OrderStatusRequest = {
 }
 
 export type OrderStatusResponse = OrderCreateResponse
+
+
+// image upload type
+export type PRODUCT_IMAGE_ERROR_CODE = "IMAGE_URL_NOT_FOUND"
+
+
+export type UploadProductImageRequest = {
+  image: File[];
+}
+
+export type UploadProductImageRespose = Error<GLOBAL_ERROR_CODE> | Error<PRODUCT_IMAGE_ERROR_CODE> | {
+  status: "IMAGE_UPLOAD_SUCCESFULL",
+  url: string
+}

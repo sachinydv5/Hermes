@@ -3,7 +3,10 @@ import { Trash2, Minus, Plus, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/app/store';
+import { Product } from '@/api/common.types';
+import { fetchProduct } from '@/app/store/cart';
 // Define CartItem interface
 interface CartItem {
   id: string;
@@ -15,32 +18,15 @@ interface CartItem {
 }
 
 const Cart = () => {
-  // Sample cart items for UI preview
-  const [cartItems, setCartItems] = useState<CartItem[]>([
-    {
-      id: '1',
-      name: 'Modern Desk Lamp',
-      price: 49.99,
-      quantity: 1,
-      category: 'Home Decor',
-      img: ['https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png']
-    },
-    {
-      id: '2',
-      name: 'Wireless Headphones',
-      price: 129.99,
-      quantity: 2,
-      category: 'Electronics',
-      img: ['https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png']
-    }
-  ]);
   const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
+  const products = useSelector((state: RootState) => state.cart.products);
 
   // Placeholder utility functions
-  const getCartItems = (): CartItem[] => {
-    // This would normally get items from localStorage or API
-    return cartItems;
-  };
+  // const getCartItems = (): CartItem[] => {
+  //   // This would normally get items from localStorage or API
+  //   return cartItems;
+  // };
 
   const removeFromCart = (productId: string): void => {
     // This would normally remove an item from the cart
@@ -48,50 +34,37 @@ const Cart = () => {
   };
 
   useEffect(() => {
-    // For UI preview, we're using predefined cart items
-    const loadCart = () => {
-      setIsLoading(true);
-      try {
-        // No actual loading for UI preview
-        // setCartItems(getCartItems());
-      } catch (error) {
-        console.error('Failed to load cart:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    
-    loadCart();
-  }, []);
+    dispatch(fetchProduct());
+  }, [dispatch]);
 
-  const updateCart = (newCart: CartItem[]): void => {
-    // This would normally update cart in state and localStorage
-    setCartItems(newCart);
-    console.log('Cart updated:', newCart);
-  };
+  // const updateCart = (newCart: CartItem[]): void => {
+  //   // This would normally update cart in state and localStorage
+  //   setCartItems(newCart);
+  //   console.log('Cart updated:', newCart);
+  // };
 
-  const handleRemoveFromCart = (productId: string): void => {
-    // For UI preview only - log action
-    removeFromCart(productId);
-    console.log(`Removed item ${productId} from cart`);
-  };
+  // const handleRemoveFromCart = (productId: string): void => {
+  //   // For UI preview only - log action
+  //   removeFromCart(productId);
+  //   console.log(`Removed item ${productId} from cart`);
+  // };
 
-  const updateQuantity = (productId: string, newQuantity: number): void => {
-    // For UI preview only - log action
-    if (newQuantity < 1) return;
-    console.log(`Update quantity of item ${productId} to ${newQuantity}`);
+  // const updateQuantity = (productId: string, newQuantity: number): void => {
+  //   // For UI preview only - log action
+  //   if (newQuantity < 1) return;
+  //   console.log(`Update quantity of item ${productId} to ${newQuantity}`);
     
-    const newCart = cartItems.map(item => 
-      item.id === productId 
-        ? { ...item, quantity: newQuantity } 
-        : item
-    );
+  //   const newCart = cartItems.map(item => 
+  //     item.id === productId 
+  //       ? { ...item, quantity: newQuantity } 
+  //       : item
+  //   );
     
-    updateCart(newCart);
-  };
+  //   updateCart(newCart);
+  // };
 
   const calculateSubtotal = (): number => {
-    return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+    return products.reduce((total, item) => total + (item.price * item.qty), 0);
   };
 
   const calculateTotal = (): number => {
@@ -100,11 +73,11 @@ const Cart = () => {
     return subtotal;
   };
 
-  const handleCheckout = (): void => {
-    // For UI preview only - log action
-    console.log('Checkout button clicked');
-    console.log('Total amount:', calculateTotal().toFixed(2));
-  };
+  // const handleCheckout = (): void => {
+  //   // For UI preview only - log action
+  //   console.log('Checkout button clicked');
+  //   console.log('Total amount:', calculateTotal().toFixed(2));
+  // };
 
   if (isLoading) {
     return (
@@ -126,7 +99,7 @@ const Cart = () => {
         <h1 className="text-3xl font-bold text-center flex-1">Your Cart</h1>
       </div>
 
-      {cartItems.length === 0 ? (
+      {products.length === 0 ? (
         <div className="text-center py-16">
           <h2 className="text-2xl font-semibold mb-4">Your cart is empty</h2>
           <p className="text-muted-foreground mb-8">Looks like you haven't added any products to your cart yet.</p>
@@ -137,7 +110,7 @@ const Cart = () => {
       ) : (
         <div className="grid md:grid-cols-3 gap-8">
           <div className="md:col-span-2 space-y-4">
-            {cartItems.map((item) => (
+            {products.map((item) => (
               <Card key={item.id} className="overflow-hidden">
                 <CardContent className="p-0">
                   <div className="flex flex-col sm:flex-row">
@@ -155,7 +128,7 @@ const Cart = () => {
                           <Button 
                             variant="ghost" 
                             size="icon"
-                            onClick={() => handleRemoveFromCart(item.id)}
+                            // onClick={() => handleRemoveFromCart(item.id)}
                             className="h-8 w-8 text-muted-foreground hover:text-destructive"
                           >
                             <Trash2 className="h-4 w-4" />
@@ -169,17 +142,17 @@ const Cart = () => {
                           <Button 
                             variant="ghost" 
                             size="icon" 
-                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                            // onClick={() => updateQuantity(item.id, item.qty - 1)}
                             className="h-8 w-8"
                           >
                             <Minus className="h-3 w-3" />
                             <span className="sr-only">Decrease quantity</span>
                           </Button>
-                          <span className="w-8 text-center">{item.quantity}</span>
+                          <span className="w-8 text-center">{item.qty }</span>
                           <Button 
                             variant="ghost" 
                             size="icon" 
-                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                            // onClick={() => updateQuantity(item.id, item.qty  + 1)}
                             className="h-8 w-8"
                           >
                             <Plus className="h-3 w-3" />
@@ -187,9 +160,9 @@ const Cart = () => {
                           </Button>
                         </div>
                         <div className="text-right">
-                          <div className="font-semibold">${(item.price * item.quantity).toFixed(2)}</div>
-                          {item.quantity > 1 && (
-                            <div className="text-xs text-muted-foreground">${item.price.toFixed(2)} each</div>
+                          <div className="font-semibold">${(item.price * item.qty ).toFixed(2)}</div>
+                          {item.qty > 1 && (
+                            <div className="text-xs text-muted-foreground">${item.price} each</div>
                           )}
                         </div>
                       </div>
@@ -217,7 +190,9 @@ const Cart = () => {
                     <span>${calculateTotal().toFixed(2)}</span>
                   </div>
                 </div>
-                <Button className="w-full mt-6" onClick={handleCheckout}>Checkout</Button>
+                <Button className="w-full mt-6" 
+                // onClick={handleCheckout}
+                >Checkout</Button>
                 <div className="mt-6 text-center text-sm text-muted-foreground">
                   Need help? <a href="#" className="underline">Contact Support</a>
                 </div>

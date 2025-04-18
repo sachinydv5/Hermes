@@ -9,7 +9,7 @@ const ProductCard = () => {
     <div className="bg-white rounded-lg shadow-md hover:shadow-2xl transition-shadow duration-300 p-3 sm:p-4 md:p-6 w-full max-w-xs mx-auto">
       {/* Image Section with Rating Badge */}
       <div className="relative">
-        <div className="h-32 sm:h-36 md:h-40 bg-gray-300 rounded-md overflow-hidden">
+        <div className="h-32 sm:h-36 md:h-44 bg-gray-300 rounded-md overflow-hidden">
           {/* Add responsive image if available */}
           {/* <img src="product.jpg" alt="Product" className="w-full h-full object-cover" /> */}
         </div>

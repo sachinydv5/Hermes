@@ -25,7 +25,7 @@ const TreandingSearch = () => {
       {trendingItems.map((item, index) => (
         <div
           key={index}
-          className="px-4 py-2 border border-[#FCB857] rounded-full text-sm hover:bg-gray-100 transition-colors cursor-pointer"
+          className="px-4 py-2 border border-[#FCB857] rounded-full text-xl hover:bg-gray-100 transition-colors cursor-pointer"
         >
           {item}
         </div>

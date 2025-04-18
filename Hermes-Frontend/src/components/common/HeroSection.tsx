@@ -6,18 +6,18 @@ const HeroSection = () => {
   return (
     <section className="py-6 px-4 sm:p-8 md:p-16 mb-20 sm:mb-32 md:mb-40">
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
-        <div className="w-full md:w-1/2 text-center md:text-left mb-8 md:mb-0 text-balance">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold text-[#313131]">
-            <span className='text-[#FCB857]'>  Rent</span> From Your Neighbors
+        <div className="w-full md:w-1/2 text-center md:text-left mb-8 md:mb-0 text-balance pl-2">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#313131]">
+             Get What You Need <br /> from<span className='text-[#FCB857]'> Vivarent</span>
           </h1>
-          <p className="text-sm sm:text-base md:text-lg text-[#7E7D7A] mt-2 sm:mt-4">
-          Vivarent is a next-gen rental platform connecting Minneapolis and St. Paul. 
+          <p className="text-lg sm:text-xl md:text-2xl text-[#7E7D7A] mt-2 sm:mt-4">
+          Save money by renting and earn money renting items <br /> with our vetted Minneapolis-St. Paul network!
           </p>
-          <div className="mt-4 sm:mt-6 flex flex-col sm:flex-row items-center justify-center md:justify-start gap-3 sm:gap-4">
-            <Link to='/productlist' className="w-full sm:w-auto flex items-center justify-center gap-2 bg-black text-white px-4 py-2 rounded-full">
-             Rent Now<ShoppingCart className="bg-[#FCB857] rounded-full p-1" />
+          <div className="mt-4 sm:mt-6 flex flex-col sm:flex-row items-center justify-center md:justify-start gap-3 sm:gap-4 text-base sm:text-lg md:text-xl">
+            <Link to='/productlist' className="w-full sm:w-auto flex items-center justify-center gap-2 bg-black text-white px-4 py-2 rounded-full hover:text-[#F4AE26]">
+             Rent Now
             </Link>
-            <button className="w-full sm:w-auto border-none font-bold text-[#F4AE26] px-4 py-2 rounded">
+            <button className="w-full sm:w-auto hover:underline  text-[#F4AE26] px-4 py-2 rounded-full">
             <Link to='/creatinglist'>List Now</Link> 
             </button>
           </div>
@@ -33,7 +33,7 @@ const HeroSection = () => {
               className="absolute object-cover w-full h-full" 
             />
             {/* Center logo/icon */}
-            <div className=" relative z-10 w-24 sm:w-28 md:w-52 top-4">
+            <div className="relative z-10 w-24 sm:w-28 md:w-44 top-2">
               <img 
                 src="logo.png" 
                 alt="Logo" 
@@ -43,13 +43,13 @@ const HeroSection = () => {
             
             {/* Labels and ratings - Responsive for all screens */}
             <div className="absolute top-2 sm:top-5 left-0 sm:left-8 transform -translate-x-1/2 bg-white bg-opacity-45 rounded-full p-0.5 sm:p-1">
-              <p className="text-xs sm:text-sm px-2 sm:px-4 py-0.5 sm:py-1 bg-white rounded-full">Lorem Ipsum</p>   
+              <p className="text-xs sm:text-sm px-2 sm:px-4 py-0.5 sm:py-1 bg-white rounded-full font-bold">Vivarent</p>   
             </div>
             <div className="absolute top-2 sm:top-8 right-0 sm:right-8 transform translate-x-1/2 bg-white bg-opacity-45 rounded-full p-0.5 sm:p-1 shadow-lg flex items-center z-10">
-              <p className="text-xs sm:text-sm bg-white px-2 sm:px-4 py-0.5 sm:py-1 rounded-full">0.0 <span className="text-yellow-400 ml-1">★</span></p>
+              <p className="text-xs sm:text-sm bg-white px-2 sm:px-4 py-0.5 sm:py-1 rounded-full font-semibold">4.8<span className="text-yellow-400 ml-1">★</span></p>
             </div>
             <div className="absolute bottom-2 sm:bottom-5 left-4 sm:left-10 transform -translate-x-1/2 bg-white bg-opacity-45 p-0.5 sm:p-1 rounded-full shadow-lg">
-              <p className="text-xs sm:text-sm bg-white px-2 sm:px-4 py-0.5 sm:py-1 rounded-full">Dummy</p>
+              <p className="text-xs sm:text-sm bg-white px-2 sm:px-4 py-0.5 sm:py-1 rounded-full font-semibold">Same-day Delivery</p>
             </div>
           </div>
         </div>

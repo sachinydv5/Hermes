@@ -25,7 +25,7 @@ function MainLayout({ children }: any) {
         <div className="w-full overflow-x-hidden">
             {children}
         </div>
-        <footer className="mt-10">
+        <footer className="mt-10 ">
         {!hideFooter && <Footer />}
         </footer>
     </div>   

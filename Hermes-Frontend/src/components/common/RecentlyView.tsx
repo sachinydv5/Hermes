@@ -39,7 +39,7 @@ const RecentlyView = () => {
       {/* Header Section */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2 sm:gap-0">
         <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-          <h2 className="text-base sm:text-lg font-semibold">YOUR RECENTLY VIEWED</h2>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold">YOUR RECENTLY VIEWED</h2>
           {/* <Button variant="link" className="text-sm text-blue-500 hover:underline p-0">
             View All
           </Button> */}

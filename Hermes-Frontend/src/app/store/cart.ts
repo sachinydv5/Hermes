@@ -1,37 +1,37 @@
-import type { PayloadAction } from "@reduxjs/toolkit"
-import { createAppSlice } from "../../app/createAppSlice"
-import type { AppThunk } from "../../app/store"
+import { callApi, getCart } from "@/api/api";
+import { Product } from "@/api/common.types";
+import {  GetWishlistRequest, GetWishlistResponse } from "@/api/types";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-export interface UserSliceState {
-  isLoggedIn: boolean
-  firstName: string
+
+interface CartSliceState {
+products:Product[];
 }
 
-const initialState: UserSliceState = {
-  isLoggedIn: false,
-  firstName: "",
+const initialState: CartSliceState = {
+products: [],
 }
 
-export const userSlice = createAppSlice({
-  name: "user",
-  initialState,
-  reducers: create => ({
-    updateUserLoggedIn: create.reducer(
-      (state, action: PayloadAction<{firstName: string}>) => {
-        console.log("isUserLoggedIn called")
-        console.log(action)
-        state.isLoggedIn = true;
-        state.firstName = action.payload.firstName
-      },
-    ),
-  }),
-  selectors: {
-    userData: state => state.firstName,
-    isUserLoggedIn: state => state.isLoggedIn
-  },
+
+
+export const fetchProduct = createAsyncThunk('cart/fetchProducts',async ()=>{
+  
+  const response : GetWishlistResponse = await getCart({} as GetWishlistRequest, "/cart/get")
+  return response;
 })
 
-export const { updateUserLoggedIn } = userSlice.actions
 
-export const { userData, isUserLoggedIn }= userSlice.selectors
-
+export const cartSlice = createSlice({
+  name:'cart',
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchProduct.fulfilled, (state, action) => {
+        if ('wishlist' in action.payload) {
+          state.products = action.payload.wishlist;
+        }
+      });
+  },
+ 
+})

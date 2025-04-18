@@ -42,7 +42,7 @@ const PopularSellers = () => {
     <div className="px-4 py-6 sm:p-6 md:p-8 lg:p-10">
       <div className=" w-[90vw] mx-auto px-2 sm:px-4 md:px-6">
         <div className="mb-4 sm:mb-6 md:mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-2">
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold">
             Popular <span className="text-orange-500">Sellers</span>
           </h2>
           <div className="flex items-center gap-2 w-full sm:w-auto">

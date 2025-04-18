@@ -1,12 +1,12 @@
-import { OrderCreateRequest,AppConfigRequest, AppConfigResponse, ERROR_RESPONSE, GetAddToWishlistRequest, GetAddToWishlistResponse, GetProductIdRequest, GetProductIdResponse, GetProductRequest, GetProductResponse, GetWishlistRequest, GetWishlistResponse, ProductRequest, ProductResponse, UpdateAppConfigRequest, UpdateAppConfigResponse, UserLoginRequest, UserLoginResponse, UserLogoutRequest, UserLogoutResponse, UserSignUpRequest, UserSignUpResponse, OrderCreateResponse, PaymentCreateResponse, PaymentCreateRequest, OrderStatusRequest, OrderStatusResponse } from "./types";
+import { OrderCreateRequest,AppConfigRequest, AppConfigResponse, ERROR_RESPONSE, GetAddToWishlistRequest, GetAddToWishlistResponse, GetProductIdRequest, GetProductIdResponse, GetProductRequest, GetProductResponse, GetWishlistRequest, GetWishlistResponse, ProductRequest, ProductResponse, UpdateAppConfigRequest, UpdateAppConfigResponse, UserLoginRequest, UserLoginResponse, UserLogoutRequest, UserLogoutResponse, UserSignUpRequest, UserSignUpResponse, OrderCreateResponse, PaymentCreateResponse, PaymentCreateRequest, OrderStatusRequest, OrderStatusResponse, UploadProductImageRequest, UploadProductImageRespose } from "./types";
 
 import axios, { AxiosResponse } from 'axios';
 
 
 const endpoint = "https://hermes-backend-pykc.onrender.com";
 
-type API_REQUEST = UserSignUpRequest | UserLoginRequest | UserLogoutRequest | ProductRequest | ProductResponse | UpdateAppConfigRequest | AppConfigRequest | GetAddToWishlistRequest | OrderCreateRequest | PaymentCreateRequest | OrderStatusRequest;
-type API_RESPONSE = UserSignUpResponse | UserLoginResponse | UserLogoutResponse | ProductResponse | GetProductResponse | UpdateAppConfigResponse | AppConfigResponse | ERROR_RESPONSE |GetAddToWishlistResponse | OrderCreateResponse | PaymentCreateResponse | OrderStatusResponse;
+type API_REQUEST = UploadProductImageRequest  | UserSignUpRequest | UserLoginRequest | UserLogoutRequest | ProductRequest | ProductResponse | UpdateAppConfigRequest | AppConfigRequest | GetAddToWishlistRequest | OrderCreateRequest | PaymentCreateRequest | OrderStatusRequest;
+type API_RESPONSE = UploadProductImageRespose | UserSignUpResponse | UserLoginResponse | UserLogoutResponse | ProductResponse | GetProductResponse | UpdateAppConfigResponse | AppConfigResponse | ERROR_RESPONSE |GetAddToWishlistResponse | OrderCreateResponse | PaymentCreateResponse | OrderStatusResponse;
 
 export function callApi(request: UserSignUpRequest, url: "/api/signup"): Promise<UserSignUpResponse | ERROR_RESPONSE>;
 export function callApi(request: UserLoginRequest, url: "/api/login"): Promise<UserLoginResponse | ERROR_RESPONSE>;
@@ -21,6 +21,8 @@ export function callApi(request:OrderCreateRequest, url: "/order/create"): Promi
 export function callApi(request:GetAddToWishlistRequest, url: "/cart/add"): Promise<GetAddToWishlistResponse | ERROR_RESPONSE>;
 export function callApi(request:PaymentCreateRequest, url: "/payment/create"): Promise<PaymentCreateResponse | ERROR_RESPONSE>;
 export function callApi(request:OrderStatusRequest, url: "/order/status"): Promise<OrderStatusResponse | ERROR_RESPONSE>;
+export function callApi(request:UploadProductImageRequest, url: "/product/uploadProduct"): Promise<UploadProductImageRespose | ERROR_RESPONSE>;
+
 
 
 export async function callApi(request: API_REQUEST, url: string): Promise<API_RESPONSE> {
