@@ -1,23 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import HeroSection from "../../common/HeroSection";
 import PopularNow from "../../common/PopularNow";
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 
 const Landing = () => {
   const [searchParams] = useSearchParams();
-  // const orderID = searchParams.get("orderID");
-  // const [orderStatus, setOrderStatus] = useState<null | string>(null);
-  // const [loading, setLoading] = useState(false);
-  // const [error, setError] = useState<null | string>(null);
- 
+
   return (
         <>
           <section className='bg-[#F6EBDA]'>
             <HeroSection />
-            {/* popular section */}
-            <PopularNow />
+            {/* popular section */}  
           </section>
-
           {/* feature section */}
           <section className="p-4 sm:p-8 md:p-12 lg:p-16 mb-6 sm:mb-8 md:mb-10">
   <div className="container mx-auto px-4 py-10">
@@ -76,9 +70,9 @@ const Landing = () => {
                 <p className="font-normal text-base sm:text-lg md:text-xl text-[#7E7D7A] mb-4 sm:mb-6 break-words">
                 Need a pro camera just for the day? Or maybe you've got a truck that could be out hauling. <br />Vivarent lets you rent stuff locally and earn money renting items to your friends and neighbors across the Twin Cities. 
                 </p>
-                <button className="bg-[#313131] text-[#F4AE26] py-2 sm:py-3 px-4 sm:px-6 rounded-full font-bold text-lg hover:bg-gray-700 cursor-pointer relative z-10">
+                <Link to='/about'className="bg-[#313131] text-[#F4AE26] py-2 sm:py-3 px-4 sm:px-6 rounded-full font-bold text-lg hover:bg-gray-700 cursor-pointer relative z-10">
                   Get in Touch
-                </button>
+                </Link>
               </div>
             </div>
             <div className="absolute top-0 right-0 w-1/2 h-full hidden sm:flex items-center justify-end">

@@ -1,56 +1,38 @@
-import { ShoppingCart } from 'lucide-react';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
 const HeroSection = () => {
   return (
-    <section className="py-6 px-4 sm:p-8 md:p-16 mb-20 sm:mb-32 md:mb-40">
-      <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
-        <div className="w-full md:w-1/2 text-center md:text-left mb-8 md:mb-0 text-balance pl-2">
+    <section className="py-6 px-4 sm:p-8 md:p-16 mb-60 sm:mb-72 md:mb-80 lg:mb-96 relative">
+      <div className="container mx-auto flex flex-col items-center justify-center">
+        {/* Text Content - Always centered with higher z-index */}
+        <div className="w-full text-center text-balance relative z-20 mb-16">
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#313131]">
              Get What You Need <br /> from<span className='text-[#FCB857]'> Vivarent</span>
           </h1>
           <p className="text-lg sm:text-xl md:text-2xl text-[#7E7D7A] mt-2 sm:mt-4">
           Save money by renting and earn money renting items <br /> with our vetted Minneapolis-St. Paul network!
           </p>
-          <div className="mt-4 sm:mt-6 flex flex-col sm:flex-row items-center justify-center md:justify-start gap-3 sm:gap-4 text-base sm:text-lg md:text-xl">
+          <div className="mt-4 sm:mt-6 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 text-base sm:text-lg md:text-xl">
             <Link to='/productlist' className="w-full sm:w-auto flex items-center justify-center gap-2 bg-black text-white px-4 py-2 rounded-full hover:text-[#F4AE26]">
              Rent Now
             </Link>
-            <button className="w-full sm:w-auto hover:underline  text-[#F4AE26] px-4 py-2 rounded-full">
+            <button className="w-full sm:w-auto hover:underline text-[#F4AE26] px-4 py-2 rounded-full">
             <Link to='/creatinglist'>List Now</Link> 
             </button>
           </div>
         </div>
-        
-        {/* Image section - Responsive for all devices */}
-        <div className="relative w-full md:w-1/2 flex justify-center md:justify-end md:right-20 lg:right-40">
-          <div className="relative w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 rounded-full flex items-center justify-center ">
-            {/* Background image for the circle */}
+        {/* Empty spacer div to ensure proper spacing */}
+        <div className="h-40 sm:h-48 md:h-56 lg:h-64"></div>  
+        {/* Hero image positioned to be half in, half out of section */}
+        <div className="absolute -bottom-12 left-0 right-0 translate-y-1/2 flex justify-center z-10">
+          <div className="w-full max-w-[300px] sm:max-w-[700px] md:max-w-[900px] lg:max-w-[1000px] xl:max-w-[1081px]">
             <img 
-              src="herocircle.png" 
-              alt="Circle Background" 
-              className="absolute object-cover w-full h-full" 
+              src="/HeroImage.svg" 
+              alt="Featured Products" 
+              className="w-full h-auto object-contain" 
+             
             />
-            {/* Center logo/icon */}
-            <div className="relative z-10 w-24 sm:w-28 md:w-44 top-2">
-              <img 
-                src="logo.png" 
-                alt="Logo" 
-                className="w-full"
-              />
-            </div>
-            
-            {/* Labels and ratings - Responsive for all screens */}
-            <div className="absolute top-2 sm:top-5 left-0 sm:left-8 transform -translate-x-1/2 bg-white bg-opacity-45 rounded-full p-0.5 sm:p-1">
-              <p className="text-xs sm:text-sm px-2 sm:px-4 py-0.5 sm:py-1 bg-white rounded-full font-bold">Vivarent</p>   
-            </div>
-            <div className="absolute top-2 sm:top-8 right-0 sm:right-8 transform translate-x-1/2 bg-white bg-opacity-45 rounded-full p-0.5 sm:p-1 shadow-lg flex items-center z-10">
-              <p className="text-xs sm:text-sm bg-white px-2 sm:px-4 py-0.5 sm:py-1 rounded-full font-semibold">4.8<span className="text-yellow-400 ml-1">★</span></p>
-            </div>
-            <div className="absolute bottom-2 sm:bottom-5 left-4 sm:left-10 transform -translate-x-1/2 bg-white bg-opacity-45 p-0.5 sm:p-1 rounded-full shadow-lg">
-              <p className="text-xs sm:text-sm bg-white px-2 sm:px-4 py-0.5 sm:py-1 rounded-full font-semibold">Same-day Delivery</p>
-            </div>
           </div>
         </div>
       </div>
