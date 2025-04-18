@@ -91,9 +91,9 @@ const ProductCardTwo = ({product}: ProductCardTwoProps) => {
       }
     }
     
-    const images = [
-      "https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png",
-    ]
+    // const images = [
+    //   "https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png",
+    // ]
   
     if (!product) {
       return (
@@ -116,29 +116,12 @@ const ProductCardTwo = ({product}: ProductCardTwoProps) => {
       >
         <div className="p-2 xs:p-3 sm:p-4 rounded-lg">
           <div className="relative mb-2 sm:mb-3 rounded-lg border-2 border-orange-100">
-            {isHovered ? (
-              <Carousel className="w-full aspect-square">
-                <CarouselContent>
-                  {images.map((src, index) => (
-                    <CarouselItem key={index}>
-                      <img
-                        src={src}
-                        alt={`Product view ${index + 1}`}
-                        className="aspect-square object-cover rounded-lg"
-                      />
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <CarouselPrevious className="left-1 sm:left-2 h-6 w-6 sm:h-8 sm:w-8" onClick={(e) => e.stopPropagation()} />
-                <CarouselNext className="right-1 sm:right-2 h-6 w-6 sm:h-8 sm:w-8" onClick={(e) => e.stopPropagation()} />
-              </Carousel>
-            ) : (
               <img
-                src={images[0]}
+                src={product.image}
                 alt={product.name || 'Product image'}
                 className="aspect-square object-cover rounded-lg"
               />
-            )}
+           
             
             <div className="absolute top-1 sm:top-2 left-1 sm:left-2 flex items-center bg-white rounded-md px-1 sm:px-2 py-0.5 sm:py-1 shadow-sm">
               <span className="font-semibold text-xs sm:text-sm">4.8</span>

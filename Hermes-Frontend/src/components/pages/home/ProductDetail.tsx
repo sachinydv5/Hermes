@@ -210,7 +210,7 @@ const ProductDetail = () => {
               <ChevronLeft className="h-6 w-6" />
             </button>
             <img
-              src={images[currentImage]}
+              src={productdetail.image}
               alt="Product image"
               
               className="object-contain"
@@ -239,7 +239,7 @@ const ProductDetail = () => {
                 }`}
               >
                 <img
-                  src={img}
+                  src={productdetail.image}
                   alt={`Thumbnail ${idx + 1}`}
                   width={80}
                   height={60}

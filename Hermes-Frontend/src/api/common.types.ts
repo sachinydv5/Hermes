@@ -5,6 +5,7 @@ export type Product = {
     name: string;
     description: string;
     qty: number;
+    image:string;
     duration: {
         value: number;
         unit: string;
