@@ -24,19 +24,19 @@ const Landing = () => {
 
     <div className="flex flex-wrap items-center justify-around gap-y-8 gap-x-4">
       <div className="text-center w-full sm:w-[45%] md:w-[30%] lg:w-[28%] ">
-        <img src="aboutus.svg" alt="" className="mx-auto mb-3 sm:mb-4 max-w-56 sm:max-w-60 md:max-w-64 lg:max-w-72" />
+        <img src="HowWorks.svg" alt="" className="mx-auto mb-3 sm:mb-4 max-w-56 sm:max-w-60 md:max-w-64 lg:max-w-72" />
         <h3 className="text-xl sm:text-2xl md:text-3xl ">Explore our rentals <br />or list your own</h3>
         <p className="text-[#7E7D7A] text-base sm:text-lg md:text-xl">Find the item you need or list yours <br />on our peer-to-peer rental platform.</p>
       </div>
 
       <div className="text-center w-full sm:w-[45%] md:w-[30%] lg:w-[28%] ">
-        <img src="Make01.svg" alt="" className="mx-auto mb-3 sm:mb-4 max-w-56 sm:max-w-60 md:max-w-64 lg:max-w-72" />
+        <img src="HowWorks2.svg" alt="" className="mx-auto mb-3 sm:mb-4 max-w-56 sm:max-w-60 md:max-w-64 lg:max-w-72" />
         <h3 className="text-xl sm:text-2xl md:text-3xl ">Connect with the <br /> owner or renter.</h3>
         <p className="text-[#7E7D7A] text-base sm:text-lg md:text-xl">Connect with owners and renters  <br />on our local rental marketplace.</p>
       </div>
 
       <div className="text-center w-full sm:w-[45%] md:w-[30%] lg:w-[28%]">
-        <img src="Make02.svg" alt="" className="mx-auto mb-3 sm:mb-4 max-w-56 sm:max-w-60 md:max-w-64 lg:max-w-72" />
+        <img src="HowWorks3.svg" alt="" className="mx-auto mb-3 sm:mb-4 max-w-56 sm:max-w-60 md:max-w-64 lg:max-w-72" />
         <h3 className="text-xl sm:text-2xl md:text-3xl f">Make or accept <br /> an offer!</h3>
         <p className="text-[#7E7D7A] text-base sm:text-lg md:text-xl">Share and rent items with the <br />community in just a few clicks!</p>
       </div>
