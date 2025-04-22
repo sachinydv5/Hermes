@@ -32,7 +32,7 @@ const PopularCategory = () => {
        <section className="w-full py-8 ">
       <div className="w-[90vw] mx-auto px-4">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">Popular Categories</h2>
+          {/* <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">Popular Categories</h2> */}
           <button 
             onClick={() => console.log('View all categories')} 
             className="text-xl text-gray-600 hover:text-gray-900 transition-colors"

@@ -15,8 +15,8 @@ interface LoginFormProps {
 const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
-    email: 'yogeshk4142@gmail.com',
-    password: 'Yogesh@999',
+    email: '',
+    password: '',
   });
 
 

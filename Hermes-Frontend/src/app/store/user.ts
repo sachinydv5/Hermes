@@ -8,8 +8,8 @@ export interface UserSliceState {
 }
 
 const initialState: UserSliceState = {
-  isLoggedIn: false,
-  firstName: "",
+  isLoggedIn: localStorage.getItem("token") ? true : false,
+  firstName: localStorage.getItem("firstName")??"User",
 }
 
 export const userSlice = createAppSlice({

@@ -57,26 +57,20 @@ const Market = () => {
 
   return (
     <div className='w-full mx-auto'>
-      <section className='mb-10 mt-10'>
+      {/* <section className='mb-10 mt-10'>
         <Search/>
-      </section>
+      </section> */}
 
       <section className='mb-10'>
         <PopularCategory/>
       </section>
-      
-      {/* AD SECTION*/}
-      <section className=''>
-        <MultipleAd/>
-      </section>
-      
       {/* weekly deals section */}
       <section className='mb-6 sm:mb-8 md:mb-10'>
         <div className="w-[90vw] bg-[#F6EBDA] space-y-4 sm:space-y-6 rounded-3xl p-4 sm:p-6 mx-auto">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <h2 className="text-4xl font-bold text-gray-900">Best Weekly Deals</h2>
           </div>
-          <div className="relative">
+          {/* <div className="relative">
               <div className="flex overflow-x-auto pb-2 gap-2 sm:gap-3 md:gap-4 no-scrollbar">
                 {categories.map((category) => (
                   <Button
@@ -93,7 +87,7 @@ const Market = () => {
                   </Button>
                 ))}
               </div>
-            </div>
+            </div> */}
         
       
             <div className="grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
@@ -101,7 +95,9 @@ const Market = () => {
                 <div className="col-span-full text-center text-red-500">{error}</div>
               ) : productData.length > 0 ? (
                 productData.slice(0, 8).map((product) => (
-                  <ProductCardTwo key={product.id} product={product} />
+                  <Link key={product.id} to={`/productdetail/${product.id}`}>
+                  <ProductCardTwo product={product} />
+                  </Link>
                 ))
               ) : (
                 <div className="col-span-full text-center text-gray-500">No products available in this category.</div>

@@ -13,7 +13,7 @@ const ErrorPage = () => {
           <img
             src="404-16.svg"
             alt="404 illustration"
-            className="w-full max-w-[750px] h-auto object-contain"
+            className="w-full max-w-[400px] h-auto object-contain"
 
           />
         </div>

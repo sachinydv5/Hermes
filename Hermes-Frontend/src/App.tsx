@@ -10,15 +10,18 @@ import AuthGuard from './guards/AuthGuard';
 import SidebarLayout from './components/layout/SidebarLayout';
 import Cart from './components/pages/home/Cart';
 import { Company } from './components/pages/home/Company';
-
+import Faq from './components/pages/home/Faq';
+import { PrivacyPolicy } from './components/pages/home/PrivacyPolicy';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 // Loading component
-const LoadingSpinner = () => (
-  <div className="flex items-center justify-center h-screen">
-    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-  </div>
-);
+// const LoadingSpinner = () => (
+//   <div className="flex items-center justify-center h-screen">
+//     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+//   </div>
+// );
 
 // Lazy load components
 const HomeScreen = React.lazy(() => import("./components/screens/home/HomeScreen"));
@@ -36,7 +39,7 @@ const ErrorPage = React.lazy(() => import("./components/pages/home/ErrorPage"));
 const getMainLayout = () => {
   return (
     <MainLayout>
-      <Suspense fallback={<LoadingSpinner />}>
+      <Suspense >
         <Routes>
           {/* Public Routes */}
           <Route path={AppRoutes.HOME} element={<HomeScreen />} />
@@ -44,6 +47,10 @@ const getMainLayout = () => {
           <Route path={AppRoutes.PRODUCTLIST} element={<ProductList />} />
           <Route path={AppRoutes.PRODUCTDETAIL} element={<ProductDetail />} />
           <Route path={AppRoutes.COMPANY} element={<Company/>} />
+          <Route path={AppRoutes.FAQ} element={<Faq/>} />
+          <Route path={AppRoutes.POLICY} element={<PrivacyPolicy/>} />
+
+
           
           {/* Protected Routes */}
           <Route element={<AuthGuard />}>
@@ -74,8 +81,7 @@ function App() {
   return (
     <>
       {getMainLayout()} 
-      {/* <UserDashboard/> */}
-     
+      <ToastContainer position="bottom-right" />   
     </>
   );
 }

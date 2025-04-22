@@ -85,7 +85,7 @@ export type ProductRequest = {
         addressLine1?: string | undefined;
         addressLine2?: string | undefined;
     };
-    price: number;
+    price: string;
     category: string;
     userId: string;
     collectionId: string;
@@ -255,10 +255,33 @@ export type PRODUCT_IMAGE_ERROR_CODE = "IMAGE_URL_NOT_FOUND"
 
 
 export type UploadProductImageRequest = {
-  image: File[];
+  image: string[];
 }
 
 export type UploadProductImageRespose = Error<GLOBAL_ERROR_CODE> | Error<PRODUCT_IMAGE_ERROR_CODE> | {
   status: "IMAGE_UPLOAD_SUCCESFULL",
   url: string
+}
+
+//User Type
+export type GetUserRequest = {
+  email:string,
+} 
+
+export type  GetUserResponse = Error<GLOBAL_ERROR_CODE> | {
+  email: string;
+  first_name: string;
+  last_name: string;
+  display_name: string;
+  is_email_verified: boolean;
+  user_id: string;
+  image_url?: string | undefined;
+} 
+
+//cart type
+
+export type GetCartRequest = {} | undefined
+
+export type  GetCartResponse = Error<GLOBAL_ERROR_CODE> | {
+ Cart: Product[] 
 }

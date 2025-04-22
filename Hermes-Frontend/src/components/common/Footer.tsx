@@ -57,22 +57,22 @@ const Footer = () => {
                   <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">support</h2>
                   <ul className="text-gray-500 dark:text-gray-400 font-medium">
                       <li className="mb-4">
-                          <Link to="#" className="hover:underline ">Contact Us</Link>
+                         Contact Us:
+                        <div>vivarent.us@gmail.com</div> 
                       </li>
                       <li>
-                          <Link to="#" className="hover:underline">FAQ</Link>
+                          <Link to="/faq" className="hover:underline">FAQ</Link>
                       </li>
                   </ul>
               </div>
               <div>
                   <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Terms &amp; Legal Info</h2>
                   <ul className="text-gray-500 dark:text-gray-400 font-medium">
-                      <li className="mb-4">
+                      {/* <li className="mb-4">
                           <Link to="#" className="hover:underline">Terms &amp; Conditions</Link>
-                      </li>
+                      </li> */}
                       <li>
-                          <Link to="#" className="hover:underline">Privacy Policy
-                          </Link>
+                          <Link to="/policy" className="hover:underline">Privacy Policy</Link>
                       </li>
                   </ul>
               </div>
@@ -80,14 +80,14 @@ const Footer = () => {
       </div>
       <hr className="my-6 border-white sm:mx-auto dark:border-white lg:my-8" />
       <div className="sm:flex items-center justify-between">
-          <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2023 <Link to="/" className="hover:underline">Vivarent™</Link>. All Rights Reserved.
+          <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2024 <Link to="/" className="hover:underline">Vivarent™</Link>. All Rights Reserved.
           </span>
           <div className="flex mt-4 items-center justify-center sm:mt-0">
               <a href="https://www.instagram.com/vivarent.us?igsh=MXE0dmVudXp3bHZhZw==" className="text-gray-500 hover:text-gray-900 dark:hover:text-white ms-5">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-instagram-icon lucide-instagram"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
                   <span className="sr-only">Instagram page</span>
               </a>
-              <a href="#" className="text-gray-500 hover:text-gray-900 dark:hover:text-white ms-5">
+              <a href="https://www.linkedin.com/in/vivarent-us-903b25344" className="text-gray-500 hover:text-gray-900 dark:hover:text-white ms-5">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-linkedin-icon lucide-linkedin"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
                   <span className="sr-only">Linkdin page</span>
               </a>

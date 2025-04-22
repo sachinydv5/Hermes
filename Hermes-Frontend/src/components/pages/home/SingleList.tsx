@@ -66,6 +66,8 @@ const SingleList = () => {
   const watchedTitle = watch("title");
   const watchedPrice = watch("price");
   const watchedPutOnLease = watch("putOnLease");
+  const watchedDuration = watch("duration");
+
 
   // Handle file input change
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -88,28 +90,29 @@ console.log("imaGE NAME",previewImage)
     setError(null);
     
     try {
-      // Upload the image first
-      if (!data.file || data.file.length === 0) {
-        throw new Error("Please select a file to upload");
-      }
+      // // Upload the image first
+      // if (!data.file || data.file.length === 0) {
+      //   throw new Error("Please select a file to upload");
+      // }
 
-      let imageUploadRequest: UploadProductImageRequest = {
-        image: [data.file[0]],
-      };
-      
-      const imageUploadResponse: UploadProductImageRespose = await callApi(
-        imageUploadRequest,
-        "/product/uploadProduct"
-      );
+      // let imageUploadRequest: UploadProductImageRequest = {
+      //   image: [previewImage ?? ""],
+      // };
+      // console.log(imageUploadRequest)
+      // console.log(data.file)
+      // const imageUploadResponse: UploadProductImageRespose = await callApi(
+      //   imageUploadRequest,
+      //   "/product/uploadProduct"
+      // );
 
-      if ("status" in imageUploadResponse) {
-        const imageUrl = imageUploadResponse.url;
+      // if (!"status" in imageUploadResponse) {
+        // const imageUrl = imageUploadResponse.url;
         
         // Prepare product data in the format expected by the API
         let req: ProductRequest = {
           name: data.title,
           description: data.description,
-          img: [imageUrl],
+          // img: [imageUrl],
           qty: 1,
           duration: {
             value: data.duration ? parseInt(data.duration.split('_')[0]) : 3,
@@ -117,13 +120,13 @@ console.log("imaGE NAME",previewImage)
           },
           discount: 0,
           pickupAddress: {
-            city: 'menesota', // These should be dynamic in a real implementation
-            country: 'USA',
+            city: '', // These should be dynamic in a real implementation
+            country: '',
             pincode: '',
             addressLine1: data.address,
             addressLine2: undefined
           },
-          price: parseFloat(data.price),
+          price: data.price,
           category: data.category || '',
           userId: '',
           collectionId: ''
@@ -137,9 +140,9 @@ console.log("imaGE NAME",previewImage)
         } else {
           setError(response.description || "Failed to create product");
         }
-      } else {
-        setError(imageUploadResponse.description || "Failed to upload image");
-      }
+      // } else {
+      //   setError(imageUploadResponse.description || "Failed to upload image");
+      // }
     } catch (err: any) {
       console.error("Product creation error:", err);
       setError(err.message || "Failed to create product");
@@ -233,14 +236,14 @@ console.log("imaGE NAME",previewImage)
                 
                 <div>
                   <Label htmlFor="duration">Duration</Label>
-                  <Select onValueChange={(value) => setValue('duration', value)}>
+                  <Select  onValueChange={(value) => setValue('duration', value)}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select duration" />
+                      <SelectValue  id="duration" placeholder="Select duration" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="1_month">1 Month</SelectItem>
-                      <SelectItem value="3_months">3 Months</SelectItem>
-                      <SelectItem value="6_months">6 Months</SelectItem>
+                      <SelectItem value="Day">Day</SelectItem>
+                      <SelectItem value="Week">Week</SelectItem>
+                      <SelectItem value="Month">Month</SelectItem>
                     </SelectContent>
                   </Select>
                   {errors.duration && <p className="text-red-500 text-sm mt-1">{errors.duration.message}</p>}
@@ -458,7 +461,7 @@ console.log("imaGE NAME",previewImage)
                 <span className="text-2xl font-semibold text-[#f4a340]">
                   ${watchedPrice || "0.00"}
                 </span>
-                <span className="text-sm text-gray-500">/per week</span>
+                <span className="text-sm text-gray-500">/per {watchedDuration}</span>
               </div>
       
               <div className="flex items-center justify-between">

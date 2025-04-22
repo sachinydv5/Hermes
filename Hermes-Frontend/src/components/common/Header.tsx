@@ -48,7 +48,7 @@ const Header = () => {
             <div className="flex items-center cursor-pointer">
               <Link to="/">
                 <img
-                  src="vivarent_logo_vertical.png"
+                  src="logo.png"
                   alt="Vivarrent logo"
                   className="h-7 sm:h-8 md:h-10"
                 />
@@ -60,9 +60,9 @@ const Header = () => {
           <div className="hidden md:flex md:items-center md:space-x-2 cursor-pointer">
             <Link to="/">
               <img
-                src="vivarent.png"
+                src="vivarent_logo_vertical.png"
                 alt="Vivarrent logo"
-                className="h-10 lg:h-12"
+                className="h-10 lg:h-14 pb-4"
               />
             </Link>
           </div>

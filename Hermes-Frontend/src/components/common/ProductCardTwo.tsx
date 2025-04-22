@@ -7,12 +7,16 @@ import { callApi } from "@/api/api"
 import { GetAddToWishlistRequest } from "@/api/types"
 import { Product } from "@/api/common.types"
 import { isProductInWishlist, addProductToWishlistCache } from "@/utils/wishlistCache"
+import { toast } from 'react-toastify'
+import { isUserLoggedIn } from '@/app/store/user'
+import { useAppSelector } from '@/app/hooks'
 
 interface ProductCardTwoProps {
   product?: Product;  
 }
 
 const ProductCardTwo = ({product}: ProductCardTwoProps) => {
+  const isLogIn: boolean = useAppSelector(isUserLoggedIn)
     const [isHovered, setIsHovered] = useState(false)
     const [isInWishlist, setIsInWishlist] = useState(false)
     const [error, setError] = useState<string | null>(null)
@@ -38,7 +42,8 @@ const ProductCardTwo = ({product}: ProductCardTwoProps) => {
       e.preventDefault();
       e.stopPropagation();
       
-      if (!product?.id || isInWishlist) {
+      if (!product?.id || isInWishlist || !isLogIn) {
+        toast.error("You must be logged in to add items to the wishlist!");
         console.log('Product already in wishlist or invalid ID'); 
         return;
       }
@@ -56,11 +61,11 @@ const ProductCardTwo = ({product}: ProductCardTwoProps) => {
             addProductToWishlistCache(product);
           }
           
-          alert(`${product.name || 'Product'} has been added to your wishlist`)
+          toast.success(`${product.name || 'Product'} has been added to your wishlist`)
         }
       } catch (error) {
         console.error('Error adding to wishlist:', error)
-        alert('Failed to add item to wishlist')
+        toast.error('Failed to add item to wishlist')
       }
     }
 
@@ -69,11 +74,11 @@ const ProductCardTwo = ({product}: ProductCardTwoProps) => {
       e.preventDefault();
       e.stopPropagation();
       
-      if (!product?.id) {
+      if (!product?.id || !isLogIn) {
+        toast.error("You must be logged in to add items to the cart!");
         console.log('Invalid product ID');
         return;
       }
-
       try {
         const req: GetAddToWishlistRequest = {
           productId: product.id,
@@ -81,7 +86,7 @@ const ProductCardTwo = ({product}: ProductCardTwoProps) => {
   
         const response = await callApi(req, "/cart/add");
         if ("status" in response) {
-          alert(`${product.name || 'Product'} added to cart successfully`)
+          toast.success(`${product.name || 'Product'} added to cart successfully`)
         } else if ("error_code" in response) {
           setError(response.description)
         }
@@ -119,7 +124,7 @@ const ProductCardTwo = ({product}: ProductCardTwoProps) => {
               <img
                 src={product.image}
                 alt={product.name || 'Product image'}
-                className="aspect-square object-cover rounded-lg"
+                className="aspect-square w-full h-full object-cover rounded-lg"
               />
            
             
@@ -144,7 +149,7 @@ const ProductCardTwo = ({product}: ProductCardTwoProps) => {
           <div className="flex items-baseline gap-1 sm:gap-2 mb-1 sm:mb-2">
             <span className="text-gray-400 line-through text-xs sm:text-sm"></span>
             <span className="text-lg sm:text-xl md:text-2xl font-semibold text-[#f4a340]">${product.price || 0}</span>
-            <span className="text-xs sm:text-sm text-gray-500">/per week</span>
+            <span className="text-xs sm:text-sm text-gray-500">/per {product.duration.unit}</span>
           </div>
   
           <div className="flex items-center justify-between">

@@ -32,10 +32,12 @@ const SignupForm = () => {
       if ("status" in response && response.status === "USER_CREATED_SUCCESSFULLY") {
         localStorage.setItem("token", response.authToken);
         const storePayload = {
-          firstName: formData.firstName
+          firstName: formData.firstName,
+          email:formData.email,
+          lastName:formData.lastName
         }
         dispatch(updateUserLoggedIn(storePayload))
-        navigate("/home");
+        navigate("/");
       }
       else if ("error_code" in response) {
         setError(response.description)

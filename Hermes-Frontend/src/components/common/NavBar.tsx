@@ -74,20 +74,10 @@ const NavBar = () => {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <Button variant="ghost" className="h-7 sm:h-8 w-full md:w-auto justify-start space-x-1 text-xs sm:text-sm md:text-base hover:bg-transparent">
+          <Link to="/trackorder" className="flex items-center justify-center gap-3 h-7 sm:h-8 w-full md:w-auto space-x-1 text-xs sm:text-sm md:text-base hover:bg-transparent">
             <ShoppingBag className="h-3 w-3 sm:h-4 sm:w-4 text-orange-500" />
-            <span>Order Tracking</span>
-          </Button>
-
-          <Button variant="ghost" className="h-7 sm:h-8 w-full md:w-auto justify-start space-x-1 text-xs sm:text-sm md:text-base hover:bg-transparent">
-            <RefreshCw className="h-3 w-3 sm:h-4 sm:w-4 text-orange-500" />
-            <span>Compare</span>
-          </Button>
-          
-          <Button variant="ghost" className="h-7 sm:h-8 w-full md:w-auto justify-start space-x-1 text-xs sm:text-sm md:text-base hover:bg-transparent">
-            <Headphones className="h-3 w-3 sm:h-4 sm:w-4 text-orange-500" />
-            <span>Customer Support</span>
-          </Button>
+            Order Tracking
+          </Link>
           
           <Button variant="ghost" className="h-7 sm:h-8 w-full md:w-auto justify-start space-x-1 text-xs sm:text-sm md:text-base hover:bg-transparent">
             <CircleHelp className="h-3 w-3 sm:h-4 sm:w-4 text-orange-500" />
@@ -102,14 +92,6 @@ const NavBar = () => {
               `hover:text-[#f8a93a] font-semibold ${isActive ? "text-[#f8a93a]": "text-gray-700"}`}>
               <Heart className="h-4 w-4" />
             </NavLink>
-          </Button>
-
-          <Button variant="ghost" className="h-8 text-sm hover:bg-transparent">
-            USD
-          </Button>
-
-          <Button variant="ghost" className="h-8 text-sm hover:bg-transparent">
-            Eng
           </Button>
         </div>
       </div>

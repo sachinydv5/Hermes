@@ -16,8 +16,13 @@ import { useNavigate } from 'react-router-dom';
 import { Product } from '../../../api/common.types'
 import ProductDetailSkeleton from '@/components/skeleton/ProductDetailSkeleton'
 import { isProductInWishlist, addProductToWishlistCache } from "@/utils/wishlistCache"
+import { toast } from 'react-toastify'
+import { isUserLoggedIn } from '@/app/store/user'
+import { useAppSelector } from '@/app/hooks'
 
 const ProductDetail = () => {
+  const isLogIn: boolean = useAppSelector(isUserLoggedIn)
+
   const { productid } = useParams();
   const [currentImage, setCurrentImage] = useState(0)
   const [error, setError] = useState<string | null>(null)
@@ -79,8 +84,11 @@ const ProductDetail = () => {
 
 
   const addtoWishlist = async (id: string) => {
-    if (!id) return;
-
+    if (!id || !isLogIn) {
+      toast.error("You must be logged in to add items to the wishlist!");
+      return;
+    }
+   
     try {
       const req: GetAddToWishlistRequest = {
         productId: id,
@@ -94,8 +102,7 @@ const ProductDetail = () => {
         if (productdetail) {
           addProductToWishlistCache(productdetail);
         }
-        
-        alert("Product added to wishlist successfully")
+        toast.success("Product added to wishlist successfully")
       } else if ("error_code" in response) {
         setError(response.description)
       }
@@ -107,8 +114,11 @@ const ProductDetail = () => {
 
   // add to cart
   const addtoCart = async (id: string) => {
-    if (!id) return;
-
+    if (!id || !isLogIn) {
+      toast.error("You must be logged in to add items to the wishlist!");    
+      return;
+    }
+   
     try {
       const req: GetAddToWishlistRequest = {
         productId: id,
@@ -117,7 +127,7 @@ const ProductDetail = () => {
       const response: GetAddToWishlistResponse = await callApi(req, "/cart/add");
       if ("status" in response) {
         // setIsInCart(true)
-        alert("Product added to cart successfully")
+        toast.success("Product added to cart successfully")
       } else if ("error_code" in response) {
         setError(response.description)
       }
@@ -211,9 +221,8 @@ const ProductDetail = () => {
             </button>
             <img
               src={productdetail.image}
-              alt="Product image"
-              
-              className="object-contain"
+              alt="Product image"  
+              className="w-full h-full object-cover"
             />
             <button 
               onClick={() => setCurrentImage(prev => prev < images.length - 1 ? prev + 1 : 0)}
@@ -260,7 +269,7 @@ const ProductDetail = () => {
                 ))}
                 <StarHalf className="w-5 h-5 fill-yellow-400 text-yellow-400" />
               </div>
-              <span className="text-sm text-muted-foreground">4.7 Star Rating (21,671 User feedback)</span>
+              {/* <span className="text-sm text-muted-foreground">4.7 Star Rating (21,671 User feedback)</span> */}
             </div>
             <h1 className="text-2xl font-bold">
               {productdetail?.name}
@@ -270,19 +279,19 @@ const ProductDetail = () => {
 
           <div className="grid gap-4">
             <div className="flex justify-between text-sm">
-              <span>P ID: </span>
+              {/* <span>P ID: </span> */}
               <span className="text-green-600">{`Availability: ${productdetail?.qty} In Stock`}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span>Deposit: </span>
+              {/* <span>Deposit: </span> */}
               <span className="text-sm text-muted-foreground">100% refund grantee</span>
             </div>
           </div>
 
           <div className="space-y-4">
-          <label className="text-sm font-medium">Tenure</label>
+          <label className="text-xl font-medium">Price</label>
             <div className='flex items-center'>
-              <Select defaultValue="01">
+              {/* <Select defaultValue="01">
                 <SelectTrigger className="w-1/5">
                   <SelectValue placeholder="Select weeks"/>
                 </SelectTrigger>
@@ -291,9 +300,9 @@ const ProductDetail = () => {
                   <SelectItem value="02">02</SelectItem>
                   <SelectItem value="03">03</SelectItem>
                 </SelectContent>
-              </Select>
+              </Select> */}
               <div className="flex items-center gap-2 mt-2">
-                <span className='text-sm'>Available: 05 weeks</span>
+                {/* <span className='text-sm'>Available: 05 weeks</span> */}
                 <span className="text-2xl font-bold text-orange-400">${productdetail?.price}</span>
                 <span>/Month</span>
                 {/* <span className="line-through text-muted-foreground">$499.00</span>
@@ -305,9 +314,9 @@ const ProductDetail = () => {
               <label className="text-sm font-medium">Check Delivery</label>
               <div className="flex gap-4">
                 <Input type="text" placeholder="PIN" className="w-1/2" />
-                <span className="text-sm text-muted-foreground self-center">
+                {/* <span className="text-sm text-muted-foreground self-center">
                   Available for delivery on 22nd Oct
-                </span>
+                </span> */}
               </div>
             </div>
 
@@ -328,23 +337,13 @@ const ProductDetail = () => {
               className="flex-1"
               onClick={() => 
               handleOrderApi(productid ?? "")
-              }>BUY NOW</Button>
+              }>RENT NOW</Button>
             </div>
 
-            <div className="flex justify-between items-center pt-6 border-t">
-              <button className="text-sm text-muted-foreground flex items-center gap-2">
-                <Share2 className="w-4 h-4" /> Add to Compare
-              </button>
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground">Share product:</span>
-                <button className="text-blue-600">facbook</button>
-                <button className="text-blue-400">twitter</button>
-                <button className="text-red-600"><Pinterest className="w-5 h-5" /></button>
-              </div>
-            </div>
+            
           </div>
 
-          <div className="pt-6 border-t">
+          <div className="pt-6 border-t ">
             <h3 className="text-sm font-medium mb-2">100% Guarantee Safe Checkout</h3>
             <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
               {['Visa', 'Mastercard', 'PayPal', 'AmEx'].map((payment) => (
@@ -357,18 +356,18 @@ const ProductDetail = () => {
         </div>
       </div>
 
-      <div className="flex gap-2 mt-6 mb-20">
+      {/* <div className="flex gap-2 mt-6 mb-20">
         <Badge variant="outline">Macbook M1</Badge>
         <Badge variant="outline">Laptop</Badge>
         <Badge variant="outline">Electronics</Badge>
         <Badge variant="outline">Apple</Badge>
-      </div>
+      </div> */}
 
       {/* Product Information Tabs */}
 
-      <Tabs defaultValue="description" className="w-full  mb-40">
+      <Tabs defaultValue="description" className="w-full  mt-20 mb-40">
         <TabsList className="w-full justify-start border-b rounded-none h-auto p-0 bg-transparent">
-          {["description", "additional", "specification", "review"].map((tab) => (
+          {["description"].map((tab) => (
             <TabsTrigger 
               key={tab}
               value={tab}
@@ -387,13 +386,6 @@ const ProductDetail = () => {
                 <p>
                   {productdetail?.description}
                 </p>
-                <Button 
-                  onClick={() => addtoCart(productid ?? "")} 
-                  variant="outline" 
-                  className="mt-4"
-                >
-                  Add to Cart
-                </Button>
               </div>
             </div>
 
@@ -419,10 +411,10 @@ const ProductDetail = () => {
               <h2 className="text-xl font-semibold">Shipping Information</h2>
               <dl className="space-y-4">
                 {[
-                  { term: "Courier", description: "2 - 4 days, free shipping" },
-                  { term: "Local Shipping", description: "up to a week, $19.00" },
-                  { term: "UPS Ground Shipping", description: "4 - 6 days, $29.00" },
-                  { term: "Unishop Global Export", description: "3 - 4 days, $39.00" },
+                  { term: "Courier", description: "" },
+                  { term: "Local Shipping", description: "" },
+                  { term: "UPS Ground Shipping", description: "" },
+                  { term: "Unishop Global Export", description: "" },
                 ].map(({ term, description }, index) => (
                   <div key={index} className="flex justify-between items-center">
                     <dt>{term}:</dt>
@@ -434,7 +426,7 @@ const ProductDetail = () => {
           </div>
         </TabsContent>
 
-        <TabsContent value="additional" className="py-4">
+        {/* <TabsContent value="additional" className="py-4">
           <h2 className="text-xl font-semibold mb-4">Additional Information</h2>
           <Table>
             <TableBody>
@@ -460,9 +452,9 @@ const ProductDetail = () => {
               </TableRow>
             </TableBody>
           </Table>
-        </TabsContent>
+        </TabsContent> */}
 
-        <TabsContent value="specification" className="py-4">
+        {/* <TabsContent value="specification" className="py-4">
           <h2 className="text-xl font-semibold mb-4">Technical Specifications</h2>
           <Table>
             <TableHeader>
@@ -494,9 +486,9 @@ const ProductDetail = () => {
               </TableRow>
             </TableBody>
           </Table>
-        </TabsContent>
+        </TabsContent> */}
 
-        <TabsContent value="review" className="py-4">
+        {/* <TabsContent value="review" className="py-4">
           <h2 className="text-xl font-semibold mb-4">Customer Reviews</h2>
           <div className="space-y-6">
             {[
@@ -517,7 +509,7 @@ const ProductDetail = () => {
               </div>
             ))}
           </div>
-        </TabsContent>
+        </TabsContent> */}
       </Tabs>
       <RecentlyView/>
 

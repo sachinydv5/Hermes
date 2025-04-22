@@ -1,6 +1,6 @@
 import { callApi, getCart } from "@/api/api";
 import { Product } from "@/api/common.types";
-import {  GetWishlistRequest, GetWishlistResponse } from "@/api/types";
+import {  GetCartResponse, GetCartRequest} from "@/api/types";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 
@@ -16,9 +16,10 @@ products: [],
 
 export const fetchProduct = createAsyncThunk('cart/fetchProducts',async ()=>{
   
-  const response : GetWishlistResponse = await getCart({} as GetWishlistRequest, "/cart/get")
+  const response : GetCartResponse  = await getCart({} as  GetCartRequest, "/cart/get")
   return response;
 })
+
 
 
 export const cartSlice = createSlice({
@@ -28,8 +29,8 @@ export const cartSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchProduct.fulfilled, (state, action) => {
-        if ('wishlist' in action.payload) {
-          state.products = action.payload.wishlist;
+        if ('Cart' in action.payload) {
+          state.products = action.payload.Cart;
         }
       });
   },

@@ -6,13 +6,16 @@ import { GetAddToWishlistRequest, GetAddToWishlistResponse } from '../../api/typ
 import { callApi } from '../../api/api'
 import { Product } from '../../api/common.types'
 import { getWishlistWithCache, removeProductFromWishlistCache, invalidateWishlistCache } from "@/utils/wishlistCache"
-
+import { useAppSelector } from '@/app/hooks'
+import { isUserLoggedIn } from '@/app/store/user'
+import { toast } from 'react-toastify';
   
 const Wishlist = () => {
 const [wishlistData, setWishlistData] = useState<Product[]>([]);
 const [error, setError] = useState<string | null>(null);
-
+const isLogIn: boolean = useAppSelector(isUserLoggedIn)
 useEffect(() => {
+  if(!isLogIn) return;
     const fetchData = async () => {
       try {
         // Use our centralized cache utility instead
@@ -25,25 +28,22 @@ useEffect(() => {
     };
   
     fetchData();
-    
-    // Cleanup function - invalidate cache on unmount
+    // Cleanup function 
     return () => {
       invalidateWishlistCache();
     };
-  }, []);
+  }, [isLogIn]);
 
   // add to cart handle
   const addtoCart = async (id: string) => {
     if (!id) return;
-
     try {
       const req: GetAddToWishlistRequest = {
         productId: id,
       }
-
       const response: GetAddToWishlistResponse = await callApi(req, "/cart/add");
       if ("status" in response) {
-        alert("Product added to cart successfully")
+        toast.success("Product added to cart successfully")
       } else if ("error_code" in response) {
         setError(response.description)
       }
@@ -56,24 +56,19 @@ useEffect(() => {
   // New function to handle removing from wishlist
   const removeFromWishlist = async (id: string) => {
     if (!id) return;
-
     try {
       // Make API call to remove from wishlist
       const req: GetAddToWishlistRequest = {
         productId: id,
       }
-
       // Use the correct URL for removing from wishlist
       const response = await callApi(req, "/wishlist/remove");
-      
       if ("status" in response) {
         // Update local state
         setWishlistData(prevItems => prevItems.filter(item => item.id !== id));
-        
         // Update cache
-        removeProductFromWishlistCache(id);
-        
-        alert("Product removed from wishlist");
+        removeProductFromWishlistCache(id);  
+        toast.success("Product removed from wishlist");
       } else if ("error_code" in response) {
         setError(response.description);
       }
@@ -100,7 +95,7 @@ useEffect(() => {
               <div className="flex gap-4 items-center">
                 <div className="w-1/12 relative">
                   <img
-                    src={"https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png"}
+                    src={item.image}
                     alt={item.name}
                     className="object-cover rounded-md"
                   />

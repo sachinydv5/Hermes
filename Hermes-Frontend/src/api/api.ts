@@ -1,9 +1,11 @@
-import { OrderCreateRequest,AppConfigRequest, AppConfigResponse, ERROR_RESPONSE, GetAddToWishlistRequest, GetAddToWishlistResponse, GetProductIdRequest, GetProductIdResponse, GetProductRequest, GetProductResponse, GetWishlistRequest, GetWishlistResponse, ProductRequest, ProductResponse, UpdateAppConfigRequest, UpdateAppConfigResponse, UserLoginRequest, UserLoginResponse, UserLogoutRequest, UserLogoutResponse, UserSignUpRequest, UserSignUpResponse, OrderCreateResponse, PaymentCreateResponse, PaymentCreateRequest, OrderStatusRequest, OrderStatusResponse, UploadProductImageRequest, UploadProductImageRespose } from "./types";
+import { OrderCreateRequest,AppConfigRequest, AppConfigResponse, ERROR_RESPONSE, GetAddToWishlistRequest, GetAddToWishlistResponse, GetProductIdRequest, GetProductIdResponse, GetProductRequest, GetProductResponse, GetWishlistRequest, GetWishlistResponse, ProductRequest, ProductResponse, UpdateAppConfigRequest, UpdateAppConfigResponse, UserLoginRequest, UserLoginResponse, UserLogoutRequest, UserLogoutResponse, UserSignUpRequest, UserSignUpResponse, OrderCreateResponse, PaymentCreateResponse, PaymentCreateRequest, OrderStatusRequest, OrderStatusResponse, UploadProductImageRequest, UploadProductImageRespose, GetCartRequest, GetCartResponse } from "./types";
 
 import axios, { AxiosResponse } from 'axios';
 
 
 const endpoint = "https://hermes-backend-pykc.onrender.com";
+// const endpoint = "https://0acb-2401-4900-4e5b-18c8-1044-cc39-2478-2d90.ngrok-free.app";
+
 
 type API_REQUEST = UploadProductImageRequest  | UserSignUpRequest | UserLoginRequest | UserLogoutRequest | ProductRequest | ProductResponse | UpdateAppConfigRequest | AppConfigRequest | GetAddToWishlistRequest | OrderCreateRequest | PaymentCreateRequest | OrderStatusRequest;
 type API_RESPONSE = UploadProductImageRespose | UserSignUpResponse | UserLoginResponse | UserLogoutResponse | ProductResponse | GetProductResponse | UpdateAppConfigResponse | AppConfigResponse | ERROR_RESPONSE |GetAddToWishlistResponse | OrderCreateResponse | PaymentCreateResponse | OrderStatusResponse;
@@ -119,7 +121,7 @@ export async function getProduct(request: GetProductRequest, url: string): Promi
 
 // get carty
 
-export async function getCart(request: GetWishlistRequest, url: string): Promise<GetWishlistResponse> {
+export async function getCart(request: GetCartRequest, url: string): Promise<GetCartResponse> {
   try {
     const config = {
       method: 'get',
@@ -140,4 +142,6 @@ export async function getCart(request: GetWishlistRequest, url: string): Promise
   return { error_code: "INTERNAL_SERVER_ERROR", description: "API Call Failure" } as ERROR_RESPONSE;
 }
 }
+
+
 

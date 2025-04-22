@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/app/store';
 import { Product } from '@/api/common.types';
 import { fetchProduct } from '@/app/store/cart';
+import { useAppSelector } from '@/app/hooks';
+import { isUserLoggedIn } from '@/app/store/user';
 // Define CartItem interface
 interface CartItem {
   id: string;
@@ -21,6 +23,8 @@ const Cart = () => {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   const products = useSelector((state: RootState) => state.cart.products);
+  console.log(products)
+  const isLogIn: boolean = useAppSelector(isUserLoggedIn)
 
   // Placeholder utility functions
   // const getCartItems = (): CartItem[] => {
@@ -34,35 +38,11 @@ const Cart = () => {
   };
 
   useEffect(() => {
+    if(!isLogIn) return;
     dispatch(fetchProduct());
-  }, [dispatch]);
+  }, [isLogIn,dispatch]);
 
-  // const updateCart = (newCart: CartItem[]): void => {
-  //   // This would normally update cart in state and localStorage
-  //   setCartItems(newCart);
-  //   console.log('Cart updated:', newCart);
-  // };
-
-  // const handleRemoveFromCart = (productId: string): void => {
-  //   // For UI preview only - log action
-  //   removeFromCart(productId);
-  //   console.log(`Removed item ${productId} from cart`);
-  // };
-
-  // const updateQuantity = (productId: string, newQuantity: number): void => {
-  //   // For UI preview only - log action
-  //   if (newQuantity < 1) return;
-  //   console.log(`Update quantity of item ${productId} to ${newQuantity}`);
-    
-  //   const newCart = cartItems.map(item => 
-  //     item.id === productId 
-  //       ? { ...item, quantity: newQuantity } 
-  //       : item
-  //   );
-    
-  //   updateCart(newCart);
-  // };
-
+ 
   const calculateSubtotal = (): number => {
     return products.reduce((total, item) => total + (item.price * item.qty), 0);
   };
