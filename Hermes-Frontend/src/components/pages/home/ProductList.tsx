@@ -18,7 +18,7 @@ import { Product } from '../../../api/common.types'
 import { Link, useNavigate } from 'react-router-dom'
 
 // Define type for sort options
-type SortOption = 'most-popular' | 'price-low' | 'price-high' | 'newest';
+type SortOption = 'most-popular' | 'price-low' | 'price-high' ;
 
 // Sample active filters
 const activeFilters = ["Wireless", "Under $50", "In Stock"]
@@ -130,7 +130,7 @@ const ProductList = () => {
                   <SelectItem value="most-popular">Most Popular</SelectItem>
                   <SelectItem value="price-low">Price: Low to High</SelectItem>
                   <SelectItem value="price-high">Price: High to Low</SelectItem>
-                  <SelectItem value="newest">Newest First</SelectItem>
+                  {/* <SelectItem value="newest">Newest First</SelectItem> */}
                 </SelectContent>
               </Select>
             </div>

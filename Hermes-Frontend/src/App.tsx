@@ -14,6 +14,7 @@ import Faq from './components/pages/home/Faq';
 import { PrivacyPolicy } from './components/pages/home/PrivacyPolicy';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ScrollToTop from './utils/ScrollToTop';
 
 
 // Loading component
@@ -39,6 +40,7 @@ const ErrorPage = React.lazy(() => import("./components/pages/home/ErrorPage"));
 const getMainLayout = () => {
   return (
     <MainLayout>
+       <ScrollToTop />
       <Suspense >
         <Routes>
           {/* Public Routes */}

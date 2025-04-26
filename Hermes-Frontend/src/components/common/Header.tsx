@@ -13,6 +13,9 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import LoginForm from '../pages/home/LoginForm';
 import { useAppDispatch, useAppSelector} from '../../app/hooks';
 import { isUserLoggedIn, userData } from '../../app/store/user';
+import { SearchBar } from './SearchBar';
+import { useSelector } from 'react-redux';
+import { selectCartCount } from '@/app/store/cart';
 
 
 const Header = () => {
@@ -20,11 +23,12 @@ const Header = () => {
   const[isSearchVisible, setIsSearchVisible] = useState(false);
   const isLogIn: boolean = useAppSelector(isUserLoggedIn)
   const firstName: string = useAppSelector(userData)
-  console.log(firstName)
 
-  const location = useLocation(); // Get the current location
+  const cartCount = useSelector(selectCartCount);
 
-  // Close menu on route change
+  console.log(cartCount)
+  const location = useLocation(); 
+
   useEffect(() => {
     setIsMenuOpen(false);
     setIsSearchVisible(false);
@@ -77,34 +81,17 @@ const Header = () => {
           {/* Desktop Right Items */}
           <div className="hidden md:flex md:items-center space-x-1 sm:space-x-2 lg:space-x-4">
             {/* Search Icon and Search Bar */}
-            <div className="relative flex items-center h-10">
-              {/* Search bar with fixed position */}
-              <div className={`absolute right-0 top-0 transform transition-all duration-200 ease-in-out ${isSearchVisible ? 'opacity-100 visible' : 'opacity-0 invisible'}`} style={{minWidth: '36px'}}>
-                <div className="flex items-center bg-white rounded-full overflow-hidden shadow-md">
-                  <input
-                    type="text"
-                    placeholder="Search..."
-                    className="px-4 py-2 outline-none w-[200px] lg:w-[250px] text-sm"
-                    autoFocus={isSearchVisible}
-                  />
-                  <Button variant="ghost" size="icon" className="p-2" onClick={toggleSearch}>
-                    <X className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-              
-              {/* Search Icon with fixed position */}
-              <div className={`transition-all duration-200 ease-in-out ${isSearchVisible ? 'opacity-0 invisible' : 'opacity-100 visible'}`}>
-                <Button variant="ghost" size="icon" className="p-1" onClick={toggleSearch}>
-                  <Search className="h-4 w-4 md:h-5 md:w-5 lg:h-6 lg:w-6" />
-                </Button>
-              </div>
-            </div>
+           <SearchBar toggleSearch={toggleSearch} isSearchVisible={isSearchVisible}/>
             
             {/* Cart Icon */}
             <NavLink to="/cart" className={({isActive}) => 
-              `hover:text-[#f8a93a] font-semibold ${isActive ? "text-[#f8a93a]": ""}`}>
+              `hover:text-[#f8a93a] font-semibold relative ${isActive ? "text-[#f8a93a]": ""}`}>
               <ShoppingCart className="h-4 w-4 md:h-5 md:w-5 lg:h-6 lg:w-6" />
+              {cartCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-[#FCB857] text-white text-xs rounded-full h-4 w-4 md:h-5 md:w-5 flex items-center justify-center">
+                  {cartCount}
+                </span>
+              )}
             </NavLink> 
 
             {/* Login/Profile Button */}
@@ -167,10 +154,15 @@ const Header = () => {
             </div>
             
             <NavLink to="/cart" className={({isActive}) => 
-              `hover:text-[#f8a93a] font-semibold ${isActive ? "text-[#f8a93a]": ""}`}>
+              `hover:text-[#f8a93a] font-semibold relative ${isActive ? "text-[#f8a93a]": ""}`}>
               <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5" />
+              {cartCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-[#FCB857] text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                  {cartCount}
+                </span>
+              )}
             </NavLink>
-            
+           
             {/* Mobile Login/Profile Button */}
             {!isLogIn ? (
               <Dialog>

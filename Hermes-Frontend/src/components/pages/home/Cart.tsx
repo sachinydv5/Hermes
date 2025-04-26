@@ -5,10 +5,14 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/app/store';
-import { Product } from '@/api/common.types';
-import { fetchProduct } from '@/app/store/cart';
+import { fetchProduct, removeItem } from '@/app/store/cart';
 import { useAppSelector } from '@/app/hooks';
 import { isUserLoggedIn } from '@/app/store/user';
+import { toast } from 'react-toastify';
+import { GetAddToWishlistRequest } from '@/api/types';
+import { callApi } from '@/api/api';
+import { Skeleton } from "@/components/ui/skeleton";
+
 // Define CartItem interface
 interface CartItem {
   id: string;
@@ -19,30 +23,131 @@ interface CartItem {
   img?: string[];
 }
 
+// Cart Skeleton Component
+const CartSkeleton = () => {
+  return (
+    <div className="w-[90vw] mx-auto py-8">
+      <div className="flex items-center mb-8">
+        <div className="flex items-center text-sm font-medium text-muted-foreground">
+          <Skeleton className="h-4 w-4 mr-2 rounded-full" />
+          <Skeleton className="h-4 w-32" />
+        </div>
+        <Skeleton className="h-8 w-48 mx-auto" />
+      </div>
+
+      <div className="grid md:grid-cols-3 gap-8">
+        <div className="md:col-span-2 space-y-4">
+          {/* Skeleton Item 1 */}
+          {[1, 2, 3].map((i) => (
+            <Card key={i} className="overflow-hidden">
+              <CardContent className="p-0">
+                <div className="flex flex-col sm:flex-row">
+                  <Skeleton className="w-full sm:w-36 h-36" />
+                  <div className="flex-1 p-4 flex flex-col justify-between">
+                    <div>
+                      <div className="flex justify-between">
+                        <Skeleton className="h-5 w-40" />
+                        <Skeleton className="h-8 w-8 rounded-full" />
+                      </div>
+                      <Skeleton className="h-4 w-20 mt-2" />
+                    </div>
+                    <div className="mt-4 flex justify-between items-center">
+                      <Skeleton className="h-5 w-24" />
+                      <Skeleton className="h-5 w-16" />
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+        <div>
+          <Card>
+            <CardContent className="p-6">
+              <Skeleton className="h-6 w-32 mb-4" />
+              <div className="space-y-3">
+                <div className="flex justify-between">
+                  <Skeleton className="h-4 w-16" />
+                  <Skeleton className="h-4 w-16" />
+                </div>
+                <div className="flex justify-between">
+                  <Skeleton className="h-4 w-16" />
+                  <Skeleton className="h-4 w-16" />
+                </div>
+                <div className="pt-4 border-t flex justify-between">
+                  <Skeleton className="h-5 w-16" />
+                  <Skeleton className="h-5 w-20" />
+                </div>
+              </div>
+              <Skeleton className="w-full h-10 mt-6" />
+              <div className="mt-6 text-center">
+                <Skeleton className="h-4 w-32 mx-auto" />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const Cart = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [dataFetched, setDataFetched] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const dispatch = useDispatch<AppDispatch>();
   const products = useSelector((state: RootState) => state.cart.products);
+  console.log("product",products)
   console.log(products)
   const isLogIn: boolean = useAppSelector(isUserLoggedIn)
 
-  // Placeholder utility functions
-  // const getCartItems = (): CartItem[] => {
-  //   // This would normally get items from localStorage or API
-  //   return cartItems;
-  // };
-
-  const removeFromCart = (productId: string): void => {
-    // This would normally remove an item from the cart
-    console.log(`Remove item ${productId} from cart`);
-  };
-
-  useEffect(() => {
-    if(!isLogIn) return;
-    dispatch(fetchProduct());
-  }, [isLogIn,dispatch]);
-
  
+  useEffect(() => {
+    if(!isLogIn) {
+      setIsLoading(false);
+      return;
+    }
+    
+    setIsLoading(true);
+    
+    const fetchData = async () => {
+      try {
+        await dispatch(fetchProduct()).unwrap();
+      } catch (error) {
+        console.error("Error fetching cart products:", error);
+        setError("Failed to load cart products");
+      } finally {
+        setIsLoading(false);
+        setDataFetched(true);
+      }
+    };
+    
+    fetchData();
+  }, [isLogIn, dispatch]);
+  
+  // New function to handle removing from wishlist
+  const handleRemoveFromCart = async (id: string) => {
+    if (!id) return;
+    try {
+      // Make API call to remove from wishlist
+      const req: GetAddToWishlistRequest = {
+        productId: id,
+      }
+      // Use the correct URL for removing from cart
+      const response = await callApi(req, "/cart/remove");
+      if ("status" in response) {
+        // Update local state
+       dispatch(removeItem(id));
+        toast.success("Product removed from cart");
+      } else if ("error_code" in response) {
+        setError(response.description);
+      }
+    } catch (err) {
+      console.error("Failed to remove from cart:", err);
+      setError("Failed to remove item from cart");
+    }
+  }
+
   const calculateSubtotal = (): number => {
     return products.reduce((total, item) => total + (item.price * item.qty), 0);
   };
@@ -53,20 +158,10 @@ const Cart = () => {
     return subtotal;
   };
 
-  // const handleCheckout = (): void => {
-  //   // For UI preview only - log action
-  //   console.log('Checkout button clicked');
-  //   console.log('Total amount:', calculateTotal().toFixed(2));
-  // };
+  
 
   if (isLoading) {
-    return (
-      <div className="w-[90vw] mx-auto py-8">
-        <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-        </div>
-      </div>
-    );
+    return <CartSkeleton />;
   }
 
   return (
@@ -79,7 +174,7 @@ const Cart = () => {
         <h1 className="text-3xl font-bold text-center flex-1">Your Cart</h1>
       </div>
 
-      {products.length === 0 ? (
+      {!dataFetched || products.length === 0 ? (
         <div className="text-center py-16">
           <h2 className="text-2xl font-semibold mb-4">Your cart is empty</h2>
           <p className="text-muted-foreground mb-8">Looks like you haven't added any products to your cart yet.</p>
@@ -108,7 +203,7 @@ const Cart = () => {
                           <Button 
                             variant="ghost" 
                             size="icon"
-                            // onClick={() => handleRemoveFromCart(item.id)}
+                            onClick={() => handleRemoveFromCart(item.id)}
                             className="h-8 w-8 text-muted-foreground hover:text-destructive"
                           >
                             <Trash2 className="h-4 w-4" />
@@ -118,26 +213,26 @@ const Cart = () => {
                         <p className="text-sm text-muted-foreground">{item.category}</p>
                       </div>
                       <div className="mt-4 flex justify-between items-center">
-                        <div className="flex items-center border rounded-md">
-                          <Button 
+                        <div className="flex items-center">
+                          {/* <Button 
                             variant="ghost" 
                             size="icon" 
-                            // onClick={() => updateQuantity(item.id, item.qty - 1)}
+                            onClick={() => handleRemoveFromCart(item.id,item.qty-1)}
                             className="h-8 w-8"
                           >
                             <Minus className="h-3 w-3" />
                             <span className="sr-only">Decrease quantity</span>
-                          </Button>
-                          <span className="w-8 text-center">{item.qty }</span>
-                          <Button 
+                          </Button> */}
+                          <span className="text-center font-semibold">Quantity: {item.qty }</span>
+                          {/* <Button 
                             variant="ghost" 
                             size="icon" 
-                            // onClick={() => updateQuantity(item.id, item.qty  + 1)}
+                            onClick={() => updateQuantity(item.id, item.qty  + 1)}
                             className="h-8 w-8"
                           >
                             <Plus className="h-3 w-3" />
                             <span className="sr-only">Increase quantity</span>
-                          </Button>
+                          </Button> */}
                         </div>
                         <div className="text-right">
                           <div className="font-semibold">${(item.price * item.qty ).toFixed(2)}</div>

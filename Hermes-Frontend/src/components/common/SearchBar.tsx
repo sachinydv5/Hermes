@@ -1,66 +1,36 @@
-import React, { useState } from "react";
-import { Search, X } from 'lucide-react';
-
+import React from 'react'
+import { Button } from '../ui/button'
+import { SearchIcon, X } from 'lucide-react'
 
 interface SearchBarProps {
-  onSearch?: (query: string) => Promise<void>;
-  placeholder?: string;
-  className?: string;
-}
+    isSearchVisible: boolean;
+    toggleSearch: () => void;
+  }
 
-const SearchBar: React.FC<SearchBarProps> = ({
-  onSearch,
-  placeholder = "Search for products",
-  className = "",
-}) => {
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  
-
-  const clearSearch = () => {
-    setSearchQuery("");
-    if (onSearch) {
-      onSearch("");
-    }
-  };
-
+export const SearchBar = ({isSearchVisible,toggleSearch}: SearchBarProps) => {
   return (
-    <form className={`flex justify-center py-6 ${className}`}>
-      <div className="bg-white rounded-full shadow-2xl flex items-center w-full max-w-4xl p-2 relative">
+    <div> <div className="relative flex items-center h-10">
+    {/* Search bar with fixed position */}
+    <div className={`absolute right-0 top-0 transform transition-all duration-200 ease-in-out ${isSearchVisible ? 'opacity-100 visible' : 'opacity-0 invisible'}`} style={{minWidth: '36px'}}>
+      <div className="flex items-center bg-white rounded-full overflow-hidden shadow-md">
         <input
           type="text"
-
-          value={searchQuery}
-          // onChange={handleInputChange}
-          placeholder={placeholder}
-          className="flex-grow px-4 py-2 rounded-l-full focus:outline-none"
-          aria-label="Search input"
-          role="searchbox"
+          placeholder="Search..."
+          className="px-4 py-2 outline-none w-[200px] lg:w-[250px] text-sm"
+          autoFocus={isSearchVisible}
         />
-
-        {searchQuery && (
-          <button
-            type="button"
-            onClick={clearSearch}
-            className="p-2 hover:bg-gray-100 rounded-full"
-            aria-label="Clear search"
-          >
-            <X className="w-5 h-5 text-gray-400" />
-          </button>
-        )}
-
-        <button 
-          type="submit"
-          className={`bg-white hover:bg-gray-100 text-gray-600 p-3 rounded-full transition-all
-            ${isLoading ? 'animate-pulse' : ''}`}
-          aria-label="Submit search"
-        >
-          <Search className={`text-gray-400 ${isLoading ? 'animate-spin' : ''}`}/>
-        </button>
+        <Button variant="ghost" size="icon" className="p-2" onClick={toggleSearch}>
+          <X className="h-4 w-4" />
+        </Button>
       </div>
-    </form>
-  );
-};
-
-export default SearchBar;
+    </div>
+    
+    {/* Search Icon with fixed position */}
+    <div className={`transition-all duration-200 ease-in-out ${isSearchVisible ? 'opacity-0 invisible' : 'opacity-100 visible'}`}>
+      <Button variant="ghost" size="icon" className="p-1" onClick={toggleSearch}>
+        <SearchIcon className="h-4 w-4 md:h-5 md:w-5 lg:h-6 lg:w-6" />
+      </Button>
+    </div>
+  </div></div>
+  )
+}

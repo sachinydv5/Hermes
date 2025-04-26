@@ -283,5 +283,5 @@ export type  GetUserResponse = Error<GLOBAL_ERROR_CODE> | {
 export type GetCartRequest = {} | undefined
 
 export type  GetCartResponse = Error<GLOBAL_ERROR_CODE> | {
- Cart: Product[] 
+  cart: Product[] 
 }

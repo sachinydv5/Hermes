@@ -61,15 +61,7 @@ const UserSideBar = () => {
           <Heart className="h-4 w-4" />
           Wishlist
         </NavLink>
-        <NavLink
-          to="/compare"
-          className={({ isActive}) =>
-            `flex items-center gap-3 rounded-lg px-4 py-2.5 text-gray-600 transition-colors hover:bg-orange-100 ${isActive ? "bg-orange-100": ""}`
-          }
-        >
-          <SplitSquareVertical className="h-4 w-4" />
-          Compare
-        </NavLink>
+       
         <NavLink
           to="/cards"
           className={({ isActive}) =>
@@ -78,15 +70,6 @@ const UserSideBar = () => {
         >
           <CreditCard className="h-4 w-4" />
           Cards & Address
-        </NavLink>
-        <NavLink
-          to="/history"
-          className={({ isActive}) =>
-            `flex items-center gap-3 rounded-lg px-4 py-2.5 text-gray-600 transition-colors hover:bg-orange-100 ${isActive ? "bg-orange-100": ""}`
-          }
-        >
-          <History className="h-4 w-4" />
-          Browsing History
         </NavLink>
         <NavLink
           to="/userprofile"
