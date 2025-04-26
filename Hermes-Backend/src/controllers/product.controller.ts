@@ -74,6 +74,7 @@ export const getProduct = async (req: TypedRequest<any>, res: TypedResponse<GetP
         }
         res.status(200).json(response);
     } catch (error) {
+        console.log(error)
         res.status(500).json({ error_code: "INTERNAL_SERVER_ERROR", description: "Some error Occurred", body: error });
     }
 }
@@ -112,28 +113,48 @@ function validateCategory() {
 
 
 
-export const uploadImage = async (req: TypedRequest<UploadProductImageRequest>, resp: TypedResponse<UploadProductImageRespose>) => {
+export const uploadImage = async (
+    req: TypedRequest<UploadProductImageRequest>,
+    resp: TypedResponse<UploadProductImageRespose>
+  ) => {
     try {
-        const files = req.files as Express.Multer.File[];
-
-        if (!files || files.length === 0) {
-            resp.json({ error_code: "IMAGE_URL_NOT_FOUND", description: "Image not found" });
-        } else {
-        const file = req.file;
-        const urls = await Promise.all(
-            files.map(file =>
-              uploadImageToFirebase(file.buffer, file.originalname, file.mimetype)
-            )
-          );
-      
-          resp.json({
-            status: "IMAGE_UPLOAD_SUCCESFULL",
-            urls
+      const images = req.body.image; // Assuming `req.body.image` is an array of base64 strings
+  
+      if (!images || !Array.isArray(images) || images.length === 0) {
+        return resp.json({
+          error_code: "IMAGE_NOT_FOUND",
+          description: "Image not found",
         });
-    }
+      }
+  
+      const urls = await Promise.all(
+        images.map(async (dataUri, index) => {
+          // Example: 'data:image/png;base64,...'
+          const matches = dataUri.match(/^data:(.+);base64,(.+)$/);
+          if (!matches || matches.length !== 3) {
+            throw new Error("Invalid image data format");
+          }
+  
+          const mimeType = matches[1]; // e.g. image/png
+          const base64Data = matches[2];
+          const buffer = Buffer.from(base64Data, "base64");
+  
+          const fileName = `image_${Date.now()}_${index}`;
+          return await uploadImageToFirebase(buffer, fileName, mimeType);
+        })
+      );
+  
+      return resp.json({
+        status: "IMAGE_UPLOAD_SUCCESFULL",
+        urls,
+      });
     } catch (error: any) {
-        resp.json({ error_code: "INTERNAL_SERVER_ERROR", description: "Some error Occurred" });
+      console.error(error);
+      return resp.json({
+        error_code: "INTERNAL_SERVER_ERROR",
+        description: "Some error occurred",
+      });
     }
-
-}
+  };
+  
 

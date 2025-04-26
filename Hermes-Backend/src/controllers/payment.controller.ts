@@ -13,7 +13,6 @@ const YOUR_DOMAIN = 'https://hermes-backend-pykc.onrender.com';
 
 export const paymentController = async (req: TypedRequestEmail<PaymentRequest>, res: TypedResponse<PaymentResponse>) => {
   try {
-    req.email = "yogeshk4124@gmail.com"
     if (!req.email) {
       res.json({ error_code: "INTERNAL_SERVER_ERROR", description: "Some error Occurred Email not found " });
     } else {

@@ -5,6 +5,6 @@ import { userRequestSchema } from '../../types/user/user';
 
 export const userRouter = express.Router();
 
-userRouter.get('/', validateData(userRequestSchema), userController);
+userRouter.post('/', validateData(userRequestSchema), userController);
 userRouter.post('/updateUser', validateData(userRequestSchema), updateUser);
 

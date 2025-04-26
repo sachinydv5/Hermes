@@ -48,6 +48,7 @@ export const handleUserSignUp = async (req: TypedRequest<UserSignUpRequest>, res
     } else
       res.json({ error_code: "INTERNAL_SERVER_ERROR", description: "Some error Occurred 1" });
   } catch (error) {
+    console.log(error)
     res.json({ error_code: "INTERNAL_SERVER_ERROR", description: "Some error Occurred 2" });
   }
 }

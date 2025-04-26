@@ -75,6 +75,7 @@ export const getProductsFromDB = async (lastDoc: string | undefined, limit: numb
     let lastDocRef = productSnapshot.docs[productSnapshot.docs.length-1];
     return {products:product, lastRef:lastDocRef.data().id};
   } catch (error) {
+    console.log(error)
     throw new Error();
   }
 }

@@ -19,10 +19,11 @@ export const getCartController = async (req: TypedRequestEmail<GetCartRequest>, 
         });
         const resolvedCart = await Promise.all(wishlistPromises);
         list = resolvedCart.filter((item) => item !== null && item !== undefined);
-        res.json({ status: "SUCCESS", wishlist: list });
+        
+        res.json({ status: "SUCCESS", cart: list });
         // res.json({ error_code: "INTERNAL_SERVER_ERROR", description: "Some error Occurred" });
       } else {
-        res.json({ status: "SUCCESS", wishlist: [] });
+        res.json({ status: "SUCCESS", cart: [] });
       }
     }
 

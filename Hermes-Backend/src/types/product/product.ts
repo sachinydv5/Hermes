@@ -76,7 +76,7 @@ export type GetProductIdRequest = {}
 
 export type GetProductIdRespose = Error<GLOBAL_ERROR_CODE> | ProductDoSchema
 
-export type PRODUCT_IMAGE_ERROR_CODE = "IMAGE_URL_NOT_FOUND" 
+export type PRODUCT_IMAGE_ERROR_CODE = "IMAGE_NOT_FOUND" 
 
 
 export type UploadProductImageRequest = {

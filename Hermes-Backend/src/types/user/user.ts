@@ -29,7 +29,9 @@ export type User = z.infer<typeof UserSchema>;
 
 
 
-export const userRequestSchema = UserSchema
+export const userRequestSchema = z.object({
+  email: z.string().email(),
+});
 
 export type UserRequest = z.infer<typeof userRequestSchema>
 

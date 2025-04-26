@@ -7,7 +7,6 @@ import { ProductDoSchema } from "../types/product/product";
 
 export const orderCreateController = async (req: TypedRequestEmail<OrderCreateRequest>, res: TypedResponse<OrderCreateResponse>) => {
   try {
-    req.email = "yogeshk4124@gmail.com"
     if (!req.email) {
       res.json({ error_code: "INTERNAL_SERVER_ERROR", description: "Some error Occurredewf erwg " });
     } else {

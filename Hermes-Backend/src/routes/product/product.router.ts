@@ -7,8 +7,9 @@ import multer from 'multer';
 const upload = multer({ storage: multer.memoryStorage() });
 
 
-
 export const productRouter = express.Router();
+
+
 
 productRouter.post('/addProduct', validateData(ProductSchema) , addProduct);
 

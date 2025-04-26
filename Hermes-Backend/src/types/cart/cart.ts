@@ -22,7 +22,7 @@ export type GetCartRequest = {
 
 export type GetCartResponse = Error<CART_ERROR_CODES> | {
   status: "SUCCESS",
-  wishlist: ProductDoSchema[]
+  cart: ProductDoSchema[]
 }
 
 
