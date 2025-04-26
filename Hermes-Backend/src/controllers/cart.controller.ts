@@ -11,16 +11,24 @@ export const getCartController = async (req: TypedRequestEmail<GetCartRequest>, 
       res.json({ error_code: "INTERNAL_SERVER_ERROR", description: "Some error Occurred Email not found " });
     } else {
       const cartDB = await getCart(req.email);
+      console.log("cartDB.cart")
+      console.log(cartDB?.cart)
       let list: ProductDoSchema[] = [];
-      if (cartDB) {
+      if (cartDB && cartDB.cart) {
         const wishlistPromises = cartDB.cart.map(async (i) => {
-          const r = await findProductByProductId(i);
-          return r; // Return the product, even if it's null/undefined
+          const r = await findProductByProductId(i.productId);
+          if (r){
+            r.qty = i.quantity
+            return r; 
+          }
+          else return null;
         });
         const resolvedCart = await Promise.all(wishlistPromises);
         list = resolvedCart.filter((item) => item !== null && item !== undefined);
-        
-        res.json({ status: "SUCCESS", cart: list });
+        console.log(list)
+        res.json({ status: "SUCCESS", cart: list, cartSummary: {
+           totalAmount: list.reduce((sum, item) => sum + item.qty * parseFloat(item.price), 0)
+        } });
         // res.json({ error_code: "INTERNAL_SERVER_ERROR", description: "Some error Occurred" });
       } else {
         res.json({ status: "SUCCESS", cart: [] });
@@ -28,6 +36,7 @@ export const getCartController = async (req: TypedRequestEmail<GetCartRequest>, 
     }
 
   } catch (error) {
+    console.log(error)
     res.json({ error_code: "INTERNAL_SERVER_ERROR", description: "Some error Occurred" });
   }
 }

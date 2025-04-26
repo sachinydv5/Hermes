@@ -30,7 +30,7 @@ export const getProduct = async (req: TypedRequest<any>, res: TypedResponse<GetP
     try {
         const limitValue = parseInt(req.query.limit as string) || 10; // Default to 10 items per page
         const page = parseInt(req.query.page as string) || 1; // Default to page 1 if not provided
-
+        const searchText: string = req.query.searchText as string
         // Validate pagination parameters
         if (page <= 0 || limitValue <= 0) {
             res.status(400).json({
@@ -50,8 +50,9 @@ export const getProduct = async (req: TypedRequest<any>, res: TypedResponse<GetP
             return;
         }
         const lastDocString = req.query.lastDoc?.toString() || undefined;
-
-        const { products, lastRef } = await getProductsFromDB(lastDocString, limitValue);
+        console.log("searchText === ")
+        console.log(searchText)
+        const { products, lastRef } = await getProductsFromDB(lastDocString, limitValue, searchText ? searchText.trim() : undefined);
 
         let response: GetProductDoResponse;
         if (page * limitValue >= totalProducts || products.length < limitValue) {
@@ -78,6 +79,7 @@ export const getProduct = async (req: TypedRequest<any>, res: TypedResponse<GetP
         res.status(500).json({ error_code: "INTERNAL_SERVER_ERROR", description: "Some error Occurred", body: error });
     }
 }
+
 
 
 export const getProductID = async (req: Request, res: Response) => {

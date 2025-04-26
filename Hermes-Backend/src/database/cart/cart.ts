@@ -14,37 +14,62 @@ export const addToCart = async (userEmail: string, productId: string) => {
   const db = getFirestore();
   const docRef = db.collection(CART_DB_COLLECTION).doc(userEmail);
   const doc = await docRef.get();
-  if(doc.exists) {
+
+  if (doc.exists) {
     const data = doc.data() as CartType;
-    data.cart.push(productId)
-    await docRef.update(data)
+    let updated = false;
+
+    console.log(data)
+    console.log(data?.cart)
+    if (data?.cart == undefined || data?.cart == null || data?.cart.length == 0) {
+      data.cart = [{ productId, quantity: 1 }]
+      await docRef.update({ cart: [{ productId, quantity: 1 }] });
+    } else {
+    const updatedCart = data.cart.map(item => {
+      if (item.productId === productId) {
+        updated = true;
+        return { ...item, quantity: item.quantity + 1 }; // increment quantity
+      }
+      return item;
+    });
+
+    if (!updated) {
+      updatedCart.push({ productId, quantity: 1 }); // add new product
+    }
+
+    await docRef.update({ cart: updatedCart });
+  }
   } else {
     const data: CartType = {
-      cart: [productId]
-    }
+      cart: [{ productId, quantity: 1 }]
+    };
     await docRef.set(data);
   }
-}
+};
 
 export const removeFromCart = async (userEmail: string, productId: string) => {
   const db = getFirestore();
   const docRef = db.collection(CART_DB_COLLECTION).doc(userEmail);
   const doc = await docRef.get();
-  if(doc.exists) {
+
+  if (doc.exists) {
     const data = doc.data() as CartType;
-    const updatedList = {
-      wishlist : data.cart.filter(i => i !== productId)
-    }
-    // data.wishlist.push(productId)
-    await docRef.update(updatedList)
-  } else {
-    // const data: WishlistType = {
-    //   wishlist: [productId]
-    // }
-    // await docRef.set(data);
+
+    const updatedCart = data.cart
+      .map(item => {
+        if (item.productId === productId) {
+          if (item.quantity > 1) {
+            return { ...item, quantity: item.quantity - 1 }; // decrement quantity
+          }
+          return null; // mark for removal
+        }
+        return item;
+      })
+      .filter(item => item !== null); // remove items with quantity 0
+
+    await docRef.update({ cart: updatedCart });
   }
 };
-
 
 
 // export const addWishlist = async (config: UpdateAppConfig) => {

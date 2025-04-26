@@ -51,7 +51,7 @@ export const findProductByProductId = async (productId: string) => {
 
 
 
-export const getProductsFromDB = async (lastDoc: string | undefined, limit: number): Promise<{products:ProductDoSchema[],lastRef?: string}>  => {
+export const getProductsFromDB = async (lastDoc: string | undefined, limit: number,  searchText?: string ): Promise<{products:ProductDoSchema[],lastRef?: string}>  => {
   try {
     const db = getFirestore();
     let productSnapshot;
@@ -73,7 +73,19 @@ export const getProductsFromDB = async (lastDoc: string | undefined, limit: numb
       })
     }
     let lastDocRef = productSnapshot.docs[productSnapshot.docs.length-1];
+
+    let sPro: { name: string; description: string; qty: number; duration: { value: number; unit: string; }; discount: number; pickupAddress: { city: string; country: string; pincode: string; addressLine1?: string | undefined; addressLine2?: string | undefined; }; price: string; category: string; userId: string; collectionId: string; id: string; createTs: string; img?: string[] | undefined; }[] = []
+
+    // 🔥 Handle lowercase filtering manually after fetching
+    if (searchText) {
+      const lowerSearchText = searchText.toLowerCase();
+      sPro = product.filter(product =>
+        product.name.toLowerCase().includes(lowerSearchText)
+      );
+      return {products:sPro, lastRef:lastDocRef.data().id};
+    }
     return {products:product, lastRef:lastDocRef.data().id};
+    
   } catch (error) {
     console.log(error)
     throw new Error();

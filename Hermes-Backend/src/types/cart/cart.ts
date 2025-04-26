@@ -22,7 +22,10 @@ export type GetCartRequest = {
 
 export type GetCartResponse = Error<CART_ERROR_CODES> | {
   status: "SUCCESS",
-  cart: ProductDoSchema[]
+  cart: ProductDoSchema[],
+  cartSummary? : {
+    totalAmount: number
+  }
 }
 
 
@@ -35,7 +38,10 @@ export type RemoveFromCartResponse = Error<CART_ERROR_CODES> | {
 
 
 export const cartScheme = z.object({
-  cart: z.array(z.string()).min(0),
+  cart: z.array(z.object({
+    productId: z.string(), 
+    quantity: z.number()
+  })).min(0),
 });
 
 export type CartType = z.infer<typeof cartScheme>
