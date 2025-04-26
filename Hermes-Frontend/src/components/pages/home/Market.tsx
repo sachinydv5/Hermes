@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import Search from '../../common/SearchBar'
 import PopularCategory from '../../common/PopularCategory'
 import { ChevronRight } from 'lucide-react'
 import { Button } from "@/components/ui/button"

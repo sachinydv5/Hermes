@@ -55,21 +55,6 @@ const SideBar = () => {
           ))}
         </div>
       </div>
-
-      <div>
-        <h3 className="font-medium text-base mb-3">PRICE RANGE</h3>
-        <Slider
-          defaultValue={[0, 100]}
-          max={100}
-          step={1}
-          className="w-full"
-        />
-        <div className="flex justify-between mt-2">
-          <span className="text-sm">Min price</span>
-          <span className="text-sm">Max price</span>
-        </div>
-      </div>
-
       <div>
         <h3 className="font-medium text-base mb-3">PRICE</h3>
         <div className="space-y-2">
@@ -79,11 +64,10 @@ const SideBar = () => {
                 <Checkbox id={range} className="rounded-full"/>
                 <span>{range}</span>
               </label>
-              {/* <span className="text-muted-foreground">(10)</span> */}
             </div>
           ))}
         </div>
-      </div>
+       </div> 
 
       <div>
         <h3 className="font-medium text-base mb-3">POPULAR BRANDS</h3>

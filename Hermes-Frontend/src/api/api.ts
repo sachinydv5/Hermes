@@ -3,8 +3,8 @@ import { OrderCreateRequest,AppConfigRequest, AppConfigResponse, ERROR_RESPONSE,
 import axios, { AxiosResponse } from 'axios';
 
 
-const endpoint = "https://hermes-backend-pykc.onrender.com";
-// const endpoint = "https://0acb-2401-4900-4e5b-18c8-1044-cc39-2478-2d90.ngrok-free.app";
+// const endpoint = "https://hermes-backend-pykc.onrender.com";
+const endpoint = "https://0ab3-2401-4900-4e71-1e9b-505b-b448-b694-7d73.ngrok-free.app";
 
 
 type API_REQUEST = UploadProductImageRequest  | UserSignUpRequest | UserLoginRequest | UserLogoutRequest | ProductRequest | ProductResponse | UpdateAppConfigRequest | AppConfigRequest | GetAddToWishlistRequest | OrderCreateRequest | PaymentCreateRequest | OrderStatusRequest;
@@ -19,6 +19,8 @@ export function callApi(request: UpdateAppConfigRequest, url: "/appConfig"): Pro
 export function callApi(request: AppConfigRequest, url: "/appConfig"): Promise<AppConfigResponse | ERROR_RESPONSE>;
 export function callApi(request:GetAddToWishlistRequest, url: "/wishlist/add"): Promise<GetAddToWishlistResponse | ERROR_RESPONSE>;
 export function callApi(request:GetAddToWishlistRequest, url: "/wishlist/remove"): Promise<GetAddToWishlistResponse | ERROR_RESPONSE>;
+export function callApi(request:GetAddToWishlistRequest, url: "/cart/remove"): Promise<GetAddToWishlistResponse | ERROR_RESPONSE>;
+
 export function callApi(request:OrderCreateRequest, url: "/order/create"): Promise<OrderCreateResponse | ERROR_RESPONSE>;
 export function callApi(request:GetAddToWishlistRequest, url: "/cart/add"): Promise<GetAddToWishlistResponse | ERROR_RESPONSE>;
 export function callApi(request:PaymentCreateRequest, url: "/payment/create"): Promise<PaymentCreateResponse | ERROR_RESPONSE>;

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import Footer from "../common/Footer";
 import Header from "../common/Header";
 import { useLocation } from 'react-router-dom';
@@ -7,7 +7,7 @@ import NavBar from '../common/NavBar';
 
 function MainLayout({ children }: any) {
     const location = useLocation();
-
+  
 
     const noFooterPaths = [AppRoutes.USERPROFILE, AppRoutes.DASHBOARD,AppRoutes.WISHLIST,AppRoutes.CART];
     const noNavBar = [AppRoutes.MARKET,AppRoutes.CREATINGLIST,AppRoutes.TRACKORDER,AppRoutes.CREATESINGLE,AppRoutes.PRODUCTDETAIL,AppRoutes.PRODUCTLIST,AppRoutes.USERPROFILE, AppRoutes.DASHBOARD,AppRoutes.WISHLIST];
