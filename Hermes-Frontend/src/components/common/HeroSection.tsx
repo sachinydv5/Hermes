@@ -18,7 +18,7 @@ const HeroSection = () => {
              Rent Now
             </Link>
             <button className="w-full sm:w-auto hover:underline text-[#F4AE26] px-4 py-2 rounded-full">
-            <Link to='/creatinglist'>List Now</Link> 
+            <Link to='/createsingle'>List Now</Link> 
             </button>
           </div>
         </div>

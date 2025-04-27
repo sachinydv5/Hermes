@@ -11,9 +11,9 @@ const ErrorPage = () => {
       <div className="w-full flex flex-col items-center justify-center gap-8 px-4 py-16 md:py-24">
         <div className="w-full flex justify-center">
           <img
-            src="404-16.svg"
+            src="Error-16-16.svg"
             alt="404 illustration"
-            className="w-full max-w-[400px] h-auto object-contain"
+            className="w-full max-w-[550px] h-auto object-contain"
 
           />
         </div>

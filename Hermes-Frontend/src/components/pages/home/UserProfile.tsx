@@ -103,8 +103,8 @@ const UserProfile = () => {
 
           {/* Billing Address Forms */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <BillingForm/>
-            <BillingForm />
+            <BillingForm label="Delivery address"/>
+            <BillingForm  label="billing address"/>
           </div>
 
           {/* Password Form */}

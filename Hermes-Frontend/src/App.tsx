@@ -38,7 +38,7 @@ const getMainLayout = () => {
   return (
     <MainLayout>
        <ScrollToTop />
-      <Suspense fallback={<div>LoadingSpinner</div>}>
+      <Suspense>
         <Routes>
           {/* Public Routes */}
           <Route path={AppRoutes.HOME} element={<HomeScreen />} />

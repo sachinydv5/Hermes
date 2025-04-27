@@ -20,7 +20,6 @@ import MultipleAd from '@/components/common/MultipleAd'
 import MarketSkeleton from '@/components/skeleton/MarketSkeleton'
 
 const Market = () => {
-  const [selectedCategory, setSelectedCategory] = useState('Kitchen')
   const [productData, setProductData] = useState<Product[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -111,21 +110,21 @@ const Market = () => {
       </section>
 
       {/* Trending Search */}
-      <section className='w-[90vw] mx-auto mb-10'>
+      {/* <section className='w-[90vw] mx-auto mb-10'>
         <TreandingSearch/>
-      </section>
+      </section> */}
       
       {/* Popular Seller */}
-      <PopularSellers/>
+      {/* <PopularSellers/> */}
 
       {/* HOT COLLECTION */}
-      <Collection/>
+      {/* <Collection/> */}
 
       {/* AD  */}
-      <SingleAd/>
+      {/* <SingleAd/> */}
 
       {/* RECENTLY VIEW */}
-      <RecentlyView/>
+      {/* <RecentlyView/> */}
 
       {/* list your product */}
       <ListYourProduct/>

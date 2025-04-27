@@ -10,11 +10,14 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-const BillingForm = () => {
+
+
+
+const BillingForm = ({label}: {label: string}) => {
   
   return (
     <div className="space-y-4 shadow-sm bg-white rounded-lg p-6">
-      <h2 className="font-semibold text-sm border-b-2">BILLING ADDRESS</h2>
+      <h2 className="font-semibold text-sm border-b-2 uppercase">{label}</h2>
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="firstName">First Name</Label>
