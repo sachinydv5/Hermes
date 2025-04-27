@@ -15,14 +15,15 @@ import { PrivacyPolicy } from './components/pages/home/PrivacyPolicy';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ScrollToTop from './utils/ScrollToTop';
+import MarketSkeleton from './components/skeleton/MarketSkeleton';
 
 
 // Loading component
-// const LoadingSpinner = () => (
-//   <div className="flex items-center justify-center h-screen">
-//     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-//   </div>
-// );
+const LoadingSpinner = () => (
+  <div className="flex items-center justify-center h-screen">
+    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+  </div>
+);
 
 // Lazy load components
 const HomeScreen = React.lazy(() => import("./components/screens/home/HomeScreen"));
@@ -41,12 +42,16 @@ const getMainLayout = () => {
   return (
     <MainLayout>
        <ScrollToTop />
-      <Suspense >
+      <Suspense fallback={<div>LoadingSpinner</div>}>
         <Routes>
           {/* Public Routes */}
           <Route path={AppRoutes.HOME} element={<HomeScreen />} />
-          <Route path={AppRoutes.MARKET} element={<Market />} />
-          <Route path={AppRoutes.PRODUCTLIST} element={<ProductList />} />
+          <Route path={AppRoutes.MARKET} element={   <Suspense fallback={<MarketSkeleton />}>
+            <Market />
+          </Suspense>} />
+          <Route path={AppRoutes.PRODUCTLIST}element={ <Suspense>
+            <ProductList/>
+          </Suspense>}  />
           <Route path={AppRoutes.PRODUCTDETAIL} element={<ProductDetail />} />
           <Route path={AppRoutes.COMPANY} element={<Company/>} />
           <Route path={AppRoutes.FAQ} element={<Faq/>} />

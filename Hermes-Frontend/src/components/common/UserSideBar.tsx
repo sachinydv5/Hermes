@@ -1,14 +1,23 @@
 import React from 'react'
 import { LayoutDashboard, ClipboardList, MapPin, ShoppingCart, Heart, SplitSquareVertical, CreditCard, History, Settings, LogOut } from 'lucide-react'
 
-import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { Link, NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useAppDispatch } from '@/app/hooks';
 
 
 
 const UserSideBar = () => {
+const dispatch = useAppDispatch();
 
+let navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.clear();
+    dispatch({ type: 'RESET' });
+    navigate("/");
+    window.location.reload();
+   
+  };
 
   return (
     <div className="h-min my-10 bg-white shadow-sm overflow-y-auto">
@@ -84,6 +93,7 @@ const UserSideBar = () => {
           variant="ghost" 
           className="w-full justify-start gap-3 px-4 py-2.5 text-gray-600 hover:bg-orange-100 hover:text-gray-600" 
           size="sm"
+          onClick={handleLogout}
         >
           <LogOut className="h-4 w-4" />
           Log-out

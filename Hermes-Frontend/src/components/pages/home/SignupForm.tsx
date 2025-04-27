@@ -36,6 +36,7 @@ const SignupForm = () => {
           email:formData.email,
           lastName:formData.lastName
         }
+        localStorage.setItem("firstName", formData.firstName);
         dispatch(updateUserLoggedIn(storePayload))
         navigate("/");
       }
