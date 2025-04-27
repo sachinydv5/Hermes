@@ -14,9 +14,9 @@ let navigate = useNavigate();
   const handleLogout = () => {
     localStorage.clear();
     dispatch({ type: 'RESET' });
+    console.log("user logout")
     navigate("/");
     window.location.reload();
-   
   };
 
   return (

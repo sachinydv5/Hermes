@@ -19,11 +19,7 @@ import MarketSkeleton from './components/skeleton/MarketSkeleton';
 
 
 // Loading component
-const LoadingSpinner = () => (
-  <div className="flex items-center justify-center h-screen">
-    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-  </div>
-);
+
 
 // Lazy load components
 const HomeScreen = React.lazy(() => import("./components/screens/home/HomeScreen"));
