@@ -5,7 +5,6 @@ import { Product } from '@/api/common.types';
 import { GetProductResponse } from '@/api/types';
 
 
-
 const useSearch = (searchText: string, debounceDelay: number = 500) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [productData, setProductData] = useState<Product[]>([]);
