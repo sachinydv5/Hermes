@@ -4,24 +4,19 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@/app/store';
+
 import { fetchProduct, removeItem } from '@/app/store/cart';
-import { useAppSelector } from '@/app/hooks';
+import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { isUserLoggedIn } from '@/app/store/user';
 import { toast } from 'react-toastify';
 import { GetAddToWishlistRequest } from '@/api/types';
 import { callApi } from '@/api/api';
 import { Skeleton } from "@/components/ui/skeleton";
+import { RootState } from '@/app/store/rootReducer';
+import { AppDispatch } from '@/app/store';
 
 // Define CartItem interface
-interface CartItem {
-  id: string;
-  name: string;
-  price: number;
-  quantity: number;
-  category: string;
-  img?: string[];
-}
+
 
 // Cart Skeleton Component
 const CartSkeleton = () => {
@@ -95,12 +90,12 @@ const Cart = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [dataFetched, setDataFetched] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const dispatch = useDispatch<AppDispatch>();
+  
   const products = useSelector((state: RootState) => state.cart.products);
   console.log("product",products)
   console.log(products)
   const isLogIn: boolean = useAppSelector(isUserLoggedIn)
-
+  const dispatch = useAppDispatch();
  
   useEffect(() => {
     if(!isLogIn) {
@@ -112,6 +107,7 @@ const Cart = () => {
     
     const fetchData = async () => {
       try {
+        //@ts-ignore
         await dispatch(fetchProduct()).unwrap();
       } catch (error) {
         console.error("Error fetching cart products:", error);

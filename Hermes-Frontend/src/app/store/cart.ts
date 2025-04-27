@@ -16,7 +16,7 @@ products: [],
 
 
 
-export const fetchProduct = createAsyncThunk('cart/fetchProducts',async ()=>{
+export const fetchProduct = createAsyncThunk<Product[], void>('cart/fetchProducts',async ()=>{
   
   const response : GetCartResponse  = await getCart({} as  GetCartRequest, "/cart/get")
   console.log("API RESPONSE",response)
