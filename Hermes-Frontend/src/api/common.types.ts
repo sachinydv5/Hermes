@@ -23,6 +23,9 @@ export type Product = {
     userId: string;
     collectionId: string;
     img?: string[] | undefined;
+    cartSummary? : {
+        totalAmount: number
+      }
 }
 
 

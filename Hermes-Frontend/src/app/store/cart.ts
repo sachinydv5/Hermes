@@ -8,6 +8,7 @@ import { RootState } from "./rootReducer";
 
 interface CartSliceState {
 products:Product[];
+
 }
 
 const initialState: CartSliceState = {
@@ -32,15 +33,21 @@ export const cartSlice = createSlice({
   name:'cart',
   initialState,
   reducers: {
-    removeItem: (state, action) => {
+    descreseItem: (state, action) => {
       const product = state.products.find(product => product.id === action.payload);
-    
       if (product) {
         if (product.qty > 1) {
           product.qty -= 1; // just decrease quantity
-        } else {
-          state.products = state.products.filter(product => product.id !== action.payload); // remove completely
-        }
+        } 
+      } 
+    },
+    removeItemCompletely: (state, action) => {
+      state.products = state.products.filter(product => product.id !== action.payload);
+    },
+    increaseItemQty: (state, action) => {
+      const product = state.products.find(product => product.id === action.payload);
+      if (product) {
+        product.qty += 1;
       }
     },
   },
@@ -55,5 +62,5 @@ export const cartSlice = createSlice({
 })
 
 export const selectCartCount = (state: RootState)=> state.cart.products.length;
-export const { removeItem } = cartSlice.actions;
+export const {descreseItem ,removeItemCompletely, increaseItemQty} = cartSlice.actions;
 export default cartSlice.reducer;
