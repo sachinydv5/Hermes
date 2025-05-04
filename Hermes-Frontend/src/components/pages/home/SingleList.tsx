@@ -461,7 +461,7 @@ console.log("imaGE NAME",previewImage)
                 <span className="text-2xl font-semibold text-[#f4a340]">
                   ${watchedPrice || "0.00"}
                 </span>
-                <span className="text-sm text-gray-500">/per {watchedDuration}</span>
+                <span className="text-sm text-gray-500">/{watchedDuration}</span>
               </div>
       
               <div className="flex items-center justify-between">

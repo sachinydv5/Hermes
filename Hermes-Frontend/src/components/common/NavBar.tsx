@@ -74,15 +74,15 @@ const NavBar = () => {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <Link to="/trackorder" className="flex items-center justify-center gap-3 h-7 sm:h-8 w-full md:w-auto space-x-1 text-xs sm:text-sm md:text-base hover:bg-transparent">
+          <Link to="/trackorder" className="flex items-center justify-center  h-7 sm:h-8 w-full md:w-auto space-x-1 text-xs sm:text-sm md:text-base hover:bg-transparent pr-2">
             <ShoppingBag className="h-3 w-3 sm:h-4 sm:w-4 text-orange-500" />
             Order Tracking
           </Link>
           
-          <Button variant="ghost" className="h-7 sm:h-8 w-full md:w-auto justify-start space-x-1 text-xs sm:text-sm md:text-base hover:bg-transparent">
+          <Link to='/faq' className="flex items-center justify-center h-7 sm:h-8 w-full md:w-auto space-x-1 text-xs sm:text-sm md:text-base hover:bg-transparent">
             <CircleHelp className="h-3 w-3 sm:h-4 sm:w-4 text-orange-500" />
             <span>Need Help</span>
-          </Button>
+          </Link>
         </div>
 
         {/* Right section - desktop only */}

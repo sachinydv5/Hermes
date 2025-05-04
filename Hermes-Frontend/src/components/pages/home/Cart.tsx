@@ -5,7 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { fetchProduct, removeItem } from '@/app/store/cart';
+import { descreseItem, fetchProduct, increaseItemQty, removeItemCompletely } from '@/app/store/cart';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { isUserLoggedIn } from '@/app/store/user';
 import { toast } from 'react-toastify';
@@ -133,8 +133,50 @@ const Cart = () => {
       const response = await callApi(req, "/cart/remove");
       if ("status" in response) {
         // Update local state
-       dispatch(removeItem(id));
+       dispatch(removeItemCompletely(id));
         toast.success("Product removed from cart");
+      } else if ("error_code" in response) {
+        setError(response.description);
+      }
+    } catch (err) {
+      console.error("Failed to remove from cart:", err);
+      setError("Failed to remove item from cart");
+    }
+  }
+
+  const handleDecreaseQuantity = async (id: string) => {
+    if (!id) return;
+    try {
+      // Make API call to remove from wishlist
+      const req: GetAddToWishlistRequest = {
+        productId: id,
+      }
+      // Use the correct URL for removing from cart
+      const response = await callApi(req, "/cart/remove");
+      if ("status" in response) {
+        // Update local state
+       dispatch(descreseItem(id));
+      } else if ("error_code" in response) {
+        setError(response.description);
+      }
+    } catch (err) {
+      console.error("Failed to remove from cart:", err);
+      setError("Failed to remove item from cart");
+    }
+  }
+
+  const updateQuantity = async (id: string) => {
+    if (!id) return;
+    try {
+      // Make API call to remove from wishlist
+      const req: GetAddToWishlistRequest = {
+        productId: id,
+      }
+      // Use the correct URL for removing from cart
+      const response = await callApi(req, "/cart/remove");
+      if ("status" in response) {
+        // Update local state
+       dispatch(increaseItemQty(id));
       } else if ("error_code" in response) {
         setError(response.description);
       }
@@ -209,26 +251,26 @@ const Cart = () => {
                         <p className="text-sm text-muted-foreground">{item.category}</p>
                       </div>
                       <div className="mt-4 flex justify-between items-center">
-                        <div className="flex items-center">
-                          {/* <Button 
+                        <div className="flex items-center rounded-lg border-2">
+                          <Button 
                             variant="ghost" 
                             size="icon" 
-                            onClick={() => handleRemoveFromCart(item.id,item.qty-1)}
-                            className="h-8 w-8"
+                            onClick={() => handleDecreaseQuantity(item.id)}
+                            className="h-8 w-8 "
                           >
                             <Minus className="h-3 w-3" />
                             <span className="sr-only">Decrease quantity</span>
-                          </Button> */}
-                          <span className="text-center font-semibold">Quantity: {item.qty }</span>
-                          {/* <Button 
+                          </Button>
+                          <span className="text-center font-semibold">{item.qty}</span>
+                          <Button 
                             variant="ghost" 
                             size="icon" 
-                            onClick={() => updateQuantity(item.id, item.qty  + 1)}
+                            onClick={() => updateQuantity(item.id)}
                             className="h-8 w-8"
                           >
                             <Plus className="h-3 w-3" />
                             <span className="sr-only">Increase quantity</span>
-                          </Button> */}
+                          </Button>
                         </div>
                         <div className="text-right">
                           <div className="font-semibold">${(item.price * item.qty ).toFixed(2)}</div>
@@ -265,7 +307,7 @@ const Cart = () => {
                 // onClick={handleCheckout}
                 >Checkout</Button>
                 <div className="mt-6 text-center text-sm text-muted-foreground">
-                  Need help? <a href="#" className="underline">Contact Support</a>
+                  Need help? <Link to='/faq' className="underline">Contact Support</Link>
                 </div>
               </CardContent>
             </Card>

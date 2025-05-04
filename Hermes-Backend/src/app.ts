@@ -43,6 +43,16 @@ app.use(morgan("dev"))
 app.use(loggerMiddleware)
 
 
+// Absolute path to the dist folder
+const distPath = path.join(__dirname, '..', 'public', 'dist');
+
+// Serve static assets from public/dist
+app.use(express.static(distPath));
+
+// Serve index.html on root route
+app.get('/', (req, res) => {
+  res.sendFile(path.join(distPath, 'index.html'));
+});
 // Serve static files from "public" folder
 // Serve static files
 // app.use(express.static(path.join(__dirname, '../../Hermes_Frontend/dist')));
