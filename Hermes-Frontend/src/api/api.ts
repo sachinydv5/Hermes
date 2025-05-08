@@ -3,7 +3,9 @@ import { OrderCreateRequest,AppConfigRequest, AppConfigResponse, ERROR_RESPONSE,
 import axios, { AxiosResponse } from 'axios';
 
 
-const endpoint = "https://hermes-backend-pykc.onrender.com";
+// const endpoint = "https://hermes-backend-pykc.onrender.com";
+const endpoint = "https://vivarent.onrender.com";
+
 // const endpoint = "https://0ab3-2401-4900-4e71-1e9b-505b-b448-b694-7d73.ngrok-free.app";
 
 
