@@ -97,7 +97,7 @@ export const Company = () =>{
             <p className="text-base sm:text-xl md:text-2xl text-gray-700 mb-6">
               Join our community today and discover a new way to access what you need.
             </p>
-            <Link to='/creatinglist'className="text-[#f8a93a] bg-white border-[#FCB857] border-2 px-8 py-3 rounded-lg font-medium text-lg  hover:text-black transition-colors">
+            <Link to='/createsingle'className="text-[#f8a93a] bg-white border-[#FCB857] border-2 px-8 py-3 rounded-lg font-medium text-lg  hover:text-black transition-colors">
               Join Us
             </Link>
           </div>

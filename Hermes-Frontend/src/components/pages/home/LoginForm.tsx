@@ -72,12 +72,12 @@ const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
             {/* Email/Phone Input */}
             <div className="space-y-2">
               <label className="text-amber-200 text-sm" htmlFor="emailorphone">
-                Email / Phone
+                Email 
               </label>
               <input
                 id="emailorphone"
                 type="text"
-                placeholder="Email or Phone Number"
+                placeholder="Enter your email"
                 className="w-full px-4 py-3 rounded-full bg-white text-gray-900 text-sm focus:ring-2 focus:ring-amber-200 focus:outline-none"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
