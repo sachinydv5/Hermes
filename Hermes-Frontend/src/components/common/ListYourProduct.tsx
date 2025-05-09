@@ -35,7 +35,7 @@ const ListYourProduct = () => {
           </div>
           <div className="flex justify-center lg:justify-start">
             <Button className="text-[#fcb857] text-base sm:text-lg md:text-xl border-2 border-[#f8d9a9] rounded-full px-4 sm:px-6 md:px-10 py-2 sm:py-4 md:py-6" variant="outline">
-            <Link to='/creatinglist'>Create Listing</Link> 
+            <Link to='/createsingle'>Create Listing</Link> 
             </Button>
         
           </div>

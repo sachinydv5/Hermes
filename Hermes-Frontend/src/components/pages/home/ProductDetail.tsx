@@ -29,21 +29,16 @@ const ProductDetail = () => {
   const [productdetail, setProductDetail] = useState<Product | null>(null);
   const [isInWishlist, setIsInWishlist] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [imageError, setImageError] = useState(false)
   const hasCheckedWishlist = useRef(false);
   const [orderID, setOrderID] = useState("")
   let navigate = useNavigate();
 
-  const images = [
-    'https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png',
-    'https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png',
-    'https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png',
-    'https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png',
-    'https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png',
-    'https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png'
-  ]
+  const defaultImage = 'https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png'
 
-
- 
+  const handleImageError = () => {
+    setImageError(true)
+  }
 
   useEffect(() => {
     // Reset the wishlist check flag when product ID changes
@@ -214,48 +209,40 @@ const ProductDetail = () => {
         <div className="space-y-4">
           <div className="relative aspect-[4/3] bg-gray-100 rounded-lg overflow-hidden">
             <button 
-              onClick={() => setCurrentImage(prev => prev > 0 ? prev - 1 : images.length - 1)}
+              onClick={() => setCurrentImage(prev => prev > 0 ? prev - 1 : 0)}
               className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white/80 rounded-full p-2"
             >
               <ChevronLeft className="h-6 w-6" />
             </button>
             <img
-              src={productdetail.image}
+              src={imageError ? defaultImage : productdetail.image}
               alt="Product image"  
               className="w-full h-full object-cover"
+              onError={handleImageError}
             />
             <button 
-              onClick={() => setCurrentImage(prev => prev < images.length - 1 ? prev + 1 : 0)}
+              onClick={() => setCurrentImage(prev => prev < 0 ? prev + 1 : 0)}
               className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white/80 rounded-full p-2"
             >
               <ChevronRight className="h-6 w-6" />
             </button>
-            {/* <Button 
-              onClick={() => addtoCart(productid ?? "")}
-              className="absolute bottom-4 right-4 z-10"
-              size="sm"
-            >
-              Add to Cart
-            </Button> */}
           </div>
           <div className="flex gap-2 overflow-x-auto pb-2">
-            {images.map((img, idx) => (
-              <button
-                key={idx}
-                onClick={() => setCurrentImage(idx)}
-                className={`flex-shrink-0 w-20 aspect-[4/3] border-2 rounded-lg overflow-hidden ${
-                  currentImage === idx ? 'border-primary' : 'border-transparent'
-                }`}
-              >
-                <img
-                  src={productdetail.image}
-                  alt={`Thumbnail ${idx + 1}`}
-                  width={80}
-                  height={60}
-                  className="object-cover w-full h-full"
-                />
-              </button>
-            ))}
+            <button
+              onClick={() => setCurrentImage(0)}
+              className={`flex-shrink-0 w-20 aspect-[4/3] border-2 rounded-lg overflow-hidden ${
+                currentImage === 0 ? 'border-primary' : 'border-transparent'
+              }`}
+            >
+              <img
+                src={imageError ? defaultImage : productdetail.image}
+                alt="Product thumbnail"
+                width={80}
+                height={60}
+                className="object-cover w-full h-full"
+                onError={handleImageError}
+              />
+            </button>
           </div>
         </div>
 
@@ -511,7 +498,7 @@ const ProductDetail = () => {
           </div>
         </TabsContent> */}
       </Tabs>
-      <RecentlyView/>
+      {/* <RecentlyView/> */}
 
       <ListYourProduct/>
     </div>
