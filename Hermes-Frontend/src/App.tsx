@@ -16,6 +16,8 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ScrollToTop from './utils/ScrollToTop';
 import MarketSkeleton from './components/skeleton/MarketSkeleton';
+import { TermsOfUse } from './components/pages/home/TermsOfUse';
+import EquipmentRentalAgreement from './components/pages/home/EquipmentRentalAgreement';
 
 
 // Loading component
@@ -52,9 +54,10 @@ const getMainLayout = () => {
           <Route path={AppRoutes.COMPANY} element={<Company/>} />
           <Route path={AppRoutes.FAQ} element={<Faq/>} />
           <Route path={AppRoutes.POLICY} element={<PrivacyPolicy/>} />
+          <Route path={AppRoutes.TERMSOFUSE} element={<TermsOfUse/>} />
+          <Route path={AppRoutes.AGREEMENT} element={<EquipmentRentalAgreement/>} />
 
-
-          
+ 
           {/* Protected Routes */}
           <Route element={<AuthGuard />}>
             <Route path={AppRoutes.CREATINGLIST} element={<CreatingList />} />
