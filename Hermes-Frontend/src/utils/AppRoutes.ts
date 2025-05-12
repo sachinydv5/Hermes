@@ -17,6 +17,8 @@ export const AppRoutes = {
     CART:'/cart' ,
     COMPANY:'/about',
     FAQ:'/faq',
-    POLICY:'/policy'
+    POLICY:'/policy',
+    TERMSOFUSE:'/termsofuse',
+    AGREEMENT: '/agreement'
 
 }
