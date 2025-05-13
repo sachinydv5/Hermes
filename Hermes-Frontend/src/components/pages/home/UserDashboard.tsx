@@ -64,7 +64,7 @@ const UserDashboard = () => {
                 <Button variant="outline" className="w-full mt-2">EDIT ADDRESS</Button>
               </CardContent>
             </Card>
-            <div className="grid gap-2 sm:gap-4 grid-cols-1">
+            {/* <div className="grid gap-2 sm:gap-4 grid-cols-1">
               <StatsCard
                 icon={<Package2 className="size-6" />}
                 value="154"
@@ -83,25 +83,9 @@ const UserDashboard = () => {
                 label="Completed Orders"
                 className="bg-green-50"
               />
-            </div>
+            </div> */}
           </div>
-          <RecentOrder/>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-base font-semibold">BROWSING HISTORY</CardTitle>
-              <Button variant="ghost" className="text-orange-500 hover:text-orange-600">
-                View All
-              </Button>
-            </CardHeader>
-            <CardContent>
-              <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-                <ProductCardTwo product={undefined}/>
-                <ProductCardTwo product={undefined}/>
-                <ProductCardTwo product={undefined}/>
-                <ProductCardTwo product={undefined}/>
-              </div>
-            </CardContent>
-          </Card>
+          <RecentOrder/> 
         </div>
       </div>
     </div>

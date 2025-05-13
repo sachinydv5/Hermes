@@ -149,7 +149,7 @@ const ProductCardTwo = ({product}: ProductCardTwoProps) => {
           <div className="flex items-baseline gap-1 sm:gap-2 mb-1 sm:mb-2">
             <span className="text-gray-400 line-through text-xs sm:text-sm"></span>
             <span className="text-lg sm:text-xl md:text-2xl font-semibold text-[#f4a340]">${product.price || 0}</span>
-            <span className="text-xs sm:text-sm text-gray-500">/per {product.duration.unit}</span>
+            <span className="text-xs sm:text-sm text-gray-500">/{product.duration.unit}</span>
           </div>
   
           <div className="flex items-center justify-between">

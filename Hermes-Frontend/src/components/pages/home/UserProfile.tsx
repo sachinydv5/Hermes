@@ -40,56 +40,18 @@ const UserProfile = () => {
                     <Input defaultValue="" />
                   </div>
                   <div className="space-y-2">
-                    <Label>Username</Label>
-                    <Input defaultValue="" />
-                  </div>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="space-y-2">
                     <Label>Full Name</Label>
                     <Input defaultValue="" />
                   </div>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4"> 
                   <div className="space-y-2">
                     <Label>Email</Label>
-                    <Input defaultValue="" />
-                  </div>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label>Secondary Email</Label>
                     <Input defaultValue="" />
                   </div>
                   <div className="space-y-2">
                     <Label>Phone Number</Label>
                     <Input defaultValue="" />
-                  </div>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <div className="space-y-2">
-                    <Label>Country/Region</Label>
-                    <Select defaultValue="usa">
-                      <SelectTrigger>
-                        <SelectValue placeholder="" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="usa">USA</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="space-y-2">
-                    <Label>States</Label>
-                    <Select defaultValue="minnesota">
-                      <SelectTrigger>
-                        <SelectValue placeholder="" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="minnesota">Minnesota</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Zip Code</Label>
-                    <Input defaultValue="528" />
                   </div>
                 </div>
                 <div className="mt-6">

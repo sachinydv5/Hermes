@@ -13,6 +13,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { callApi } from '../../../api/api'
 import { ProductRequest, ProductResponse, UploadProductImageRequest, UploadProductImageRespose } from '../../../api/types'
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify'
 
 // Extended form data type to include the file field
 interface FormData {
@@ -90,29 +91,29 @@ console.log("imaGE NAME",previewImage)
     setError(null);
     
     try {
-      // // Upload the image first
-      // if (!data.file || data.file.length === 0) {
-      //   throw new Error("Please select a file to upload");
-      // }
+      // Upload the image first
+      if (!data.file || data.file.length === 0) {
+        throw new Error("Please select a file to upload");
+      }
 
-      // let imageUploadRequest: UploadProductImageRequest = {
-      //   image: [previewImage ?? ""],
-      // };
-      // console.log(imageUploadRequest)
-      // console.log(data.file)
-      // const imageUploadResponse: UploadProductImageRespose = await callApi(
-      //   imageUploadRequest,
-      //   "/product/uploadProduct"
-      // );
+      let imageUploadRequest: UploadProductImageRequest = {
+        image: [previewImage ?? ""],
+      };
+      console.log(imageUploadRequest)
+      console.log(data.file)
+      const imageUploadResponse: UploadProductImageRespose = await callApi(
+        imageUploadRequest,
+        "/product/uploadProduct"
+      );
 
-      // if (!"status" in imageUploadResponse) {
-        // const imageUrl = imageUploadResponse.url;
+      if ("status" in imageUploadResponse) {
+        const imageUrl = imageUploadResponse.urls;
         
         // Prepare product data in the format expected by the API
         let req: ProductRequest = {
           name: data.title,
           description: data.description,
-          // img: [imageUrl],
+          image: imageUrl[0],
           qty: 1,
           duration: {
             value: data.duration ? parseInt(data.duration.split('_')[0]) : 3,
@@ -120,7 +121,7 @@ console.log("imaGE NAME",previewImage)
           },
           discount: 0,
           pickupAddress: {
-            city: '', // These should be dynamic in a real implementation
+            city: '', 
             country: '',
             pincode: '',
             addressLine1: data.address,
@@ -135,14 +136,14 @@ console.log("imaGE NAME",previewImage)
         const response: ProductResponse = await callApi(req, "/product/addProduct");
         
         if ("status" in response) {
-          alert("Product created successfully!");
+          toast.success("Product created successfully!");
           navigate(`/productdetail/${response.id}`);
         } else {
           setError(response.description || "Failed to create product");
         }
-      // } else {
-      //   setError(imageUploadResponse.description || "Failed to upload image");
-      // }
+      } else {
+        setError(imageUploadResponse.description || "Failed to upload image");
+      }
     } catch (err: any) {
       console.error("Product creation error:", err);
       setError(err.message || "Failed to create product");
@@ -181,7 +182,7 @@ console.log("imaGE NAME",previewImage)
                       })}
                     />
                     <Upload className="mx-auto mb-4 h-12 w-12 text-gray-400" />
-                    <p className="text-sm text-gray-500">Drag or choose your file to upload</p>
+                    <p className="text-sm text-gray-500">choose your file to upload</p>
                     <p className="text-xs text-gray-400 mt-2">PNG, GIF, WEBP, MP4 or MP3. Max 1GB.</p>
                   </label>
                   {uploadedFile && <p>{uploadedFile.name}</p>}
@@ -272,7 +273,7 @@ console.log("imaGE NAME",previewImage)
               </div>
 
               <div className="flex items-center justify-between">
-                <div>
+                {/* <div>
                   <Label htmlFor="putOnLease" className="font-semibold">Put on lease</Label>
                   <p className="text-sm text-gray-500">This creates payment on this item</p>
                 </div>
@@ -280,7 +281,7 @@ console.log("imaGE NAME",previewImage)
                   id="putOnLease"
                   checked={watchedPutOnLease}
                   onCheckedChange={(checked) => setValue('putOnLease', checked)}
-                />
+                /> */}
               </div>
 
               {watchedPutOnLease && (
@@ -322,8 +323,8 @@ console.log("imaGE NAME",previewImage)
               </div>
 
               <div>
-                <Label className="mb-2 block">Preference</Label>
-                <div className="grid grid-cols-3 gap-4">
+                {/* <Label className="mb-2 block">Preference</Label> */}
+                {/* <div className="grid grid-cols-3 gap-4">
                   <Select onValueChange={(value) => setValue('preference.type', value)}>
                     <SelectTrigger>
                       <SelectValue placeholder="Type" />
@@ -353,11 +354,11 @@ console.log("imaGE NAME",previewImage)
                       <SelectItem value="15_weeks">15 Weeks</SelectItem>
                     </SelectContent>
                   </Select>
-                </div>
+                </div> */}
               </div>
             </div>
 
-            <div className="p-6">
+            {/* <div className="p-6">
               <h2 className="text-xl font-semibold mb-4">Choose Collection</h2>
               <div className="flex flex-wrap gap-4">
                 <Button type="button" variant="outline" className="h-24 w-36">
@@ -368,7 +369,7 @@ console.log("imaGE NAME",previewImage)
                 <Button type="button" variant="secondary" className="h-24 w-36">Add to Collection</Button>
                 <Button type="button" variant="secondary" className="h-24 w-36">Add to Collection</Button>
               </div>
-            </div>
+            </div> */}
 
             <Button
               type="submit"

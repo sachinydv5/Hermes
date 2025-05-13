@@ -89,7 +89,7 @@ export type ProductRequest = {
     category: string;
     userId: string;
     collectionId: string;
-    img?: string[] | undefined;
+    image?: string | undefined;
 }
 
 
@@ -260,7 +260,7 @@ export type UploadProductImageRequest = {
 
 export type UploadProductImageRespose = Error<GLOBAL_ERROR_CODE> | Error<PRODUCT_IMAGE_ERROR_CODE> | {
   status: "IMAGE_UPLOAD_SUCCESFULL",
-  url: string
+  urls: string[]
 }
 
 //User Type
@@ -285,3 +285,41 @@ export type GetCartRequest = {} | undefined
 export type  GetCartResponse = Error<GLOBAL_ERROR_CODE> | {
   cart: Product[] 
 }
+
+
+// getorder type
+
+export type GetOrderRequest = {} | undefined
+
+
+  export type  GetOrderResponse = Error<GLOBAL_ERROR_CODE> | {
+    orders: {
+    products: Product[];
+    totalAmount: number;
+    orderStatus: 
+      | "INITIATED"
+      | "ORDER_PLACED"
+      | "FAILURE"
+      | "IN_TRANSIT"
+      | "REACHED"
+      | "REFUNDED"
+      | "ABORTED"
+      | "CREATED"
+      | "PAYMENT_SUCCESS"
+      | "PAYMENT_FAILURE";
+    address: {
+      city: string;
+      country: string;
+      pincode: string;
+      addressLine1?: string;
+      addressLine2?: string;
+    };
+    lastUpdatedTime: Date;
+    updateTrace: Array<{
+      updatedBy: "DASHBOARD" | "SYSTEM";
+      time: Date;
+    }>;
+    userEmail: string;
+    orderId: string;
+  }[];
+  }

@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -14,94 +15,127 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { AppDispatch} from '@/app/store'
+import { fetchOrders } from '@/app/store/orders'
+import { RootState } from '@/app/store/rootReducer'
+import { useAppSelector } from '@/app/hooks'
+import { isUserLoggedIn } from '@/app/store/user'
 
-interface Order {
-  id: string
-  status: "IN PROGRESS" | "COMPLETED" | "CANCELLED" | "Returned"
-  date: string
-  total: string
-  products: number
-}
-
-const orders: Order[] = [
-  {
-    id: "#96459761",
-    status: "IN PROGRESS",
-    date: "Dec 30, 2019 05:18",
-    total: "$1,500",
-    products: 5,
-  },
-  {
-    id: "#71667167",
-    status: "COMPLETED",
-    date: "Feb 2, 2019 19:28",
-    total: "$80",
-    products: 1,
-  },
-  {
-    id: "#95214362",
-    status: "CANCELLED",
-    date: "Mar 20, 2019 23:14",
-    total: "$160",
-    products: 3,
-  },
-  // Add more orders as needed
-]
 const RecentOrder = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [dataFetched, setDataFetched] = useState(false);
+
+  const dispatch = useDispatch<AppDispatch>();
+  const { orders, loading, error } = useSelector((state: RootState) => state.orders);
+  const isLogIn: boolean = useAppSelector(isUserLoggedIn)
+
+  useEffect(() => {
+    setIsLoading(true); 
+    const fetchData = async () => {
+      try {
+        //@ts-ignore
+        await dispatch(fetchOrders()).unwrap();
+      } catch (error) {
+        console.error("Error fetching cart products:", error);
+      } finally {
+        setIsLoading(false);
+        setDataFetched(true);
+      }
+    };
+
+    if (isLogIn) {
+      fetchData();
+    }
+  }, [dispatch, isLogIn]);
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "PAYMENT_SUCCESS":
+      case "REACHED":
+        return "text-green-500";
+      case "PAYMENT_FAILURE":
+      case "FAILURE":
+      case "ABORTED":
+        return "text-red-500";
+      case "IN_TRANSIT":
+      case "ORDER_PLACED":
+        return "text-orange-500";
+      default:
+        return "text-gray-500";
+    }
+  };
+
+  if (loading) {
+    return (
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between border-b-2 space-y-0 pb-2">
+          <CardTitle className="text-base font-semibold">RECENT ORDERS</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-center py-4">Loading orders...</div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (error) {
+    return (
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between border-b-2 space-y-0 pb-2">
+          <CardTitle className="text-base font-semibold">RECENT ORDERS</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-center py-4 text-red-500">Error loading orders: {error}</div>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <Card>
-    <CardHeader className="flex flex-row items-center justify-between border-b-2 space-y-0 pb-2">
-      <CardTitle className="text-base font-semibold">RECENT ORDER</CardTitle>
-      <Button variant="ghost" className="text-orange-500 hover:text-orange-600">
-        View All
-      </Button>
-    </CardHeader>
-    <CardContent>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>ORDER ID</TableHead>
-            <TableHead>STATUS</TableHead>
-            <TableHead>DATE</TableHead>
-            <TableHead>TOTAL</TableHead>
-            <TableHead>ACTION</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {orders.map((order) => (
-            <TableRow key={order.id}>
-              <TableCell className="font-medium">{order.id}</TableCell>
-              <TableCell>
-                <span
-                  className={
-                    order.status === "COMPLETED"
-                      ? "text-green-500"
-                      : order.status === "CANCELLED"
-                      ? "text-red-500"
-                      : order.status === "IN PROGRESS"
-                      ? "text-orange-500"
-                      : "text-gray-500"
-                  }
-                >
-                  {order.status}
-                </span>
-              </TableCell>
-              <TableCell>{order.date}</TableCell>
-              <TableCell>
-                {order.total} ({order.products} Products)
-              </TableCell>
-              <TableCell>
-                <Button variant="link" size="sm">
-                  View Details
-                </Button>
-              </TableCell>
+      <CardHeader className="flex flex-row items-center justify-between border-b-2 space-y-0 pb-2">
+        <CardTitle className="text-base font-semibold">RECENT ORDERS</CardTitle>
+        <Button variant="ghost" className="text-orange-500 hover:text-orange-600">
+          View All
+        </Button>
+      </CardHeader>
+      <CardContent>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>ORDER ID</TableHead>
+              <TableHead>STATUS</TableHead>
+              <TableHead>DATE</TableHead>
+              <TableHead>TOTAL</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </CardContent>
-  </Card>
+          </TableHeader>
+          <TableBody>
+            {orders.slice(0, 5).map((order) => (
+              <TableRow key={order.orderId}>
+                <TableCell className="font-medium">#{order.orderId}</TableCell>
+                <TableCell>
+                  <span className={getStatusColor(order.orderStatus)}>
+                    {order.orderStatus}
+                  </span>
+                </TableCell>
+                <TableCell>{new Date(order.lastUpdatedTime).toLocaleString()}</TableCell>
+                <TableCell>
+                  ${order.totalAmount} ({order.products.length} Products)
+                </TableCell>
+              </TableRow>
+            ))}
+            {orders.length === 0 && (
+              <TableRow>
+                <TableCell colSpan={5} className="text-center py-4">
+                  No orders found
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </CardContent>
+    </Card>
   )
 }
 
-export default RecentOrder
+export default RecentOrder;
