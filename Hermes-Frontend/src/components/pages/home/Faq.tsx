@@ -30,7 +30,7 @@ export default function Faq() {
     {
       question: "How can I contact customer support?",
       answer:
-        "Our customer support team is available 24/7. You can reach us through live chat on our website, by sending an email to support@example.com, or by calling our toll-free number at 1-800-123-4567. We typically respond to email inquiries within 24 hours.",
+        "Our customer support team is available 24/7. You can reach us through by sending an email to vivarent.us@gmail.com. We typically respond to email inquiries within 24 hours.",
     },
   ]
 

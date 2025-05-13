@@ -34,7 +34,7 @@ let navigate = useNavigate();
           <LayoutDashboard className="h-4 w-4" />
           Dashboard
         </NavLink>
-        <NavLink
+        {/* <NavLink
           to="/orders"
           className={({ isActive}) =>
             `flex items-center gap-3 rounded-lg px-4 py-2.5 text-gray-600 transition-colors hover:bg-orange-100 ${isActive ? "bg-orange-100": ""}`
@@ -42,7 +42,7 @@ let navigate = useNavigate();
         >
           <ClipboardList className="h-4 w-4" />
           Order History
-        </NavLink>
+        </NavLink> */}
         <NavLink
           to="/trackorder"
           className={({ isActive}) =>
@@ -71,7 +71,7 @@ let navigate = useNavigate();
           Wishlist
         </NavLink>
        
-        <NavLink
+        {/* <NavLink
           to="/cards"
           className={({ isActive}) =>
             `flex items-center gap-3 rounded-lg px-4 py-2.5 text-gray-600 transition-colors hover:bg-orange-100 ${isActive ? "bg-orange-100": ""}`
@@ -79,7 +79,7 @@ let navigate = useNavigate();
         >
           <CreditCard className="h-4 w-4" />
           Cards & Address
-        </NavLink>
+        </NavLink> */}
         <NavLink
           to="/userprofile"
           className={({ isActive}) =>

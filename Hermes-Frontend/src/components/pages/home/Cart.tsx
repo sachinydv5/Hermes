@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Trash2, Minus, Plus, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { descreseItem, fetchProduct, increaseItemQty, removeItemCompletely } from '@/app/store/cart';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { isUserLoggedIn } from '@/app/store/user';
 import { toast } from 'react-toastify';
-import { GetAddToWishlistRequest } from '@/api/types';
+import { GetAddToWishlistRequest, OrderCreateRequest, OrderCreateResponse, PaymentCreateRequest, PaymentCreateResponse } from '@/api/types';
 import { callApi } from '@/api/api';
 import { Skeleton } from "@/components/ui/skeleton";
 import { RootState } from '@/app/store/rootReducer';
@@ -90,6 +90,9 @@ const Cart = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [dataFetched, setDataFetched] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [orderId, setOrderId] = useState<string | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const navigate = useNavigate();
   
   const products = useSelector((state: RootState) => state.cart.products);
   console.log("product",products)
@@ -196,7 +199,56 @@ const Cart = () => {
     return subtotal;
   };
 
-  
+  const handlePaymentApi = async (orderId: string) => {
+    try {
+      const req: PaymentCreateRequest = {
+        orderId: orderId,
+      };
+      const response = await callApi(req, "/payment/create");
+      if ("status" in response && response.status === "SUCCESS") {
+        // Redirect to payment URL
+        window.location.href = response.url;
+      } else if ("error_code" in response) {
+        setError(response.description);
+        toast.error("Payment initialization failed");
+      }
+    } catch (err) {
+      console.error("Payment initialization error:", err);
+      setError("Failed to initialize payment");
+      toast.error("Failed to initialize payment");
+    }
+  };
+
+  const handleOrderApi = async () => {
+    if (products.length === 0) {
+      toast.error("Your cart is empty");
+      return;
+    }
+
+    setIsProcessing(true);
+    try {
+      const productIds = products.map(item => item.id);
+      const req: OrderCreateRequest = {
+        products: productIds,
+      };
+      const response = await callApi(req, "/order/create");
+      
+      if ("status" in response && response.status === "SUCCESS") {
+        setOrderId(response.orderId);
+        toast.success("Order created successfully!");
+        await handlePaymentApi(response.orderId);
+      } else if ("error_code" in response) {
+        setError(response.description || "Failed to create order");
+        toast.error(response.description || "Failed to create order");
+      }
+    } catch (err) {
+      console.error("Order creation error:", err);
+      setError("Failed to create order");
+      toast.error("Failed to create order");
+    } finally {
+      setIsProcessing(false);
+    }
+  };
 
   if (isLoading) {
     return <CartSkeleton />;
@@ -229,7 +281,7 @@ const Cart = () => {
                   <div className="flex flex-col sm:flex-row">
                     <div className="w-full sm:w-36 h-36 bg-muted">
                       <img 
-                        src={item.img && item.img.length > 0 ? item.img[0] : 'https://cdn.jsdelivr.net/gh/200-DevelopersFound/SnapStore@master/portfolio/testp.png'} 
+                        src={item.image} 
                         alt={item.name} 
                         className="w-full h-full object-cover"
                       />
@@ -303,9 +355,13 @@ const Cart = () => {
                     <span>${calculateTotal().toFixed(2)}</span>
                   </div>
                 </div>
-                <Button className="w-full mt-6" 
-                // onClick={handleCheckout}
-                >Checkout</Button>
+                <Button 
+                  className="w-full mt-6" 
+                  onClick={handleOrderApi}
+                  disabled={isProcessing || products.length === 0}
+                >
+                  {isProcessing ? "Processing..." : "Checkout"}
+                </Button>
                 <div className="mt-6 text-center text-sm text-muted-foreground">
                   Need help? <Link to='/faq' className="underline">Contact Support</Link>
                 </div>

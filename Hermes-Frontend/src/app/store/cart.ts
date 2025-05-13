@@ -1,4 +1,4 @@
-import { callApi, getCart } from "@/api/api";
+import { getCart } from "@/api/api";
 import { Product } from "@/api/common.types";
 import {  GetCartResponse, GetCartRequest} from "@/api/types";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";

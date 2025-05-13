@@ -105,19 +105,19 @@ const ProductList = () => {
   return (
     <div className="w-[90vw] mx-auto py-10 sm:py-16">
       <div className="flex flex-col lg:flex-row lg:gap-8">
-        <div className="hidden lg:block lg:min-w-64">
+        {/* <div className="hidden lg:block lg:min-w-64">
           <SideBar />
-        </div>
+        </div> */}
         <div className="flex-1">
           <div className="flex flex-col gap-4 mb-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-              <div className="relative w-full sm:w-96">
+              {/* <div className="relative w-full sm:w-96">
                 <Input
                   placeholder="Search for anything..."
                   className="pl-10"
                 />
                 <Search className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
-              </div>
+              </div> */}
               
               <Select 
                 defaultValue="most-popular" 
@@ -135,7 +135,7 @@ const ProductList = () => {
               </Select>
             </div>
 
-            <div className="flex items-center gap-2 flex-wrap">
+            {/* <div className="flex items-center gap-2 flex-wrap">
               <span className="text-sm font-medium">Filters:</span>
               {activeFilters.map((filter) => (
                 <Badge key={filter} variant="secondary" className="text-xs">
@@ -159,7 +159,7 @@ const ProductList = () => {
               >
                 Clear all filters
               </Button>
-            </div>
+            </div> */}
           </div>
 
           {/* Mobile sidebar toggle */}
@@ -181,7 +181,7 @@ const ProductList = () => {
             ))}     
           </div>
 
-          <div className="flex justify-center mt-8">
+          {/* <div className="flex justify-center mt-8">
             <nav className="flex items-center gap-1">
               {[1, 2, 3, 4, 5].map((page) => (
                 <button
@@ -196,7 +196,7 @@ const ProductList = () => {
                 </button>
               ))}
             </nav>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
