@@ -1,5 +1,6 @@
 import admin from 'firebase-admin';
 import { v4 as uuidv4 } from 'uuid';
+import { getFirestoreApp, getFirebaseStorage } from '../firebase';
 
 
 export const uploadImageToFirebase = async (
@@ -9,7 +10,7 @@ export const uploadImageToFirebase = async (
 ): Promise<string> => {
   try {
     const filename = `${uuidv4()}-${originalName}`;
-    const file = admin.storage().bucket().file(filename);
+    const file = getFirebaseStorage().file(filename);
     const token = uuidv4();
 
     const stream = file.createWriteStream({

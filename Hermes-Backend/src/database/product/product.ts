@@ -25,6 +25,7 @@ export const addProductInDB = async (product: ProductRequestSchema)=>{
        addressLine1 : product.pickupAddress.addressLine1,
        addressLine2 : product.pickupAddress.addressLine2 || ""
     },
+    image: product.img,
     price : product.price,
     userId : product.userId,
     qty : product.qty,
@@ -74,7 +75,7 @@ export const getProductsFromDB = async (lastDoc: string | undefined, limit: numb
     }
     let lastDocRef = productSnapshot.docs[productSnapshot.docs.length-1];
 
-    let sPro: { name: string; description: string; qty: number; duration: { value: number; unit: string; }; discount: number; pickupAddress: { city: string; country: string; pincode: string; addressLine1?: string | undefined; addressLine2?: string | undefined; }; price: string; category: string; userId: string; collectionId: string; id: string; createTs: string; img?: string[] | undefined; }[] = []
+    let sPro = []
 
     // 🔥 Handle lowercase filtering manually after fetching
     if (searchText) {

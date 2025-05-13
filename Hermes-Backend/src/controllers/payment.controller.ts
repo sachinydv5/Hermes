@@ -31,14 +31,18 @@ export const paymentController = async (req: TypedRequestEmail<PaymentRequest>, 
         // const lineItems = productList.map((product: ProductDoSchema) => ({ price: product.price, quantity: product.qty }));
         const lineItems = await Promise.all(
           productList.map(async (product: ProductDoSchema) => {
+            
+            console.log("Number(product.price)")
+            console.log(Number(product.price))
             const priceObj = await stripe.prices.create({
-              unit_amount: Number(product.price), // Stripe expects amount in cents (e.g., $10 → 1000)
+              unit_amount: Number(product.price) * 100, // Stripe expects amount in cents (e.g., $10 → 1000)
               currency: 'usd',
               product_data: {
                 name: product.name, // Ensure each product has a name
               },
             });
-        
+            
+            
             return { price: priceObj.id, quantity: product.qty };
           })
         );

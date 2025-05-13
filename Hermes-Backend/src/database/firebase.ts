@@ -1,9 +1,10 @@
 import { FirebaseApp, initializeApp } from "firebase/app"
 import { getFirestore, collection, getDocs, Firestore } from 'firebase/firestore';
 import { config } from '../configs/env.config';
-
-import { cert, initializeApp as ia} from 'firebase-admin/app';
+import { getStorage } from 'firebase-admin/storage';
+import { cert, initializeApp as ia, getApps} from 'firebase-admin/app';
 import { getFirestore as gf} from 'firebase-admin/firestore';
+// import { cert, initializeApp as initializeAdminApp, getApps } from 'firebase-admin/app';
 
 // import serviceAccount from '../../firebase-admin.json';
 
@@ -23,7 +24,8 @@ let firestoreDB: Firestore;
 const initializeDatabase = () => {
   try {
     ia({
-      credential: cert(config.FIREBASE_ADMIN as any)
+      credential: cert(config.FIREBASE_ADMIN as any),
+      storageBucket: config.FIREBASE_STORAGE_BUCKET,
     })
     app = initializeApp(firebaseConfig);
     firestoreDB = getFirestore();
@@ -35,22 +37,10 @@ const initializeDatabase = () => {
 
 const getFirestoreApp = () => app;
 const getFirestoreDB = () => firestoreDB;
-
-// async function closeConnection() {
-//     try {
-//       await mongoose.disconnect()
-//       console.log("Database connection closed");
-//     } catch (error) {
-//       console.error("Error closing the database connection:", error);
-//       process.exit(1);
-//     }
-//   }
-
-
-//   process.on('SIGINT', closeConnection); // Handle termination signals
-//   process.on('SIGTERM', closeConnection);
-
-//   export { connectToDatabase, closeConnection };
-
-
-export { initializeDatabase, getFirestoreApp, getFirestoreDB };
+const getFirebaseStorage = () => {
+  if (!getApps().length) {
+    throw new Error("Firebase Admin not initialized. Call initializeDatabase() first.");
+  }
+  return getStorage().bucket();
+};
+export { initializeDatabase, getFirestoreApp, getFirebaseStorage, getFirestoreDB };

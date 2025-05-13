@@ -6,7 +6,7 @@ import { orderCreateController, orderStatusAllController, orderStatusController,
 
 export const orderRouter = express.Router();
 
-orderRouter.post('/create', validateData(orderRequestScheme), orderCreateController);
+orderRouter.post('/create', authTokenVerification, validateData(orderRequestScheme), orderCreateController);
 orderRouter.post('/update', validateData(updateOrderRequestSchema), orderUpdateController);
 orderRouter.get('/status/:orderId', orderStatusController);
-orderRouter.post('/all', orderStatusAllController)
+orderRouter.post('/all', authTokenVerification, orderStatusAllController)

@@ -23,7 +23,7 @@ export const createOrder = async (orderValue: PARAM_ORDER) => {
     totalAmount: orderValue.totalAmount,
     orderStatus: 'CREATED',
     address: orderValue.address,
-    lastUpdatedTime: new Date(),
+    lastUpdatedTime: new Date().toISOString(),
     updateTrace: [],
     // invoice: undefined,
     userEmail: orderValue.userEmail,
