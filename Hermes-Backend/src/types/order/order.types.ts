@@ -31,7 +31,7 @@ export const orderScheme = z.object({
   // paymentGateway: z.array(z.object()),
   orderStatus: orderStatusEnum,
   address: AddressSchema,
-  lastUpdatedTime: z.date(),
+  lastUpdatedTime: z.string(),
   updateTrace: z.array(z.object({
     updatedBy: z.enum(["DASHBOARD", "SYSTEM"]),
     time: z.date(),
@@ -48,7 +48,7 @@ export const orderAPIScheme = z.object({
   // paymentGateway: z.array(z.object()),
   orderStatus: orderStatusEnum,
   address: AddressSchema,
-  lastUpdatedTime: z.date(),
+  lastUpdatedTime: z.string(),
   updateTrace: z.array(z.object({
     updatedBy: z.enum(["DASHBOARD", "SYSTEM"]),
     time: z.date(),

@@ -34,13 +34,13 @@ export const orderCreateController = async (req: TypedRequestEmail<OrderCreateRe
             pincode: ""
           },
           totalAmount: totalAmount,
-          lastUpdatedTime: new Date(),
+          lastUpdatedTime: new Date().toISOString(),
           updateTrace: [],
           userEmail: req.email
         });
         res.json({
-          products:products,
-          totalAmount:totalAmount,
+          products: products,
+          totalAmount: totalAmount,
           // paymentGateway: z.array(z.object()),
           orderStatus: orderRes.orderStatus,
           address: orderRes.address,
@@ -69,17 +69,17 @@ export const orderStatusController = async (req: TypedRequest<OrderStatusRequest
       res.json({ error_code: "INTERNAL_SERVER_ERROR", description: "Some error Occurredewf " });
     } else {
       res.json({
-        products:resp.products,
-          totalAmount:resp.totalAmount,
-          // paymentGateway: z.array(z.object()),
-          orderStatus: resp.orderStatus,
-          address: resp.address,
-          lastUpdatedTime: resp.lastUpdatedTime,
-          updateTrace:resp.updateTrace,
-          // invoice: z.object({}).optional(),
-          userEmail: resp.userEmail,
-          orderId: resp.orderId,
-          status: "SUCCESS"
+        products: resp.products,
+        totalAmount: resp.totalAmount,
+        // paymentGateway: z.array(z.object()),
+        orderStatus: resp.orderStatus,
+        address: resp.address,
+        lastUpdatedTime: resp.lastUpdatedTime,
+        updateTrace: resp.updateTrace,
+        // invoice: z.object({}).optional(),
+        userEmail: resp.userEmail,
+        orderId: resp.orderId,
+        status: "SUCCESS"
       });
     }
   } catch (e) {
@@ -89,15 +89,21 @@ export const orderStatusController = async (req: TypedRequest<OrderStatusRequest
 }
 
 
-export const orderStatusAllController = async (req: TypedRequest<OrderStatusAllRequest>, res: TypedResponse<OrderStatusAllResponse>) => {
+export const orderStatusAllController = async (req: TypedRequestEmail<OrderStatusAllRequest>, res: TypedResponse<OrderStatusAllResponse>) => {
   try {
-    const resp: ORDER[] = await getAllOrders();
-    console.log(resp)
-
-    if (!resp) {
-      res.json({ error_code: "INTERNAL_SERVER_ERROR", description: "Some error Occurredewf " });
+    if (!req.email) {
+      res.json({ error_code: "INTERNAL_SERVER_ERROR", description: "Some error Occurred Email not found " });
     } else {
-      res.json({ orders: resp});
+      console.log(req.email)
+      const resp: ORDER[] = await getAllOrders();
+      const orderList = resp.filter(e => e.userEmail.toLowerCase() === req.email?.toLowerCase())
+      console.log(orderList)
+
+      if (!orderList) {
+        res.json({ error_code: "INTERNAL_SERVER_ERROR", description: "Some error Occurredewf " });
+      } else {
+        res.json({ orders: orderList });
+      }
     }
   } catch (e) {
     console.log(e)
@@ -111,7 +117,7 @@ export const orderUpdateController = async (req: TypedRequest<UpdateOrderRequest
   try {
     const orderId = req.body.orderId;
     await updateOrderStatus(orderId, req.body.orderStatus, "DASHBOARD");
-    res.json({ status: "SUCCESS"})
+    res.json({ status: "SUCCESS" })
   } catch (e) {
     res.json({ error_code: "INTERNAL_SERVER_ERROR", description: "Some error Occurredewf " });
   }

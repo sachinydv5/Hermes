@@ -3,7 +3,7 @@ import { Error, GLOBAL_ERROR_CODE } from "../common/error";
 
 // Schema for the duration object
 export const DurationSchema = z.object({
-  value: z.number().nonnegative().min(1),
+  value: z.number().nonnegative().min(1).nullable(),
   unit: z.string(),
 });
 
@@ -20,7 +20,7 @@ export const PickupAddressSchema = z.object({
 export const ProductSchema = z.object({
   name: z.string(),
   description: z.string(),
-  img: z.array(z.string()).min(0).optional(), // img can be an empty array
+  img: z.string().optional(), // img can be an empty array
   qty: z.number(), // Can be empty string
   duration: DurationSchema, // Nested duration object
   discount: z.number(),
@@ -35,7 +35,7 @@ export const ProductDO = z.object({
   id: z.string().uuid(),
   description: z.string(),
   name:z.string(),
-  img: z.array(z.string()).min(0).optional(), // img can be an empty array
+  image: z.string().optional(), // img can be an empty array
   duration: DurationSchema, // Nested duration object
   discount: z.number(),
   pickupAddress: PickupAddressSchema, // Nested address object
