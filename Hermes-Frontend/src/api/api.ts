@@ -1,12 +1,12 @@
-import { OrderCreateRequest,AppConfigRequest, AppConfigResponse, ERROR_RESPONSE, GetAddToWishlistRequest, GetAddToWishlistResponse, GetProductIdRequest, GetProductIdResponse, GetProductRequest, GetProductResponse, GetWishlistRequest, GetWishlistResponse, ProductRequest, ProductResponse, UpdateAppConfigRequest, UpdateAppConfigResponse, UserLoginRequest, UserLoginResponse, UserLogoutRequest, UserLogoutResponse, UserSignUpRequest, UserSignUpResponse, OrderCreateResponse, PaymentCreateResponse, PaymentCreateRequest, OrderStatusRequest, OrderStatusResponse, UploadProductImageRequest, UploadProductImageRespose, GetCartRequest, GetCartResponse } from "./types";
+import { OrderCreateRequest,AppConfigRequest, AppConfigResponse, ERROR_RESPONSE, GetAddToWishlistRequest, GetAddToWishlistResponse, GetProductIdRequest, GetProductIdResponse, GetProductRequest, GetProductResponse, GetWishlistRequest, GetWishlistResponse, ProductRequest, ProductResponse, UpdateAppConfigRequest, UpdateAppConfigResponse, UserLoginRequest, UserLoginResponse, UserLogoutRequest, UserLogoutResponse, UserSignUpRequest, UserSignUpResponse, OrderCreateResponse, PaymentCreateResponse, PaymentCreateRequest, OrderStatusRequest, OrderStatusResponse, UploadProductImageRequest, UploadProductImageRespose, GetCartRequest, GetCartResponse, GetOrderRequest, GetOrderResponse } from "./types";
 
 import axios, { AxiosResponse } from 'axios';
 
 
 // const endpoint = "https://hermes-backend-pykc.onrender.com";
-const endpoint = "https://vivarent.onrender.com";
+// const endpoint = "https://vivarent.onrender.com";
 
-// const endpoint = "https://0ab3-2401-4900-4e71-1e9b-505b-b448-b694-7d73.ngrok-free.app";
+const endpoint = "https://3acf-2405-201-a421-f008-c9b8-fa92-1e11-fda.ngrok-free.app";
 
 
 type API_REQUEST = UploadProductImageRequest  | UserSignUpRequest | UserLoginRequest | UserLogoutRequest | ProductRequest | ProductResponse | UpdateAppConfigRequest | AppConfigRequest | GetAddToWishlistRequest | OrderCreateRequest | PaymentCreateRequest | OrderStatusRequest;
@@ -143,6 +143,31 @@ export async function getCart(request: GetCartRequest, url: string): Promise<Get
   } 
  catch (error) {
   console.error('Error making POST request:', error);
+  return { error_code: "INTERNAL_SERVER_ERROR", description: "API Call Failure" } as ERROR_RESPONSE;
+}
+}
+
+
+// get all orders 
+
+export async function getOrders(request: GetOrderRequest, url: string): Promise<GetOrderResponse> {
+  try {
+    const config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: endpoint+url,
+      headers: { 
+        'Content-Type': 'application/json', 
+        'Authorization': "Bearer "+ localStorage.getItem("token")
+      },
+      // data: data,
+    };
+
+    const response = await axios.request(config);
+    return response.data;
+  } 
+ catch (error) {
+  console.error('Error making Get request:', error);
   return { error_code: "INTERNAL_SERVER_ERROR", description: "API Call Failure" } as ERROR_RESPONSE;
 }
 }
