@@ -3,10 +3,8 @@ import { OrderCreateRequest,AppConfigRequest, AppConfigResponse, ERROR_RESPONSE,
 import axios, { AxiosResponse } from 'axios';
 
 
-// const endpoint = "https://hermes-backend-pykc.onrender.com";
-// const endpoint = "https://vivarent.onrender.com";
+const endpoint = "https://vivarent.onrender.com";
 
-const endpoint = "https://3acf-2405-201-a421-f008-c9b8-fa92-1e11-fda.ngrok-free.app";
 
 
 type API_REQUEST = UploadProductImageRequest  | UserSignUpRequest | UserLoginRequest | UserLogoutRequest | ProductRequest | ProductResponse | UpdateAppConfigRequest | AppConfigRequest | GetAddToWishlistRequest | OrderCreateRequest | PaymentCreateRequest | OrderStatusRequest;
