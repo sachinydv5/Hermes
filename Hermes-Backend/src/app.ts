@@ -49,9 +49,27 @@ const distPath = path.join(__dirname, '..', 'public', 'dist');
 // Serve static assets from public/dist
 app.use(express.static(distPath));
 
-// Serve index.html on root route
-app.get('/', (req, res) => {
-  res.sendFile(path.join(distPath, 'index.html'));
+const routes = [
+  '/',
+  '/market',
+  '/creatinglist',
+  '/createsingle',
+  'productlist',
+  '/productdetail/:productid',
+  '/wishlist',
+  '/userprofile',
+  '/dashboard',
+  '/trackorder',
+  '/multipleproduct',
+  '/cart',
+  '/about',
+  '/faq',
+  '/policy'];
+
+routes.forEach(route => {
+  app.get(route, (req: any, res: any) => {
+    res.sendFile(path.join(distPath, 'index.html'));
+  });
 });
 // Serve static files from "public" folder
 // Serve static files
