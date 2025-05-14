@@ -49,17 +49,28 @@ const distPath = path.join(__dirname, '..', 'public', 'dist');
 // Serve static assets from public/dist
 app.use(express.static(distPath));
 
-// Serve index.html on root route
-app.get('/', (req, res) => {
-  res.sendFile(path.join(distPath, 'index.html'));
+const routes = [
+  '/',
+  '/market',
+  '/creatinglist',
+  '/createsingle',
+  'productlist',
+  '/productdetail/:productid',
+  '/wishlist',
+  '/userprofile',
+  '/dashboard',
+  '/trackorder',
+  '/multipleproduct',
+  '/cart',
+  '/about',
+  '/faq',
+  '/policy'];
+
+routes.forEach(route => {
+  app.get(route, (req: any, res: any) => {
+    res.sendFile(path.join(distPath, 'index.html'));
+  });
 });
-// Serve static files from "public" folder
-// Serve static files
-// app.use(express.static(path.join(__dirname, '../../Hermes_Frontend/dist')));
-// app.get('/', (_req: Request, res: Response) => {
-//   res.sendFile(path.join(__dirname, '../../Hermes_Frontend/dist', 'index.html'));
-// });
-// Catch all other routes and send back index.html (good for SPA apps
 
 app.use("/api", authRouter)
 app.use("/api", dashboardRouter)
@@ -74,7 +85,7 @@ app.use("/user", userRouter)
 app.use("/webhook", webhookRouter)
 
 
-app.post("/api/test", authTokenVerification, (_req, resp) => {
+app.post("/api/test", authTokenVerification, (_req: any, resp: { json: (arg0: { status: string; }) => void; }) => {
   resp.json({ status: "Passed" });
 })
 
